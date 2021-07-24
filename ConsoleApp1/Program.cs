@@ -90,61 +90,15 @@ namespace ConsoleApp1
             Console.WriteLine(resultCaseA);
 
 
-            if (resultCaseA == 0)
-            {
-                Console.WriteLine("____________________________________________________");
-                Console.WriteLine("Case B");
-                List<int> listCheckZero = new List<int>();
-                m = Algebra.CreateSymmetricMatrix(m);
-                List<int> listZero = Preprocessing.CheckIfDiagonalElementsAreZero(listCheckZero, inputMatrix);
-                double[] v1 = new double[inputMatrix.GetLength(0)];
-                v1 = Preprocessing.TestMethod(listZero, v1, inputMatrix);
-                if (v1 != null)
-                {
-                    double[] v2 = new double[v1.Length];
-                    Console.WriteLine("Results Case B");
-                    Console.WriteLine("A violating vector is");
-                    PrintingToConsole.PrintVektorToConsole(v1);
-                    PrintingToConsole.PrintMatrixToConsole(inputMatrix);
-                    Console.WriteLine(Algebra.SkalarProdukt(v1, Algebra.VektorMatrixMultiplikation(inputMatrix, v1, resultTest)));
-                }
-            }
-
+            //Case B
+            Preprocessing.CaseB(resultCaseA, inputMatrix);
+            //END CASE B___________________________________________________
 
             //CASE C
-
-            Console.WriteLine("Case C");
-
-            m = Algebra.CreateSymmetricMatrix(m);
-            int[,] outputMatrix = new int[m.GetLength(0), m.GetLength(1)];
-            int[,] outputMatrix2 = new int[m.GetLength(0) - 1, m.GetLength(1) - 1];
-            PrintingToConsole.PrintMatrixToConsole(Preprocessing.TestCaseC(m, outputMatrix));
-            int[,] afterCaseC = Preprocessing.TestCaseC(m, outputMatrix);
-            int[,] againCaseC = Preprocessing.TestCaseC(afterCaseC, outputMatrix2);
-
-            PrintingToConsole.PrintMatrixToConsole(againCaseC);
-
-            Console.WriteLine("____________________________________________________");
-            Console.WriteLine("Case B");
-            List<int> listCheckZero2 = new List<int>();
-            
-            List<int> listZero2 = Preprocessing.CheckIfDiagonalElementsAreZero(listCheckZero2, afterCaseC);
-            double[] v12 = new double[afterCaseC.GetLength(0)];
-            v12 = Preprocessing.TestMethod(listZero2, v12, afterCaseC);
-            if (v12 != null)
-            {
-                double[] v2 = new double[v12.Length];
-                Console.WriteLine("Results Case B");
-                Console.WriteLine("A violating vector is");
-                PrintingToConsole.PrintVektorToConsole(v12);
-                PrintingToConsole.PrintMatrixToConsole(afterCaseC);
-                Console.WriteLine(Algebra.SkalarProdukt(v12, Algebra.VektorMatrixMultiplikation(afterCaseC, v12, resultTest)));
-                PrintingToConsole.PrintVektorToConsole(v12);
-            }
-
+            Preprocessing.CaseC(resultCaseA, inputMatrix);
             //END CASE C___________________________________________________
 
-            
+
 
         }
     }

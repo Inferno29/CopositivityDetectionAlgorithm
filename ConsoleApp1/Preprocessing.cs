@@ -50,23 +50,27 @@ namespace ConsoleApp1
 
         public static List<int> CheckIfDiagonalElementsAreZero(List<int> list, int[,] matrix)
         {
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            if (matrix != null)
             {
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                for (int i = 0; i < matrix.GetLength(0); i++)
                 {
-                    if (i == j)
+                    for (int j = 0; j < matrix.GetLength(1); j++)
                     {
-
-                        if (matrix[i,j] == 0)
+                        if (i == j)
                         {
-                             list.Add(i); 
+
+                            if (matrix[i, j] == 0)
+                            {
+                                list.Add(i);
+                            }
+
                         }
-                        
+
                     }
-
                 }
-            }
 
+                
+            }
             if (list.Count > 0)
             {
                 return list;
@@ -75,7 +79,7 @@ namespace ConsoleApp1
             else
             {
                 Console.WriteLine("No diagonal element is 0");
-                return null; 
+                return null;
 
             }
 
@@ -150,11 +154,6 @@ namespace ConsoleApp1
                         indexJ++;
                         if (indexJ == inputMatrix.GetLength(1) -1 && indexI !=null)
                         {
-
-
-
-
-
                             for (int m = 0; m < inputMatrix.GetLength(0); m++)
                             {
                                 for (int k = 0; k < inputMatrix.GetLength(0); k++)
@@ -182,65 +181,12 @@ namespace ConsoleApp1
 
                                 return outputMatrix;
                             }
-
-                            indexI = null;
-                            return null;
-
                         }
                     }
                 }
 
                 indexJ = -1; 
             }
-
-
-
-
-
-
-
-
-            //int counter = 0;
-            //int? removeIndex = null; 
-            //for (int i = 0; i < inputMatrix.GetLength(0); i++)
-            //{
-               
-            //    for (int j = 0; j < inputMatrix.GetLength(1); j++)
-            //    {
-            //        if (inputMatrix[i,j] > 0)
-            //        {
-                      
-            //            for (int k = 0; k < inputMatrix.GetLength(0); k++)
-            //            {
-            //                if (counter <=1)
-            //                {
-            //                    int? number = null;
-            //                    removeIndex = i; 
-            //                    if (k != i && j != i)
-            //                    {
-            //                        number = inputMatrix[j, k];
-            //                    }
-
-            //                    if (number != null)
-            //                    {
-            //                        outputMatrix[j,k] = (int) number;
-            //                    }
-
-            //                }
-                           
-                            
-            //            }
-
-            //        }
-            //    }
-            //}
-
-            //if (removeIndex != null)
-            //{
-            //    outputMatrix = TrimForCaseC(removeIndex, outputMatrix);
-
-            //    return outputMatrix;
-            //}
 
             return null; 
 
@@ -272,30 +218,88 @@ namespace ConsoleApp1
             return result;
         }
 
-        public static int[,] WhileLoopForCaseC(int[,] inputMatrix, int[,] outputMatrix)
+
+        public static void CaseC(double resultCaseA, int[,] inputMatrix)
         {
-            outputMatrix = TestCaseC(inputMatrix, outputMatrix);
-            int sumOfRow = 0;
-            while (sumOfRow >= 0)
+            if (resultCaseA == 0)
             {
-                for (int i = 0; i < outputMatrix.GetLength(0); i++)
+                Console.WriteLine("Case C");
+                double[] resultTest = Algebra.RandomVektorForRandomMatrix(inputMatrix);
+                int[,] outputMatrix = new int[inputMatrix.GetLength(0), inputMatrix.GetLength(1)];
+                PrintingToConsole.PrintMatrixToConsole(Preprocessing.TestCaseC(inputMatrix, outputMatrix));
+                int[,] afterCaseC = Preprocessing.TestCaseC(inputMatrix, outputMatrix);
+
+                if (afterCaseC != null)
                 {
-                    for (int j = 0; j < outputMatrix.GetLength(1); j++)
+                    Console.WriteLine("____________________________________________________");
+                    Console.WriteLine("Case B called from Case C");
+                    List<int> listCheckZero2 = new List<int>();
+
+                    List<int> listZero2 = Preprocessing.CheckIfDiagonalElementsAreZero(listCheckZero2, afterCaseC);
+                    double[] violatingVectorReduced = new double[afterCaseC.GetLength(0)];
+                    violatingVectorReduced = Preprocessing.TestMethod(listZero2, violatingVectorReduced, afterCaseC);
+                    if (violatingVectorReduced != null)
                     {
-                        sumOfRow += inputMatrix[i, j]; 
-                        outputMatrix = TestCaseC(inputMatrix, outputMatrix);
+                        Console.WriteLine("Results Case B");
+                        Console.WriteLine("A violating vector is REDUCED");
+                        PrintingToConsole.PrintVektorToConsole(violatingVectorReduced);
+                        PrintingToConsole.PrintMatrixToConsole(afterCaseC);
+                        Console.WriteLine(Algebra.SkalarProdukt(violatingVectorReduced, Algebra.VektorMatrixMultiplikation(afterCaseC, violatingVectorReduced, resultTest)));
+                        double[] violatingVectorCaseC = new double[violatingVectorReduced.Length + 1];
+                        for (int i = 0; i < violatingVectorCaseC.Length; i++)
+                        {
+                            if (i == 0)
+                            {
+                                violatingVectorCaseC[i] = 0;
+
+                            }
+                            else
+                            {
+                                violatingVectorCaseC[i] = violatingVectorReduced[i - 1];
+                            }
+                        }
+
+                        Console.WriteLine("Extended Violating Vector");
+                        PrintingToConsole.PrintVektorToConsole(violatingVectorCaseC);
+                        Console.WriteLine("The Result is " + Algebra.SkalarProdukt(violatingVectorCaseC, Algebra.VektorMatrixMultiplikation(inputMatrix, violatingVectorCaseC, resultTest)));
+
                     }
+                    else
+                    {
+                        Console.WriteLine("No violating Vector for Case C");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No row had only nonnegative entries CASE C failed");
                 }
 
             }
-          
-
-            return outputMatrix; 
         }
 
 
-
-
+        public static void CaseB(double resultCaseA, int[,] inputMatrix)
+        {
+            if (resultCaseA == 0)
+            {
+                Console.WriteLine("____________________________________________________");
+                Console.WriteLine("Case B");
+                double[] resultTest = Algebra.RandomVektorForRandomMatrix(inputMatrix);
+                List<int> listCheckZero = new List<int>();
+                List<int> listZero = Preprocessing.CheckIfDiagonalElementsAreZero(listCheckZero, inputMatrix);
+                double[] v1 = new double[inputMatrix.GetLength(0)];
+                v1 = Preprocessing.TestMethod(listZero, v1, inputMatrix);
+                if (v1 != null)
+                {
+                    double[] v2 = new double[v1.Length];
+                    Console.WriteLine("Results Case B");
+                    Console.WriteLine("A violating vector is");
+                    PrintingToConsole.PrintVektorToConsole(v1);
+                    PrintingToConsole.PrintMatrixToConsole(inputMatrix);
+                    Console.WriteLine(Algebra.SkalarProdukt(v1, Algebra.VektorMatrixMultiplikation(inputMatrix, v1, resultTest)));
+                }
+            }
+        }
 
 
         public static void CheckForNull(double[] resultVektor)
@@ -312,8 +316,5 @@ namespace ConsoleApp1
                 Console.WriteLine("All diaglonal entries are positive");
             }
         }
-
-
-
     }
 }
