@@ -13,9 +13,9 @@ namespace ConsoleApp1
             //Test Input
             int[,] matrix = new int[,]
             {
-                {1   ,-2,   5},
-                {2,   2,   4},
-                {4,   -4,   73}
+                {2   ,3,   5},
+                {-3,   1,   -2},
+                {5,   -2,   2}
 
 
             };
@@ -37,10 +37,10 @@ namespace ConsoleApp1
 
             int[,] m = new int[,]
             {
-                {1,2,3,2},
-                {2,0,-3,1},
-                {3,-3,5,-4},
-                {2,2,-4,0}
+                {5,-2,3,2},
+                {-2,1,3,2},
+                {3,3,1,-4},
+                {2,2,-1,4}
 
             };
             //Test input END 
@@ -63,25 +63,14 @@ namespace ConsoleApp1
             double[] checkForGegativeDiagonals = Algebra.RandomVektorForRandomMatrix(inputMatrix);
             checkForGegativeDiagonals = Preprocessing.CheckForNegativeDiagonalElement(checkForGegativeDiagonals, inputMatrix);
             double[] vektorResultFinal = Algebra.RandomVektorForRandomMatrix(inputMatrix);
-            double finalResult = 0;
 
 
-            if (checkForGegativeDiagonals == null)
-            {
-                Console.WriteLine("Case BRUTE FORCE");
-                Algebra.DisplayResults(listDisplayResults, finalResult, resultTest, vektorResultFinal, inputMatrix);
-                Console.WriteLine("NO negative diagonals");
-                PrintingToConsole.PrintMatrixToConsole(inputMatrix);
-                Console.WriteLine("______________________________________________________");
-            }
-            else
-            {
-                Console.WriteLine("Case A");
-                Preprocessing.CheckForNull(checkForGegativeDiagonals);
-                Console.WriteLine("there are negative diagonal elements");
-                PrintingToConsole.PrintMatrixToConsole(inputMatrix);
 
-            }
+
+            Console.WriteLine("Case A");
+            Preprocessing.CheckForNull(checkForGegativeDiagonals);
+            PrintingToConsole.PrintMatrixToConsole(inputMatrix);
+
 
 
             Console.WriteLine("Results Case A");
@@ -91,13 +80,23 @@ namespace ConsoleApp1
 
 
             //Case B
+            Console.WriteLine("____________________Case B____________________");
             Preprocessing.CaseB(resultCaseA, inputMatrix);
             //END CASE B___________________________________________________
 
             //CASE C
+
+            Console.WriteLine("____________________Case C____________________");
             Preprocessing.CaseC(resultCaseA, inputMatrix);
+
+
+
+
             //END CASE C___________________________________________________
 
+            Console.WriteLine("____________________Case E____________________");
+            Preprocessing.CaseE(inputMatrix);
+            
 
 
         }

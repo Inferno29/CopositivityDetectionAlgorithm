@@ -162,7 +162,7 @@ namespace ConsoleApp1
         {
             finalResult = Algebra.SkalarProdukt(Algebra.VektorMatrixMultiplikation(matrix, vektor, result), vektor);
             int counter = 0;
-            while (counter < 1000000)
+            while (counter < 10)
             {
                 finalResult = Algebra.SkalarProdukt(Algebra.VektorMatrixMultiplikation(matrix, Algebra.VektorRandomElements(vektor),result), Algebra.VektorRandomElements(vektor));
                 //Console.WriteLine(finalResult);
@@ -178,7 +178,7 @@ namespace ConsoleApp1
                     return vektor;
 
                 }
-                if (counter == 1000000)
+                if (counter == 10)
                 {
                     Console.WriteLine("no violating vector could be found");
                    
