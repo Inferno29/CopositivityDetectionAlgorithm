@@ -13,7 +13,7 @@ namespace ConsoleApp1
             //Test Input
             int[,] matrix = new int[,]
             {
-                {2   ,3,   5},
+                {2   ,-3,   5},
                 {-3,   1,   -2},
                 {5,   -2,   2}
 
@@ -37,7 +37,7 @@ namespace ConsoleApp1
 
             int[,] m = new int[,]
             {
-                {5,-2,3,2},
+                {0,-2,3,2},
                 {-2,1,3,2},
                 {3,3,1,-4},
                 {2,2,-1,4}
@@ -60,8 +60,7 @@ namespace ConsoleApp1
             int[,] inputMatrix = Algebra.CreateSymmetricMatrix(Algebra.MatrixRandomElements());
             double[] resultTest = Algebra.RandomVektorForRandomMatrix(inputMatrix);
             List<double> listDisplayResults = new List<double>();
-            double[] checkForGegativeDiagonals = Algebra.RandomVektorForRandomMatrix(inputMatrix);
-            checkForGegativeDiagonals = Preprocessing.CheckForNegativeDiagonalElement(checkForGegativeDiagonals, inputMatrix);
+            double [] checkForGegativeDiagonals = Preprocessing.CheckForNegativeDiagonalElement(inputMatrix);
             double[] vektorResultFinal = Algebra.RandomVektorForRandomMatrix(inputMatrix);
 
 
@@ -96,8 +95,16 @@ namespace ConsoleApp1
 
             Console.WriteLine("____________________Case E____________________");
             Preprocessing.CaseE(inputMatrix);
-            
 
+
+
+            Console.WriteLine("____________________Case D____________________");
+
+            if (resultCaseA > 0)
+            {
+                Preprocessing.CaseD(inputMatrix);
+            }
+          
 
         }
     }
