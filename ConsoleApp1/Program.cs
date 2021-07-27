@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Channels;
 
 
 namespace ConsoleApp1
@@ -37,24 +38,13 @@ namespace ConsoleApp1
 
             int[,] m = new int[,]
             {
-                {0,-2,3,2},
-                {-2,1,3,2},
-                {3,3,1,-4},
+                {5,-2,-3,2},
+                {-2,1,-3,-2},
+                {-3,-3,1,-4},
                 {2,2,-1,4}
 
             };
             //Test input END 
-
-
-
-
-
-
-
-
-
-
-
 
 
             int[,] inputMatrix = Algebra.CreateSymmetricMatrix(Algebra.MatrixRandomElements());
@@ -100,11 +90,25 @@ namespace ConsoleApp1
 
             Console.WriteLine("____________________Case D____________________");
 
-            if (resultCaseA > 0)
-            {
-                Preprocessing.CaseD(inputMatrix);
-            }
-          
+            
+            Preprocessing.NegativityTestCaseD(inputMatrix);
+
+
+            Console.WriteLine("________________________________________________________");
+            Console.WriteLine("____________________Lemma 0.2 Case B____________________");
+            Console.WriteLine("________________________________________________________");
+
+
+            var inMatrix = Preprocessing2.CaseB2(inputMatrix);
+            Preprocessing2.CaseB(0, inMatrix);
+            Console.WriteLine("____________________Case C2____________________");
+            Preprocessing2.CaseC(0, inMatrix);
+            Console.WriteLine("____________________Case E2____________________");
+            Preprocessing2.CaseE(inMatrix);
+            Console.WriteLine("____________________Case D2____________________");
+            Preprocessing2.NegativityTestCaseD(inMatrix); 
+            
+
 
         }
     }

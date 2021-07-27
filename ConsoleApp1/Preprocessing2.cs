@@ -1,18 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.Diagnostics.Tracing;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization.Formatters;
 using System.Text;
 
 namespace ConsoleApp1
 {
-    class Preprocessing
+    class Preprocessing2
     {
-        public static double[] CheckForNegativeDiagonalElement(int[,] matrix)
+
+        public static double[,] CaseB2(int[,] inputMatrix)
+        {
+            double[,] processedMatrix = new double[inputMatrix.GetLength(0), inputMatrix.GetLength(1)];
+            for (int i = 0; i < inputMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < inputMatrix.GetLength(1); j++)
+                {
+                    if (inputMatrix[i,j] > 0)
+                    {
+                        processedMatrix[i, j] = Math.Round(inputMatrix[i, j] / Math.Sqrt(inputMatrix[i, i] * inputMatrix[j, j]), 3);
+                    }
+                    else
+                    {
+                        processedMatrix[i, j] = 0.000001; 
+                    }
+                   
+                }
+            }
+
+
+            return processedMatrix; 
+        }
+
+
+        public static double[,] CaseB2(double[,] inputMatrix)
+        {
+            double[,] processedMatrix = new double[inputMatrix.GetLength(0), inputMatrix.GetLength(1)];
+            for (int i = 0; i < inputMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < inputMatrix.GetLength(1); j++)
+                {
+                    processedMatrix[i, j] = Math.Round(inputMatrix[i, j] / Math.Sqrt(inputMatrix[i, i] * inputMatrix[j, j]), 3);
+                }
+            }
+
+
+            return processedMatrix;
+        }
+
+
+
+        //METHODS FROM PREPROCESSING
+
+        public static double[] CheckForNegativeDiagonalElement(double[,] matrix)
         {
             double[] resultVektor = new double[matrix.GetLength(0)];
             int counter = 0;
@@ -54,7 +93,7 @@ namespace ConsoleApp1
 
 
 
-        public static double[] CheckForNegativeDiagonalElementAndIgnoreIndex(int[,] matrix, int index)
+        public static double[] CheckForNegativeDiagonalElementAndIgnoreIndex(double[,] matrix, int index)
         {
             double[] resultVektor = new double[matrix.GetLength(0)];
             int counter = 0;
@@ -95,7 +134,7 @@ namespace ConsoleApp1
         }
 
 
-        public static List<int> CheckIfDiagonalElementsAreZero(List<int> list, int[,] matrix)
+        public static List<double> CheckIfDiagonalElementsAreZero(List<double> list, double[,] matrix)
         {
             if (matrix != null)
             {
@@ -135,12 +174,12 @@ namespace ConsoleApp1
 
 
 
-        public static double[] TestMethod(List<int> list, double[] violatingVector, int[,] matrix)
+        public static double[] TestMethod(List<double> list, double[] violatingVector, double[,] matrix)
         {
             if (list != null)
             {
                 int counter = 0;
-                foreach (var i in list)
+                foreach (int i in list)
                 {
                     if (counter > 1)
                     {
@@ -185,7 +224,7 @@ namespace ConsoleApp1
 
 
         //Case C
-        public static int[,] TestCaseC(int[,] inputMatrix, int[,] outputMatrix)
+        public static double[,] TestCaseC(double[,] inputMatrix, double[,] outputMatrix)
         {
             int? indexI = -1;
             int indexJ = -1;
@@ -207,7 +246,7 @@ namespace ConsoleApp1
                                 {
 
 
-                                    int? number = null;
+                                    double? number = null;
 
                                     if (k != indexI && m != indexI)
                                     {
@@ -242,9 +281,9 @@ namespace ConsoleApp1
 
 
 
-        public static int[,] TrimForCaseC(int? removeIndex, int[,] originalArray)
+        public static double[,] TrimForCaseC(int? removeIndex, double[,] originalArray)
         {
-            int[,] result = new int[originalArray.GetLength(0) - 1, originalArray.GetLength(1) - 1];
+            double[,] result = new double[originalArray.GetLength(0) - 1, originalArray.GetLength(1) - 1];
 
             for (int i = 0, j = 0; i < originalArray.GetLength(0); i++)
             {
@@ -266,7 +305,7 @@ namespace ConsoleApp1
         }
 
 
-        public static double[] CaseC(double resultCaseA, int[,] inputMatrix)
+        public static double[] CaseC(double resultCaseA, double[,] inputMatrix)
         {
 
 
@@ -276,15 +315,15 @@ namespace ConsoleApp1
                 Console.WriteLine("Case C");
                 Console.WriteLine("First iteration");
                 double[] resultTest = Algebra.RandomVektorForRandomMatrix(inputMatrix);
-                int[,] outputMatrix = new int[inputMatrix.GetLength(0), inputMatrix.GetLength(1)];
-                PrintingToConsole.PrintMatrixToConsole(Preprocessing.TestCaseC(inputMatrix, outputMatrix));
-                int[,] afterCaseC = Preprocessing.TestCaseC(inputMatrix, outputMatrix);
+                double[,] outputMatrix = new double[inputMatrix.GetLength(0), inputMatrix.GetLength(1)];
+                PrintingToConsole.PrintMatrixToConsole(Preprocessing2.TestCaseC(inputMatrix, outputMatrix));
+                double[,] afterCaseC = Preprocessing2.TestCaseC(inputMatrix, outputMatrix);
                 int counter = 1;
                 while (afterCaseC != null)
                 {
 
-                    outputMatrix = new int[afterCaseC.GetLength(0), afterCaseC.GetLength(1)];
-                    afterCaseC = Preprocessing.TestCaseC(afterCaseC, outputMatrix);
+                    outputMatrix = new double[afterCaseC.GetLength(0), afterCaseC.GetLength(1)];
+                    afterCaseC = Preprocessing2.TestCaseC(afterCaseC, outputMatrix);
                     counter++;
 
 
@@ -295,15 +334,15 @@ namespace ConsoleApp1
                         PrintingToConsole.PrintMatrixToConsole(afterCaseC);
                         Console.WriteLine("____________________________________________________");
                         Console.WriteLine("Case B called from Case C");
-                        List<int> listCheckZero2 = new List<int>();
+                        List<double> listCheckZero2 = new List<double>();
 
                         //Call to Case E
                         CaseE(afterCaseC);
 
-                        List<int> listZero2 = Preprocessing.CheckIfDiagonalElementsAreZero(listCheckZero2, afterCaseC);
+                        List<double> listZero2 = Preprocessing2.CheckIfDiagonalElementsAreZero(listCheckZero2, afterCaseC);
                         double[] violatingVectorReduced = new double[afterCaseC.GetLength(0)];
                         violatingVectorReduced =
-                            Preprocessing.TestMethod(listZero2, violatingVectorReduced, afterCaseC);
+                            Preprocessing2.TestMethod(listZero2, violatingVectorReduced, afterCaseC);
                         if (violatingVectorReduced != null)
                         {
 
@@ -367,17 +406,17 @@ namespace ConsoleApp1
         }
 
 
-        public static double[] CaseB(double resultCaseA, int[,] inputMatrix)
+        public static double[] CaseB(double resultCaseA, double[,] inputMatrix)
         {
             if (resultCaseA == 0)
             {
                 Console.WriteLine("____________________________________________________");
                 Console.WriteLine("Case B");
                 double[] resultTest = Algebra.RandomVektorForRandomMatrix(inputMatrix);
-                List<int> listCheckZero = new List<int>();
-                List<int> listZero = Preprocessing.CheckIfDiagonalElementsAreZero(listCheckZero, inputMatrix);
+                List<double> listCheckZero = new List<double>();
+                List<double> listZero = Preprocessing2.CheckIfDiagonalElementsAreZero(listCheckZero, inputMatrix);
                 double[] violatingVector = new double[inputMatrix.GetLength(0)];
-                violatingVector = Preprocessing.TestMethod(listZero, violatingVector, inputMatrix);
+                violatingVector = Preprocessing2.TestMethod(listZero, violatingVector, inputMatrix);
                 if (violatingVector != null)
                 {
                     double[] v2 = new double[violatingVector.Length];
@@ -404,7 +443,7 @@ namespace ConsoleApp1
         }
 
 
-        public static double[] CaseE(int[,] inputMatrix)
+        public static double[] CaseE(double[,] inputMatrix)
         {
             Console.WriteLine("Case E starting");
             double[] violatingVector = new double[inputMatrix.GetLength(0)];
@@ -454,12 +493,12 @@ namespace ConsoleApp1
         }
 
 
-        public static void CaseD(int[,] inputMatrix)
+        public static void CaseD(double[,] inputMatrix)
         {
             double[] valuesVector = new double[inputMatrix.GetLength(0)];
             double[] saveForValuesVector = new double[valuesVector.Length];
-            int[,] negativeSignMatrix = new int[inputMatrix.GetLength(0), inputMatrix.GetLength(1)];
-            int[,] saveForInputMatrix = inputMatrix;
+            double[,] negativeSignMatrix = new double[inputMatrix.GetLength(0), inputMatrix.GetLength(1)];
+            double[,] saveForInputMatrix = inputMatrix;
 
 
             do
@@ -518,7 +557,7 @@ namespace ConsoleApp1
 
 
 
-                    int[,] T = TMatrixForCaseD(saveForInputMatrix, indexOfMax);
+                    double[,] T = TMatrixForCaseD(saveForInputMatrix, indexOfMax);
                     Console.WriteLine("this is matrix T");
                     PrintingToConsole.PrintMatrixToConsole(T);
 
@@ -694,14 +733,14 @@ namespace ConsoleApp1
         }
 
 
-        public static double[] NegativityTestCaseD(int[,] inputMatrix)
+        public static double[] NegativityTestCaseD(double[,] inputMatrix)
         {
             int indexJ = -1;
             for (int i = 0; i < inputMatrix.GetLength(0); i++)
             {
                 for (int j = 0; j < inputMatrix.GetLength(1); j++)
                 {
-                    if (inputMatrix[i, j] <= 0 && j != i && inputMatrix[i,i] > 0)
+                    if (inputMatrix[i, j] <= 0 && j != i && inputMatrix[i, i] > 0)
                     {
                         indexJ++;
 
@@ -709,7 +748,7 @@ namespace ConsoleApp1
                         {
 
                             CaseD(inputMatrix);
-                            return null; 
+                            return null;
                         }
                     }
 
@@ -724,9 +763,9 @@ namespace ConsoleApp1
 
         }
 
-        public static int[,] TMatrixForCaseD(int[,] inputMatrix, int i)
+        public static double[,] TMatrixForCaseD(double[,] inputMatrix, int i)
         {
-            int[,] matrixT = new int[inputMatrix.GetLength(0), inputMatrix.GetLength(1)];
+            double[,] matrixT = new double[inputMatrix.GetLength(0), inputMatrix.GetLength(1)];
 
 
             for (int j = 0; j < matrixT.GetLength(1); j++)
@@ -761,5 +800,7 @@ namespace ConsoleApp1
                 Console.WriteLine("All diaglonal entries are positive");
             }
         }
+
+
     }
 }

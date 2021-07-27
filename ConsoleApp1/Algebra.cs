@@ -37,6 +37,32 @@ namespace ConsoleApp1
             return matrix; 
         }
 
+        public static double[,] CreateSymmetricMatrix(double[,] matrix)
+        {
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    if (i == j || i < j)
+                    {
+                        matrix[i, j] = Math.Round(matrix[i, j],3);
+                    }
+
+                    if (i > j)
+                    {
+                        matrix[i, j] = Math.Round(matrix[j, i],3);
+
+                    }
+
+                }
+            }
+
+
+
+
+            return matrix;
+        }
+
         public static double[] VektorRandomElements(double[] vektor)
         {
             Random random = new Random();
@@ -80,6 +106,18 @@ namespace ConsoleApp1
             return randomVektor;
         }
 
+        public static double[] RandomVektorForRandomMatrix(double[,] matrix)
+        {
+            Random random = new Random();
+            double[] randomVektor = new double[matrix.GetLength(0)];
+
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                randomVektor[i] = Math.Round(random.NextDouble(), 3);
+            }
+
+            return randomVektor;
+        }
 
         public static double[] VektorMatrixMultiplikation(int[,] matrix, double[] vektor, double[] result)
         {
@@ -103,6 +141,27 @@ namespace ConsoleApp1
             return result;
         }
 
+        public static double[] VektorMatrixMultiplikation(double[,] matrix, double[] vektor, double[] result)
+        {
+            if (matrix != null && vektor != null && result != null)
+            {
+                for (int i = 0; i < matrix.GetLength(0); i++)
+                {
+                    double temp = 0;
+                    for (int j = 0; j < matrix.GetLength(1); j++)
+                    {
+
+                        temp += (double)matrix[i, j] * vektor[j];
+                    }
+
+                    result[i] = temp;
+                }
+
+
+
+            }
+            return result;
+        }
 
 
         //MatrixMultiplikation
