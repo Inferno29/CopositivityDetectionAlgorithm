@@ -100,14 +100,16 @@ namespace ConsoleApp1
 
 
             var inMatrix = Preprocessing2.CaseB2(inputMatrix);
+            Console.WriteLine("The processed inputmatrix is now: ");
+            PrintingToConsole.PrintMatrixToConsole(inMatrix);
             Preprocessing2.CaseB(0, inMatrix);
             Console.WriteLine("____________________Case C2____________________");
             Preprocessing2.CaseC(0, inMatrix);
             Console.WriteLine("____________________Case E2____________________");
             Preprocessing2.CaseE(inMatrix);
             Console.WriteLine("____________________Case D2____________________");
-            Preprocessing2.NegativityTestCaseD(inMatrix); 
-            
+            Preprocessing2.NegativityTestCaseD(inMatrix);
+
 
 
         }

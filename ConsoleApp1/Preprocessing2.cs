@@ -15,13 +15,13 @@ namespace ConsoleApp1
             {
                 for (int j = 0; j < inputMatrix.GetLength(1); j++)
                 {
-                    if (inputMatrix[i,j] > 0)
+                    if (inputMatrix[i,i] > 0 && inputMatrix[j,j] > 0)
                     {
-                        processedMatrix[i, j] = Math.Round(inputMatrix[i, j] / Math.Sqrt(inputMatrix[i, i] * inputMatrix[j, j]), 3);
+                        processedMatrix[i, j] = Math.Round(inputMatrix[i, j] / (Math.Sqrt(inputMatrix[i, i] * inputMatrix[j, j])), 3);
                     }
                     else
                     {
-                        processedMatrix[i, j] = 0.000001; 
+                        processedMatrix[i, j] = 0.001; 
                     }
                    
                 }
@@ -39,7 +39,14 @@ namespace ConsoleApp1
             {
                 for (int j = 0; j < inputMatrix.GetLength(1); j++)
                 {
-                    processedMatrix[i, j] = Math.Round(inputMatrix[i, j] / Math.Sqrt(inputMatrix[i, i] * inputMatrix[j, j]), 3);
+                    if (inputMatrix[i, j] > 0)
+                    {
+                        processedMatrix[i, j] = Math.Round(inputMatrix[i, j] / (Math.Sqrt(inputMatrix[i, i] * inputMatrix[j, j])), 3);
+                    }
+                    else
+                    {
+                        processedMatrix[i, j] = 0.001;
+                    }
                 }
             }
 
