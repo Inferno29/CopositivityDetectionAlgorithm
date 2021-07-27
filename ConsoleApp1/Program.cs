@@ -111,7 +111,13 @@ namespace ConsoleApp1
             Console.WriteLine("____________________Case D2____________________");
             Preprocessing2.NegativityTestCaseD(inMatrix);
             Console.WriteLine("____________________Case Lemma0.2 C____________________");
-            Preprocessing2.Lemma2CaseC(inputMatrix); 
+            Preprocessing2.Lemma2CaseC(inputMatrix);
+
+            Console.WriteLine("________________________________________________________");
+            Console.WriteLine("________________________________________________________");
+            Console.WriteLine("________________________________________________________");
+            Console.WriteLine("________________________________________________________");
+            Preprocessing2.CaseC(0, inMatrix); 
 
         }
     }

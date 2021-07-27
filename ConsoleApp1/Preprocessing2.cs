@@ -262,7 +262,7 @@ namespace ConsoleApp1
 
                                     if (number != null)
                                     {
-                                        outputMatrix[m, k] = (int)number;
+                                        outputMatrix[m, k] = (double)number;
                                     }
 
                                 }
