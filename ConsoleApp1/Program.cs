@@ -14,9 +14,9 @@ namespace ConsoleApp1
             //Test Input
             int[,] matrix = new int[,]
             {
-                {2   ,-3,   5},
+                {1   ,-3,   5},
                 {-3,   1,   -2},
-                {5,   -2,   2}
+                {5,   -2,   1}
 
 
             };
@@ -76,7 +76,8 @@ namespace ConsoleApp1
             //CASE C
 
             Console.WriteLine("____________________Case C____________________");
-            Preprocessing.CaseC(resultCaseA, inputMatrix);
+            
+            Preprocessing.PositivityTestCaseC(inputMatrix,resultCaseA); 
 
 
 
@@ -104,13 +105,13 @@ namespace ConsoleApp1
             PrintingToConsole.PrintMatrixToConsole(inMatrix);
             Preprocessing2.CaseB(0, inMatrix);
             Console.WriteLine("____________________Case C2____________________");
-            Preprocessing2.CaseC(0, inMatrix);
+            Preprocessing2.PositivityTestCaseC(inMatrix,resultCaseA); 
             Console.WriteLine("____________________Case E2____________________");
             Preprocessing2.CaseE(inMatrix);
             Console.WriteLine("____________________Case D2____________________");
             Preprocessing2.NegativityTestCaseD(inMatrix);
-
-
+            Console.WriteLine("____________________Case Lemma0.2 C____________________");
+            Preprocessing2.Lemma2CaseC(inputMatrix); 
 
         }
     }

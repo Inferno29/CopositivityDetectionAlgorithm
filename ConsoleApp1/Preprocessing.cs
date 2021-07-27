@@ -224,6 +224,7 @@ namespace ConsoleApp1
 
                             if (indexI != null)
                             {
+                                
                                 outputMatrix = TrimForCaseC(indexI, outputMatrix);
 
                                 return outputMatrix;
@@ -261,7 +262,7 @@ namespace ConsoleApp1
                 }
                 j++;
             }
-
+            
             return result;
         }
 
@@ -270,7 +271,7 @@ namespace ConsoleApp1
         {
 
 
-            if (resultCaseA > -1000)
+            if (resultCaseA == 0)
             {
 
                 Console.WriteLine("Case C");
@@ -721,6 +722,44 @@ namespace ConsoleApp1
 
             Console.WriteLine("Input matrix not meeting criteria for Case D");
             return null;
+
+        }
+
+
+        public static double[] PositivityTestCaseC(int[,] inputMatrix, double resultCaseA)
+        {
+            if (resultCaseA == 0)
+            {
+                int indexJ = -1;
+                for (int i = 0; i < inputMatrix.GetLength(0); i++)
+                {
+                    for (int j = 0; j < inputMatrix.GetLength(1); j++)
+                    {
+                        if (inputMatrix[i, j] >= 0)
+                        {
+                            indexJ++;
+
+                            if (indexJ == inputMatrix.GetLength(1) - 2)
+                            {
+
+                                CaseC(resultCaseA, inputMatrix);
+                                return null;
+                            }
+                        }
+
+
+                    }
+
+                    indexJ = -1;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Input matrix not meeting criteria for Case C");
+                return null;
+            }
+
+            return null; 
 
         }
 

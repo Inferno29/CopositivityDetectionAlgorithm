@@ -270,8 +270,9 @@ namespace ConsoleApp1
 
                             if (indexI != null)
                             {
+                                
                                 outputMatrix = TrimForCaseC(indexI, outputMatrix);
-
+                               
                                 return outputMatrix;
                             }
                         }
@@ -307,7 +308,6 @@ namespace ConsoleApp1
                 }
                 j++;
             }
-
             return result;
         }
 
@@ -316,7 +316,7 @@ namespace ConsoleApp1
         {
 
 
-            if (resultCaseA > -1000)
+            if (resultCaseA == 0)
             {
 
                 Console.WriteLine("Case C");
@@ -412,7 +412,43 @@ namespace ConsoleApp1
             return null;
         }
 
+        public static double[] PositivityTestCaseC(double[,] inputMatrix, double resultCaseA)
+        {
+            if (resultCaseA == 0)
+            {
+                int indexJ = -1;
+                for (int i = 0; i < inputMatrix.GetLength(0); i++)
+                {
+                    for (int j = 0; j < inputMatrix.GetLength(1); j++)
+                    {
+                        if (inputMatrix[i, j] >= 0)
+                        {
+                            indexJ++;
 
+                            if (indexJ == inputMatrix.GetLength(1) - 2)
+                            {
+
+                                CaseC(resultCaseA, inputMatrix);
+                                return null;
+                            }
+                        }
+
+
+                    }
+
+                    indexJ = -1;
+                }
+            }
+
+            else
+            {
+                Console.WriteLine("Input matrix not meeting criteria for Case C");
+                return null;
+            }
+
+            return null; 
+
+        }
         public static double[] CaseB(double resultCaseA, double[,] inputMatrix)
         {
             if (resultCaseA == 0)
@@ -808,6 +844,65 @@ namespace ConsoleApp1
             }
         }
 
+        public static double[] Lemma2CaseC(int[,] inputMatrix)
+        {
+            
+            Console.WriteLine("Lemma 0.2 Case E starting");
+            double[] violatingVector = new double[inputMatrix.GetLength(0)];
+            bool rowFound = false;
+            double[] result = new double[inputMatrix.GetLength(0)];
+            for (int i = 0; i < inputMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < inputMatrix.GetLength(1); j++)
+                {
 
+                    for (int k = 0; k < violatingVector.Length; k++)
+                    {
+                        if (k == j && inputMatrix[i, j] < -Math.Sqrt(inputMatrix[i, i] * inputMatrix[j, j]) && inputMatrix[i,i] > 0 && inputMatrix[j,j] >0)
+                        {
+                            rowFound = true;
+                            violatingVector[i] = Math.Sqrt(inputMatrix[i, i]);
+                            violatingVector[j] = Math.Sqrt(inputMatrix[j, j]);
+                        }
+                        else
+                        {
+                            violatingVector[k] = 0;
+                        }
+                    }
+
+                    if (rowFound)
+                    {
+                        double sum = 0;
+                        for (int l = 0; l < violatingVector.Length; l++)
+                        {
+                            sum += violatingVector[l];
+                        }
+
+                        if (sum > 0)
+                        {
+                            
+                            double resultCaseE = Algebra.SkalarProdukt(violatingVector,
+                                Algebra.VektorMatrixMultiplikation(inputMatrix, violatingVector, result));
+                            if (resultCaseE < 0)
+                            {
+                                Console.WriteLine("The result for Lemma 2 Case C is : " + resultCaseE);
+                                Console.WriteLine("A violating vector is: ");
+                                PrintingToConsole.PrintVektorToConsole(violatingVector);
+                                return violatingVector;
+                            }
+                            else
+                            {
+                                Console.WriteLine("No violating vector for Lemma 0,2 Case C");
+                                return null;
+                            }
+                           
+                        }
+                    }
+                }
+            }
+
+            Console.WriteLine("Required criteria not fulfilled for input matrix");
+            return null;
+        }
     }
 }
