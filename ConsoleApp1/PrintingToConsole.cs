@@ -61,13 +61,10 @@ namespace ConsoleApp1
 
         public static void PrintJaggedArrayToConsole(double[][] inputMatrix)
         {
-            for (int i = 0; i <= inputMatrix.Length-1; i++)
+            for (int i = 0; i < inputMatrix.GetLength(0); i++)
             {
-                //Console.Write("Row({0}): ", i);
-                for (int j = 0; j <= inputMatrix.Length-1; j++)
-                {
-                    Console.Write("{0} " + "|", inputMatrix[i][j]);
-                }
+                for (int j = 0; j < inputMatrix.GetLength(0); j++)
+                    Console.Write(Math.Round(inputMatrix[i][j], 1).ToString().PadLeft(5, ' ') + "|");
                 Console.WriteLine();
             }
         }

@@ -46,6 +46,8 @@ namespace ConsoleApp1
                 {-1,1,1,-1,1}
 
             };
+
+            double[][] testMatrix = new double[][] { new double[] { 2, -3, 5 }, new double[] { -3, 1, -2 }, new double[] { 5, -2, 2 } };
             //Test input END 
 
 
@@ -135,21 +137,31 @@ namespace ConsoleApp1
 
 
 
-           var identityMatrix = MatrixOperations.MatrixIdentity(inputMatrixDoubles.GetLength(0)); 
-           PrintingToConsole.PrintJaggedArrayToConsole(identityMatrix);
-
-
+           var identityMatrix = MatrixOperations.MatrixIdentity(jaggedInputMatrix.GetLength(0));
+           Console.WriteLine("INVERSE MATRIX");
            var inverseMatrix = MatrixOperations.MatrixInverse(jaggedInputMatrix); 
            PrintingToConsole.PrintJaggedArrayToConsole(inverseMatrix);
 
            Console.WriteLine("__________________________________________________________________________");
            Console.WriteLine("__________________________________________________________________________");
            Console.WriteLine("__________________________________________________________________________");
-           PrintingToConsole.PrintJaggedArrayToConsole(MatrixOperations.MatrixProduct(jaggedInputMatrix, inverseMatrix));
+           //var lol = MatrixOperations.MatrixProduct(testMatrix, inverseMatrix);
+
+           double[][] mmm = new double[][] { new double[] { 2, -3, 5 }, new double[] { -3, 1, -2 }, new double[] { 5, -2, 2 } };
+           double[][] inv = MatrixOperations.MatrixInverse(testMatrix);
 
 
-           var det = MatrixOperations.Determinant(inputMatrixDoubles);
-           Console.WriteLine(Math.Round(det,3));
+
+           Console.WriteLine();
+           double[][] invMultiplication = MatrixOperations.MatrixProduct(jaggedInputMatrix,inverseMatrix);
+
+           PrintingToConsole.PrintJaggedArrayToConsole(invMultiplication);
+
+
+
+
+            //var det = MatrixOperations.Determinant(inputMatrixDoubles);
+            //Console.WriteLine(Math.Round(det,3));
         }
     }
 }

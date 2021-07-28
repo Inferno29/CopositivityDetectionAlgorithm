@@ -59,17 +59,9 @@ namespace ConsoleApp1
             double[][] result = MatrixCreate(aRows, bCols);
 
             for (int i = 0; i < aRows; ++i) // each row of A
-                for (int j = 0; j < bCols; ++j) // each col of B
-                    for (int k = 0; k < aCols; ++k) // could use k less-than bRows
-                        if (matrixA[i][k] * matrixB[k][j] > 0.5)
-                        {
-                            result[i][j] += Math.Round(matrixA[i][k] * matrixB[k][j], 2);
-                        }
-                        else
-                        {
-                            result[i][j] = 0;
-                        }
-
+            for (int j = 0; j < bCols; ++j) // each col of B
+            for (int k = 0; k < aCols; ++k) // could use k less-than bRows
+                result[i][j] += matrixA[i][k] * matrixB[k][j];
 
             return result;
         }
@@ -85,7 +77,7 @@ namespace ConsoleApp1
             int[] perm;
             int toggle;
             double[][] lum = MatrixDecompose(matrix, out perm,
-              out toggle);
+                out toggle);
             if (lum == null)
                 throw new Exception("Unable to compute inverse");
 
@@ -103,7 +95,7 @@ namespace ConsoleApp1
                 double[] x = HelperSolve(lum, b);
 
                 for (int j = 0; j < n; ++j)
-                    result[j][i] = Math.Round(x[j],3);
+                    result[j][i] = x[j];
             }
             return result;
         }
@@ -113,8 +105,8 @@ namespace ConsoleApp1
             // allocates/creates a duplicate of a matrix.
             double[][] result = MatrixCreate(matrix.Length, matrix[0].Length);
             for (int i = 0; i < matrix.Length; ++i) // copy the values
-                for (int j = 0; j < matrix[i].Length; ++j)
-                    result[i][j] = matrix[i][j];
+            for (int j = 0; j < matrix[i].Length; ++j)
+                result[i][j] = matrix[i][j];
             return result;
         }
 
