@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.ConstrainedExecution;
 using System.Threading.Channels;
 
 
@@ -12,11 +13,11 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             //Test Input
-            int[,] matrix = new int[,]
+            double[,] matrix = new double[,]
             {
-                {1   ,-3,   5},
+                {2   ,-3,   5},
                 {-3,   1,   -2},
-                {5,   -2,   1}
+                {5,   -2,   2}
 
 
             };
@@ -36,22 +37,25 @@ namespace ConsoleApp1
 
 
 
-            int[,] m = new int[,]
+            double[,] m = new double[,]
             {
-                {5,-2,-3,2},
-                {-2,1,-3,-2},
-                {-3,-3,1,-4},
-                {2,2,-1,4}
+                {1,-1,1,1,-1},
+                {-1,1,-1,1,1},
+                {1,-1,1,-1,1},
+                {1,1,-1,1,-1},
+                {-1,1,1,-1,1}
 
             };
             //Test input END 
 
 
             int[,] inputMatrix = Algebra.CreateSymmetricMatrix(Algebra.MatrixRandomElements());
+            double[,] inputMatrixDoubles = Algebra.CreateSymmetricMatrixOfDoubles(inputMatrix);
             double[] resultTest = Algebra.RandomVektorForRandomMatrix(inputMatrix);
             List<double> listDisplayResults = new List<double>();
             double [] checkForGegativeDiagonals = Preprocessing.CheckForNegativeDiagonalElement(inputMatrix);
             double[] vektorResultFinal = Algebra.RandomVektorForRandomMatrix(inputMatrix);
+           
 
 
 
@@ -117,8 +121,35 @@ namespace ConsoleApp1
             Console.WriteLine("________________________________________________________");
             Console.WriteLine("________________________________________________________");
             Console.WriteLine("________________________________________________________");
-            Preprocessing2.CaseC(0, inMatrix); 
+            
 
+
+            //____________________________________________________________________________
+            //____________________________________________________________________________
+            //____________________________________________________________________________
+
+
+            PrintingToConsole.PrintMatrixToConsole(inputMatrixDoubles);
+           var jaggedInputMatrix = MatrixOperations.ConvertToJaggedArray(inputMatrixDoubles);
+           PrintingToConsole.PrintJaggedArrayToConsole(jaggedInputMatrix);
+
+
+
+           var identityMatrix = MatrixOperations.MatrixIdentity(inputMatrixDoubles.GetLength(0)); 
+           PrintingToConsole.PrintJaggedArrayToConsole(identityMatrix);
+
+
+           var inverseMatrix = MatrixOperations.MatrixInverse(jaggedInputMatrix); 
+           PrintingToConsole.PrintJaggedArrayToConsole(inverseMatrix);
+
+           Console.WriteLine("__________________________________________________________________________");
+           Console.WriteLine("__________________________________________________________________________");
+           Console.WriteLine("__________________________________________________________________________");
+           PrintingToConsole.PrintJaggedArrayToConsole(MatrixOperations.MatrixProduct(jaggedInputMatrix, inverseMatrix));
+
+
+           var det = MatrixOperations.Determinant(inputMatrixDoubles);
+           Console.WriteLine(Math.Round(det,3));
         }
     }
 }

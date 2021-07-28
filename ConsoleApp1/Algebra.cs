@@ -37,20 +37,21 @@ namespace ConsoleApp1
             return matrix; 
         }
 
-        public static double[,] CreateSymmetricMatrix(double[,] matrix)
+        public static double[,] CreateSymmetricMatrixOfDoubles(int[,] matrix)
         {
+            double[,] inputMatrixDoubles = new double[matrix.GetLength(0), matrix.GetLength(1)];  
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
                     if (i == j || i < j)
                     {
-                        matrix[i, j] = Math.Round(matrix[i, j],3);
+                        inputMatrixDoubles[i,j] = Math.Round((double)matrix[i, j],3);
                     }
 
                     if (i > j)
                     {
-                        matrix[i, j] = Math.Round(matrix[j, i],3);
+                        inputMatrixDoubles[i, j] = Math.Round((double)matrix[j, i],3);
 
                     }
 
@@ -60,7 +61,7 @@ namespace ConsoleApp1
 
 
 
-            return matrix;
+            return inputMatrixDoubles;
         }
 
         public static double[] VektorRandomElements(double[] vektor)
@@ -91,6 +92,23 @@ namespace ConsoleApp1
                 }
             }
             return randomMatrix; 
+        }
+
+        public static double[,] MatrixRandomDoubles()
+        {
+            Random random = new Random();
+            int number = random.Next(5, 20);
+            double[,] randomMatrix = new double[number, number];
+
+
+            for (int i = 0; i < randomMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < randomMatrix.GetLength(1); j++)
+                {
+                    randomMatrix[i, j] = random.Next(0, 60) - random.Next(0, 20);
+                }
+            }
+            return randomMatrix;
         }
 
         public static double[] RandomVektorForRandomMatrix(int[,] matrix)
@@ -247,6 +265,8 @@ namespace ConsoleApp1
             return null;
 
         }
+
+
 
 
 

@@ -133,8 +133,6 @@ namespace ConsoleApp1
         }
 
 
-
-
         public static double[] TestMethod(List<int> list, double[] violatingVector, int[,] matrix)
         {
             if (list != null)
@@ -182,7 +180,6 @@ namespace ConsoleApp1
                 return null;
             }
         }
-
 
         //Case C
         public static int[,] TestCaseC(int[,] inputMatrix, int[,] outputMatrix)
@@ -240,9 +237,6 @@ namespace ConsoleApp1
 
         }
 
-
-
-
         public static int[,] TrimForCaseC(int? removeIndex, int[,] originalArray)
         {
             int[,] result = new int[originalArray.GetLength(0) - 1, originalArray.GetLength(1) - 1];
@@ -265,7 +259,6 @@ namespace ConsoleApp1
             
             return result;
         }
-
 
         public static double[] CaseC(double resultCaseA, int[,] inputMatrix)
         {
@@ -367,7 +360,6 @@ namespace ConsoleApp1
             return null;
         }
 
-
         public static double[] CaseB(double resultCaseA, int[,] inputMatrix)
         {
             if (resultCaseA == 0)
@@ -403,7 +395,6 @@ namespace ConsoleApp1
 
             return null;
         }
-
 
         public static double[] CaseE(int[,] inputMatrix)
         {
@@ -453,7 +444,6 @@ namespace ConsoleApp1
             Console.WriteLine("No violating vector for Case E");
             return null;
         }
-
 
         public static void CaseD(int[,] inputMatrix)
         {
@@ -694,7 +684,6 @@ namespace ConsoleApp1
 
         }
 
-
         public static double[] NegativityTestCaseD(int[,] inputMatrix)
         {
             int indexJ = -1;
@@ -724,7 +713,6 @@ namespace ConsoleApp1
             return null;
 
         }
-
 
         public static double[] PositivityTestCaseC(int[,] inputMatrix, double resultCaseA)
         {
@@ -784,7 +772,6 @@ namespace ConsoleApp1
 
             return matrixT;
         }
-
 
         public static void CheckForNull(double[] resultVektor)
         {
