@@ -272,7 +272,6 @@ namespace ConsoleApp1
                             {
                                 
                                 outputMatrix = TrimForCaseC(indexI, outputMatrix);
-                               
                                 return outputMatrix;
                             }
                         }
@@ -385,15 +384,17 @@ namespace ConsoleApp1
 
                             }
 
-
-
+                         
+                            
 
 
 
                         }
                         else
                         {
+                            
                             Console.WriteLine("No violating Vector for Case C");
+                            return null; 
                         }
                     }
                     else
@@ -401,6 +402,7 @@ namespace ConsoleApp1
                         if (counter < 2)
                         {
                             Console.WriteLine("No row had only nonnegative entries CASE C failed");
+                            return null;
                         }
 
 
@@ -844,7 +846,7 @@ namespace ConsoleApp1
             }
         }
 
-        public static double[] Lemma2CaseC(int[,] inputMatrix)
+        public static double[] Lemma2CaseC(double[,] inputMatrix)
         {
             
             Console.WriteLine("Lemma 0.2 Case E starting");
