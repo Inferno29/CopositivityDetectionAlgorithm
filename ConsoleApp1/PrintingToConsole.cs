@@ -64,7 +64,8 @@ namespace ConsoleApp1
             for (int i = 0; i < inputMatrix.GetLength(0); i++)
             {
                 for (int j = 0; j < inputMatrix.GetLength(0); j++)
-                    Console.Write(Math.Round(inputMatrix[i][j], 1).ToString().PadLeft(5, ' ') + "|");
+                    
+                    Console.Write(Math.Round(inputMatrix[i][j], 3).ToString().PadLeft(5, ' ') + "|");
                 Console.WriteLine();
             }
         }

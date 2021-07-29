@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.ConstrainedExecution;
+using System.Threading;
 using System.Threading.Channels;
 
 
@@ -54,10 +56,9 @@ namespace ConsoleApp1
             int[,] inputMatrix = Algebra.CreateSymmetricMatrix(Algebra.MatrixRandomElements());
             double[,] inputMatrixDoubles = Algebra.CreateSymmetricMatrixOfDoubles(inputMatrix);
             double[] resultTest = Algebra.RandomVektorForRandomMatrix(inputMatrix);
-            List<double> listDisplayResults = new List<double>();
-            double [] checkForGegativeDiagonals = Preprocessing.CheckForNegativeDiagonalElement(inputMatrix);
-            double[] vektorResultFinal = Algebra.RandomVektorForRandomMatrix(inputMatrix);
-           
+            double[] checkForGegativeDiagonals = Preprocessing.CheckForNegativeDiagonalElement(inputMatrix);
+            
+
 
 
 
@@ -82,8 +83,8 @@ namespace ConsoleApp1
             //CASE C
 
             Console.WriteLine("____________________Case C____________________");
-            
-            Preprocessing.PositivityTestCaseC(inputMatrix,resultCaseA); 
+
+            Preprocessing.PositivityTestCaseC(inputMatrix, resultCaseA);
 
 
 
@@ -97,7 +98,7 @@ namespace ConsoleApp1
 
             Console.WriteLine("____________________Case D____________________");
 
-            
+
             Preprocessing.NegativityTestCaseD(inputMatrix);
 
 
@@ -111,7 +112,7 @@ namespace ConsoleApp1
             PrintingToConsole.PrintMatrixToConsole(inMatrix);
             Preprocessing2.CaseB(0, inMatrix);
             Console.WriteLine("____________________Case C2____________________");
-            Preprocessing2.PositivityTestCaseC(inMatrix,resultCaseA); 
+            Preprocessing2.PositivityTestCaseC(inMatrix, resultCaseA);
             Console.WriteLine("____________________Case E2____________________");
             Preprocessing2.CaseE(inMatrix);
             Console.WriteLine("____________________Case D2____________________");
@@ -123,7 +124,7 @@ namespace ConsoleApp1
             Console.WriteLine("________________________________________________________");
             Console.WriteLine("________________________________________________________");
             Console.WriteLine("________________________________________________________");
-            
+
 
 
             //____________________________________________________________________________
@@ -131,37 +132,67 @@ namespace ConsoleApp1
             //____________________________________________________________________________
 
 
-            PrintingToConsole.PrintMatrixToConsole(inputMatrixDoubles);
-           var jaggedInputMatrix = MatrixOperations.ConvertToJaggedArray(inputMatrixDoubles);
-           PrintingToConsole.PrintJaggedArrayToConsole(jaggedInputMatrix);
+            var jaggedInputMatrix = MatrixOperations.ConvertToJaggedArray(inputMatrixDoubles);
+            PrintingToConsole.PrintJaggedArrayToConsole(jaggedInputMatrix);
 
 
+            Console.WriteLine("IDENTITY MATRIX");
+            var identityMatrix = MatrixOperations.MatrixIdentity(inputMatrixDoubles.GetLength(0));
+            PrintingToConsole.PrintJaggedArrayToConsole(identityMatrix);
+            Console.WriteLine("INVERSE MATRIX");
+            var inverseMatrix = MatrixOperations.MatrixInverse(jaggedInputMatrix);
+            PrintingToConsole.PrintJaggedArrayToConsole(inverseMatrix);
 
-           var identityMatrix = MatrixOperations.MatrixIdentity(jaggedInputMatrix.GetLength(0));
-           Console.WriteLine("INVERSE MATRIX");
-           var inverseMatrix = MatrixOperations.MatrixInverse(jaggedInputMatrix); 
-           PrintingToConsole.PrintJaggedArrayToConsole(inverseMatrix);
+            Console.WriteLine("__________________________________________________________________________");
+            Console.WriteLine("__________________________________________________________________________");
+            Console.WriteLine("__________________________________________________________________________");
+            //var lol = MatrixOperations.MatrixProduct(testMatrix, inverseMatrix);
 
-           Console.WriteLine("__________________________________________________________________________");
-           Console.WriteLine("__________________________________________________________________________");
-           Console.WriteLine("__________________________________________________________________________");
-           //var lol = MatrixOperations.MatrixProduct(testMatrix, inverseMatrix);
-
-           double[][] mmm = new double[][] { new double[] { 2, -3, 5 }, new double[] { -3, 1, -2 }, new double[] { 5, -2, 2 } };
-           double[][] inv = MatrixOperations.MatrixInverse(testMatrix);
-
-
-
-           Console.WriteLine();
-           double[][] invMultiplication = MatrixOperations.MatrixProduct(jaggedInputMatrix,inverseMatrix);
-
-           PrintingToConsole.PrintJaggedArrayToConsole(invMultiplication);
+            double[][] mmm = new double[][] { new double[] { 2, -3, 5 }, new double[] { -3, 1, -2 }, new double[] { 5, -2, 2 } };
+            double[][] inv = MatrixOperations.MatrixInverse(testMatrix);
 
 
 
 
-            //var det = MatrixOperations.Determinant(inputMatrixDoubles);
-            //Console.WriteLine(Math.Round(det,3));
+            double[][] invMultiplication = MatrixOperations.PreprocessingMatrix(MatrixOperations.MatrixProduct(jaggedInputMatrix, inverseMatrix));
+            double[][] invIdentityMultiplication = MatrixOperations.MatrixProduct(invMultiplication, identityMatrix);
+            Console.WriteLine("__________________________________________________________________________");
+            Console.WriteLine("__________________________________________________________________________");
+            Console.WriteLine("__________________________________________________________________________");
+            PrintingToConsole.PrintJaggedArrayToConsole(MatrixOperations.MatrixProduct(invIdentityMultiplication, jaggedInputMatrix));
+
+
+            //var determinant = MatrixOperations.CalculateDeterminant(jaggedInputMatrix);
+            //Console.WriteLine(determinant);
+            //if (determinant == 0)
+            //{
+            //    Console.WriteLine("Inverse Matrix does not exist");
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Inverse Matrix exists");
+            //}
+
+
+            Console.WriteLine("__________________________________________________________________________");
+            Console.WriteLine("__________________________________________________________________________");
+            Console.WriteLine("__________________________________________________________________________");
+
+            //Proof that inv(invA) = A
+            var invinv = MatrixOperations.MatrixInverse(inverseMatrix);
+            PrintingToConsole.PrintJaggedArrayToConsole(invinv);
+
+           var listForMatrices =  MatrixOperations.CreateAllSubmatrices(inputMatrixDoubles);
+
+           foreach (var item in listForMatrices)
+           {
+               Console.WriteLine("___________________________________________________");
+               Console.WriteLine("Submatrix");
+               PrintingToConsole.PrintMatrixToConsole(item);
+               Console.WriteLine("the determinant is : " + MatrixOperations.CalculateDeterminant(MatrixOperations.ConvertToJaggedArray(item)));
+           }
+
+
         }
     }
 }

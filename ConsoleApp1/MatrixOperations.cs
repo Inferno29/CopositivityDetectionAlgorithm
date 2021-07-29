@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading;
 
@@ -8,6 +9,61 @@ namespace ConsoleApp1
 {
     class MatrixOperations
     {
+
+        public static List<double[,]> CreateAllSubmatrices(double[,] inputMatrix)
+        {
+            double[,] saveInputMatrix = inputMatrix;
+            List<double[,]> listOfMatrices = new List<double[,]>();
+            List<double[,]> saveForListOfMatrices = new List<double[,]>();
+            List<double[,]> Matrices = saveForListOfMatrices; 
+            saveForListOfMatrices.Add(inputMatrix);
+            for (int i = 0; i < inputMatrix.GetLength(0); i++)
+            {
+                listOfMatrices.Add(CreateSubmatrix(i, inputMatrix));
+            }
+
+            foreach (var item in listOfMatrices)
+            {
+                for (int j = 0; j < item.GetLength(0); j++)
+                {
+                    saveForListOfMatrices.Add(CreateSubmatrix(j, item));
+                }
+                
+                saveForListOfMatrices.Add(item);
+            }
+
+
+            return saveForListOfMatrices; 
+        }
+        public static double[,] CreateSubmatrix(int? removeIndex, double[,] originalArray)
+        {
+            if (originalArray.GetLength(0)-1 >= 0)
+            {
+                double[,] result = new double[originalArray.GetLength(0) - 1, originalArray.GetLength(1) - 1];
+
+                for (int i = 0, j = 0; i < originalArray.GetLength(0); i++)
+                {
+                    if (i == removeIndex)
+                        continue;
+
+                    for (int k = 0, u = 0; k < originalArray.GetLength(1); k++)
+                    {
+                        if (k == removeIndex)
+                            continue;
+
+                        result[j, u] = originalArray[i, k];
+                        u++;
+                    }
+                    j++;
+                }
+                return result;
+            }
+            else
+            {
+                return null; 
+            }
+           
+        }
         public static double[][] ConvertToJaggedArray(double[,] twoDimensionalArray)
         {
             int rowsFirstIndex = twoDimensionalArray.GetLowerBound(0);
@@ -59,14 +115,33 @@ namespace ConsoleApp1
             double[][] result = MatrixCreate(aRows, bCols);
 
             for (int i = 0; i < aRows; ++i) // each row of A
-            for (int j = 0; j < bCols; ++j) // each col of B
-            for (int k = 0; k < aCols; ++k) // could use k less-than bRows
-                result[i][j] += matrixA[i][k] * matrixB[k][j];
+                for (int j = 0; j < bCols; ++j) // each col of B
+                    for (int k = 0; k < aCols; ++k) // could use k less-than bRows
+                        result[i][j] += matrixA[i][k] * matrixB[k][j];
 
             return result;
         }
 
+        public static double[][] PreprocessingMatrix(double[][] inputMatrix)
+        {
+            int aRows = inputMatrix.Length; int aCols = inputMatrix[0].Length;
+            for (int i = 0; i < aRows; i++)
+            {
+                for (int j = 0; j < aCols; j++)
+                {
+                    if (inputMatrix[i][j] < 0.004)
+                    {
+                        inputMatrix[i][j] = 0; 
+                    }
+                    else
+                    {
+                        inputMatrix[i][j] = inputMatrix[i][j]; 
+                    }
+                }
+            }
 
+            return inputMatrix; 
+        }
         //Inversion
 
         public static double[][] MatrixInverse(double[][] matrix)
@@ -105,8 +180,8 @@ namespace ConsoleApp1
             // allocates/creates a duplicate of a matrix.
             double[][] result = MatrixCreate(matrix.Length, matrix[0].Length);
             for (int i = 0; i < matrix.Length; ++i) // copy the values
-            for (int j = 0; j < matrix[i].Length; ++j)
-                result[i][j] = matrix[i][j];
+                for (int j = 0; j < matrix[i].Length; ++j)
+                    result[i][j] = matrix[i][j];
             return result;
         }
 
@@ -317,6 +392,81 @@ namespace ConsoleApp1
 
 
 
+        }
+
+
+
+        public static double CalculateDeterminant(double[][] matrix)
+        {
+            int numRows = matrix.Length;
+            int numColumns = matrix[0].Length;
+
+            if (numRows != numColumns)
+            {
+                throw new ArgumentException("Matrix not square"); 
+            }
+
+            if (numColumns ==1 && numColumns ==1)
+            {
+                return matrix[0][0]; 
+            }
+
+            if (numColumns == 2 && numColumns == 2)
+            {
+                return matrix[0][0] * matrix[1][1] - matrix[1][0] * matrix[0][1]; 
+            }
+
+            double result = 0;
+            double counter = 0; 
+
+            for (int col = 0; col < numColumns; col++)
+            {
+
+                if (col % 2 == 0)
+                {
+                    counter++;
+                    result += matrix[0][col] * CalculateDeterminant(GetMinorMatrix(0, col, matrix)); 
+                }
+                else
+                {
+                    counter++;
+                    result -= matrix[0][col] * CalculateDeterminant(GetMinorMatrix(0, col, matrix));
+                }
+                
+            }
+
+            return result; 
+        }
+
+        public static double[][] GetMinorMatrix(int row, int col, double[][] matrix)
+        {
+            int numRows = matrix.Length;
+            int numColumns = matrix[0].Length;
+            double[][] minor = new double[numRows - 1][];
+            int rowIndex = 0; 
+
+            for (int i = 0; i < numRows; i++)
+            {
+                if (i == row)
+                {
+                    continue;
+                }
+
+                minor[rowIndex] = new double[numColumns - 1];
+                int colIndex = 0; 
+                for (int j = 0; j < numColumns; j++)
+                {
+                    if (j == col)
+                    {
+                        continue;
+                    }
+
+                    minor[rowIndex][colIndex++] = matrix[i][j];
+                }
+
+                ++rowIndex; 
+            }
+            return minor; 
         }
     }
 
