@@ -154,6 +154,10 @@ namespace ConsoleApp1
             Console.WriteLine("________________________________________________________");
 
 
+
+            var determinant = MatrixOperations.Det(inputMatrixDoubles, inputMatrix.GetLength(0));
+            Console.WriteLine("The Determinant is = " + determinant);
+
             if (resultCaseA == 0 &&
             resultCaseAinv == 0 && caseB == null && caseC == null && caseD == null 
             && caseE == null && caseB2 == null && caseC2 == null && caseD2 == null 
@@ -192,17 +196,7 @@ namespace ConsoleApp1
                 var invinv = MatrixOperations.MatrixInverse(inverseMatrix);
                 PrintingToConsole.PrintJaggedArrayToConsole(invinv);
 
-                var determinant = MatrixOperations.CalculateDeterminant(jaggedInputMatrix);
-
-                if (determinant >= 0)
-                {
-                    
-                    Console.WriteLine("The input matrix is copositive with determinant " + determinant);
-                }
-                else
-                {
-                    Console.WriteLine("The input matrix is not copositive with determinant " + determinant);
-                }
+                
                 //var listForMatrices = MatrixOperations.CreateAllSubmatrices(inputMatrixDoubles);
 
                 //foreach (var item in listForMatrices)

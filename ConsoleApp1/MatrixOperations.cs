@@ -487,7 +487,60 @@ namespace ConsoleApp1
             }
             return minor; 
         }
+
+
+
+
+        //Gauss Elimination Determinant
+
+        private static readonly double eps = 1e-6;
+        public static double Det(double[,] matrix, int dim)
+        {
+
+            double[,] mat = new double[dim, dim];
+            for (int i = 0; i < dim; i++)
+            {
+                for (int j = 0; j < dim; j++)
+                {
+                    mat[i, j] = matrix[i, j];
+                }
+            }
+
+            for (int i = 0; i < dim; i++)
+            {
+                if (Math.Abs(mat[i, i]) < eps)
+                {
+                    int j = -1;
+                    for (j = i + 1; j < dim; j++)
+                    {
+                        if (Math.Abs(mat[j, i]) > eps) break;
+                    }
+                    if (j == dim) return 0;
+                    for (int r = i; r < dim; r++)
+                    {
+                        mat[i, r] += mat[j, r];
+                    }
+                }
+
+                for (int j = i + 1; j < dim; j++)
+                {
+                    double e = -1 * (mat[j, i] / mat[i, i]);
+                    for (int r = i; r < dim; r++)
+                    {
+                        mat[j, r] += e * mat[i, r];
+                    }
+                }
+            }
+
+            double det = 1.0;
+            for (int i = 0; i < dim; i++) det *= mat[i, i];
+            return det;
+
+        }
     }
+
+
+   
 
 
 
