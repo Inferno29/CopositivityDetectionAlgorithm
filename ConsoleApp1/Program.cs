@@ -155,21 +155,30 @@ namespace ConsoleApp1
 
 
 
-            var determinant = MatrixOperations.Det(inputMatrixDoubles, inputMatrix.GetLength(0));
-            Console.WriteLine("The Determinant is = " + determinant);
+
 
             if (resultCaseA == 0 &&
-            resultCaseAinv == 0 && caseB == null && caseC == null && caseD == null 
-            && caseE == null && caseB2 == null && caseC2 == null && caseD2 == null 
+            resultCaseAinv == 0 && caseB == null && caseC == null && caseD == null
+            && caseE == null && caseB2 == null && caseC2 == null && caseD2 == null
             && caseB2inv == null && caseC2inv == null && caseD2inv == null &&
             caseE2inv == null && caseL2C2 == null && caseL2C == null)
             {
-               // ____________________________________________________________________________
-               // ____________________________________________________________________________
+                // ____________________________________________________________________________
+                // ____________________________________________________________________________
                 //____________________________________________________________________________
 
+                var determinant = MatrixOperations.Det(m, m.GetLength(0));
+                Console.WriteLine("The Determinant is = " + determinant);
 
-               
+                if (determinant < 0)
+                {
+                    Console.WriteLine("No answer");
+                }
+                else
+                {
+                    Console.WriteLine("The input matrix is copositive");
+                }
+
 
                 Console.WriteLine("__________________________________________________________________________");
                 Console.WriteLine("__________________________________________________________________________");
