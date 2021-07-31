@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Threading;
 using System.Threading.Channels;
@@ -23,22 +24,6 @@ namespace ConsoleApp1
 
 
             };
-
-            double[] vektor1111 = new double[]
-            {
-                0.9451086641965009,
-                0.9298211009846167,
-                0.03265740723938561,
-                0.13534266601099756,
-                0.5398110223653778,
-                0.32010522173722517
-            };
-            double[] vektor2222 = new double[vektor1111.Length];
-
-
-
-
-
             double[,] m = new double[,]
             {
                 {1,-1,1,1,-1},
@@ -51,6 +36,8 @@ namespace ConsoleApp1
 
             double[][] testMatrix = new double[][] { new double[] { 2, -3, 5 }, new double[] { -3, 1, -2 }, new double[] { 5, -2, 2 } };
             //Test input END 
+            //_____________________________________________________________________________________________________________________________
+            //_____________________________________________________________________________________________________________________________
 
 
             int[,] inputMatrix = Algebra.CreateSymmetricMatrix(Algebra.MatrixRandomElements());
@@ -103,7 +90,7 @@ namespace ConsoleApp1
 
             Console.WriteLine("____________________Case C____________________");
 
-            var caseC = Preprocessing.PositivityTestCaseC(inputMatrix, 0);
+            var caseC = Preprocessing.PositivityTestCaseC(inputMatrix, resultCaseA);
 
 
 
@@ -155,14 +142,69 @@ namespace ConsoleApp1
 
 
 
+           
 
+           
 
             if (resultCaseA == 0 &&
             resultCaseAinv == 0 && caseB == null && caseC == null && caseD == null
-            && caseE == null && caseB2 == null && caseC2 == null && caseD2 == null
+            && caseE == null && caseE2 == null && caseB2 == null && caseC2 == null && caseD2 == null
             && caseB2inv == null && caseC2inv == null && caseD2inv == null &&
             caseE2inv == null && caseL2C2 == null && caseL2C == null)
             {
+
+
+
+                List<double[,]> firstList = new List<double[,]>();
+                var det = 0; 
+
+
+                for (int i = 0; i < inputMatrixDoubles.GetLength(0); i++)
+                {
+                    firstList = MatrixOperations.returnListForTrim(firstList, MatrixOperations.Trim(firstList, i, inputMatrixDoubles));
+                }
+
+                foreach (var item in firstList)
+                {
+                    det = (int) MatrixOperations.Det(item, item.GetLength(0));
+                    if (det != 0)
+                    {
+                        var jaggedSubInputMatrix = MatrixOperations.ConvertToJaggedArray(item);
+                        var identitySubMatrix = MatrixOperations.MatrixIdentity(item.GetLength(0));
+                        var inverseSubMatrix = MatrixOperations.MatrixInverse(jaggedSubInputMatrix);
+                        var inverseSubMatrixDouble = MatrixOperations.ConvertToArray(inverseSubMatrix);
+
+
+
+
+                        double[] checkForGegativeDiagonalsSub = Preprocessing.CheckForNegativeDiagonalElement(inverseSubMatrixDouble);
+
+                        var caseB2sub = Preprocessing2.CaseB(0, inverseSubMatrixDouble);
+                        
+                        var caseC2sub = Preprocessing2.PositivityTestCaseC(inverseSubMatrixDouble, 0);
+
+                        var caseE2sub = Preprocessing2.CaseE(inverseSubMatrixDouble);
+
+                        var caseD2sub = Preprocessing2.NegativityTestCaseD(inverseSubMatrixDouble);
+                        
+                        var caseL2Csub = Preprocessing2.Lemma2CaseC(inverseSubMatrixDouble);
+
+
+                        if (caseL2Csub == null && caseB2sub == null && caseC2sub == null && caseE2sub == null && caseD2sub == null)
+                        {
+                            bool copositive = false;
+                            copositive = Preprocessing.NegativityTestForColumns(item);
+                            if (copositive == true)
+                            {
+                                break;
+                            }
+                        }
+
+
+                    }
+                }
+
+
                 // ____________________________________________________________________________
                 // ____________________________________________________________________________
                 //____________________________________________________________________________
@@ -179,42 +221,26 @@ namespace ConsoleApp1
                     Console.WriteLine("The input matrix is copositive");
                 }
 
+                //Console.WriteLine("__________________________________________________________________________");
+                //Console.WriteLine("__________________________________________________________________________");
+                //Console.WriteLine("__________________________________________________________________________");
+               
 
-                Console.WriteLine("__________________________________________________________________________");
-                Console.WriteLine("__________________________________________________________________________");
-                Console.WriteLine("__________________________________________________________________________");
-                //var lol = MatrixOperations.MatrixProduct(testMatrix, inverseMatrix);
+                //double[][] invMultiplication = MatrixOperations.PreprocessingMatrix(MatrixOperations.MatrixProduct(jaggedInputMatrix, inverseMatrix));
+                //double[][] invIdentityMultiplication = MatrixOperations.MatrixProduct(invMultiplication, identityMatrix);
+                //Console.WriteLine("__________________________________________________________________________");
+                //Console.WriteLine("__________________________________________________________________________");
+                //Console.WriteLine("__________________________________________________________________________");
+                //PrintingToConsole.PrintJaggedArrayToConsole(MatrixOperations.MatrixProduct(invIdentityMultiplication, jaggedInputMatrix));
 
-             
+                //Console.WriteLine("__________________________________________________________________________");
+                //Console.WriteLine("__________________________________________________________________________");
+                //Console.WriteLine("__________________________________________________________________________");
 
+                ////Proof that inv(invA) = A
+                //var invinv = MatrixOperations.MatrixInverse(inverseMatrix);
+                //PrintingToConsole.PrintJaggedArrayToConsole(invinv);
 
-
-
-                double[][] invMultiplication = MatrixOperations.PreprocessingMatrix(MatrixOperations.MatrixProduct(jaggedInputMatrix, inverseMatrix));
-                double[][] invIdentityMultiplication = MatrixOperations.MatrixProduct(invMultiplication, identityMatrix);
-                Console.WriteLine("__________________________________________________________________________");
-                Console.WriteLine("__________________________________________________________________________");
-                Console.WriteLine("__________________________________________________________________________");
-                PrintingToConsole.PrintJaggedArrayToConsole(MatrixOperations.MatrixProduct(invIdentityMultiplication, jaggedInputMatrix));
-
-                Console.WriteLine("__________________________________________________________________________");
-                Console.WriteLine("__________________________________________________________________________");
-                Console.WriteLine("__________________________________________________________________________");
-
-                //Proof that inv(invA) = A
-                var invinv = MatrixOperations.MatrixInverse(inverseMatrix);
-                PrintingToConsole.PrintJaggedArrayToConsole(invinv);
-
-                
-                //var listForMatrices = MatrixOperations.CreateAllSubmatrices(inputMatrixDoubles);
-
-                //foreach (var item in listForMatrices)
-                //{
-                //    Console.WriteLine("___________________________________________________");
-                //    Console.WriteLine("Submatrix");
-                //    PrintingToConsole.PrintMatrixToConsole(item);
-                //    Console.WriteLine("the determinant is : " + MatrixOperations.CalculateDeterminant(MatrixOperations.ConvertToJaggedArray(item)));
-                //}
             }
 
 

@@ -9,61 +9,68 @@ namespace ConsoleApp1
 {
     class MatrixOperations
     {
-
-        public static List<double[,]> CreateAllSubmatrices(double[,] inputMatrix)
+        public static double[,] Trim(List<double[,]> list, int? removeIndex, double[,] originalArray)
         {
-            double[,] saveInputMatrix = inputMatrix;
-            List<double[,]> listOfMatrices = new List<double[,]>();
-            List<double[,]> saveForListOfMatrices = new List<double[,]>();
-            List<double[,]> Matrices = saveForListOfMatrices; 
-            saveForListOfMatrices.Add(inputMatrix);
-            for (int i = 0; i < inputMatrix.GetLength(0); i++)
-            {
-                listOfMatrices.Add(CreateSubmatrix(i, inputMatrix));
-            }
+            double[,] result = new double[originalArray.GetLength(0) - 1, originalArray.GetLength(1) - 1];
 
-            foreach (var item in listOfMatrices)
+            for (int i = 0, j = 0; i < originalArray.GetLength(0); i++)
             {
-                for (int j = 0; j < item.GetLength(0); j++)
+
+                if (i == removeIndex)
+                    continue;
+
+                for (int k = 0, u = 0; k < originalArray.GetLength(1); k++)
                 {
-                    saveForListOfMatrices.Add(CreateSubmatrix(j, item));
-                }
-                
-                saveForListOfMatrices.Add(item);
-            }
-
-
-            return saveForListOfMatrices; 
-        }
-        public static double[,] CreateSubmatrix(int? removeIndex, double[,] originalArray)
-        {
-            if (originalArray.GetLength(0)-1 >= 0)
-            {
-                double[,] result = new double[originalArray.GetLength(0) - 1, originalArray.GetLength(1) - 1];
-
-                for (int i = 0, j = 0; i < originalArray.GetLength(0); i++)
-                {
-                    if (i == removeIndex)
+                    if (k == removeIndex)
                         continue;
 
-                    for (int k = 0, u = 0; k < originalArray.GetLength(1); k++)
-                    {
-                        if (k == removeIndex)
-                            continue;
+                    result[j, u] = originalArray[i, k];
+                    u++;
+                }
+                j++;
+            }
 
-                        result[j, u] = originalArray[i, k];
-                        u++;
+            if (result.GetLength(0) > 1)
+            {
+
+                originalArray = result;
+                for (int i = 0; i < originalArray.GetLength(0); i++)
+                {
+                    if (originalArray != null && list.Count <1000)
+                    {
+                        returnListForTrim(list, Trim(list, i, originalArray));
                     }
-                    j++;
+
                 }
                 return result;
             }
             else
             {
-                return null; 
+                return null;
             }
-           
+
         }
+
+
+        public static List<double[,]> returnListForTrim(List<double[,]> list, double[,] matrix)
+        {
+            if (list.Count < 1000)
+            {
+                if (matrix != null)
+                {
+                    list.Add(matrix);
+                    return list;
+                }
+
+               
+            }
+          
+            return list;
+        }
+
+
+
+
         public static double[][] ConvertToJaggedArray(double[,] twoDimensionalArray)
         {
             int rowsFirstIndex = twoDimensionalArray.GetLowerBound(0);
@@ -492,6 +499,7 @@ namespace ConsoleApp1
 
 
         //Gauss Elimination Determinant
+        //Source: https://www.programmersought.com/article/54114624350/
 
         private static readonly double eps = 1e-6;
         public static double Det(double[,] matrix, int dim)
@@ -538,14 +546,6 @@ namespace ConsoleApp1
 
         }
     }
-
-
-   
-
-
-
-
-
 }
 
 

@@ -12,7 +12,87 @@ namespace ConsoleApp1
 {
     class Preprocessing
     {
+
+
+        public static bool NegativityTestForColumns(double[,] inputMatrix)
+        {
+            int indexJ = -1;
+            int IndexI = 0;
+            for (int i = 0; i < inputMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < inputMatrix.GetLength(1); j++)
+                {
+                    if (inputMatrix[j, i] <= 0)
+                    {
+                        indexJ++;
+
+                        if (indexJ == inputMatrix.GetLength(1) - 1)
+                        {
+                            IndexI = 1;
+                            Console.WriteLine("The input matrix is copositive");
+                            return true; 
+
+                        }
+                    }
+
+
+                }
+
+
+                indexJ = -1;
+            }
+
+            if (IndexI == 0)
+            {
+                Console.WriteLine("Input matrix not meeting criteria for Case D");
+            }
+
+            return false; 
+        }
+
+
+
         public static double[] CheckForNegativeDiagonalElement(int[,] matrix)
+        {
+            double[] resultVektor = new double[matrix.GetLength(0)];
+            int counter = 0;
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+
+                    if (i == j)
+                    {
+                        if (matrix[i, j] < 0 && counter < 1)
+                        {
+                            resultVektor[j] = 1;
+                            counter++;
+                        }
+
+                        else
+                        {
+                            resultVektor[j] = 0;
+                        }
+                    }
+
+                }
+            }
+
+            int sum = 0;
+            for (int i = 0; i < resultVektor.Length; i++)
+            {
+                sum += (int)resultVektor[i];
+            }
+
+            if (sum == 0)
+            {
+                return null;
+            }
+            return resultVektor;
+
+        }
+
+        public static double[] CheckForNegativeDiagonalElement(double[,] matrix)
         {
             double[] resultVektor = new double[matrix.GetLength(0)];
             int counter = 0;
