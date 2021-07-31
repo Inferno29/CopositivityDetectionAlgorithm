@@ -29,7 +29,7 @@ namespace ConsoleApp1
                         if (indexJ == inputMatrix.GetLength(1) - 1)
                         {
                             IndexI = 1;
-                            Console.WriteLine("The input matrix is copositive");
+                            Console.WriteLine("The input matrix is copositive because a column of a nonsingular principal submatrix of the inverse input matrix contains a nonpositive column");
                             return true; 
 
                         }
@@ -44,7 +44,7 @@ namespace ConsoleApp1
 
             if (IndexI == 0)
             {
-                Console.WriteLine("Input matrix not meeting criteria for Case D");
+                Console.WriteLine("Input matrix has positive elements in every row - no answer");
             }
 
             return false; 

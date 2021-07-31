@@ -113,9 +113,10 @@ namespace ConsoleApp1
             Console.WriteLine("________________________________________________________");
 
 
-            var inMatrix = Preprocessing2.CaseB2(inputMatrix);
-            Console.WriteLine("The processed inputmatrix is now: ");
-            PrintingToConsole.PrintMatrixToConsole(inputMatrixDoubles);
+           
+
+
+           
             var caseB2 = Preprocessing2.CaseB(0, inputMatrixDoubles);
             var caseB2inv = Preprocessing2.CaseB(0, inverseMatrixDouble);
             Console.WriteLine("____________________Case C2____________________");
@@ -141,16 +142,31 @@ namespace ConsoleApp1
             Console.WriteLine("________________________________________________________");
 
 
+            var ProcessedMatrix = Preprocessing2.CaseB2(inputMatrix);
+            Console.WriteLine("The Processed Matrix is now: ");
+            PrintingToConsole.PrintMatrixToConsole(ProcessedMatrix);
+            var caseB2Processed = Preprocessing2.CaseB(0, ProcessedMatrix);
+            Console.WriteLine("____________________Case C2____________________");
+            var caseC2Processed = Preprocessing2.PositivityTestCaseC(ProcessedMatrix, resultCaseA);
+            Console.WriteLine("____________________Case E2____________________");
+            var caseE2Processed = Preprocessing2.CaseE(ProcessedMatrix);
+            Console.WriteLine("____________________Case D2____________________");
+            var caseD2Processed = Preprocessing2.NegativityTestCaseD(ProcessedMatrix);
+            Console.WriteLine("____________________Case Lemma0.2 C____________________");
+            var caseL2CProcessed = Preprocessing2.Lemma2CaseC(ProcessedMatrix);
 
-           
 
-           
+            Console.WriteLine("________________________________________________________");
+            Console.WriteLine("________________________________________________________");
+            Console.WriteLine("________________________________________________________");
+            Console.WriteLine("________________________________________________________");
 
-            if (resultCaseA == 0 &&
-            resultCaseAinv == 0 && caseB == null && caseC == null && caseD == null
+
+
+            if (resultCaseA == 0 && caseB == null && caseC == null && caseD == null
             && caseE == null && caseE2 == null && caseB2 == null && caseC2 == null && caseD2 == null
-            && caseB2inv == null && caseC2inv == null && caseD2inv == null &&
-            caseE2inv == null && caseL2C2 == null && caseL2C == null)
+            && caseL2C == null && caseB2Processed == null && caseC2Processed == null && caseE2Processed == null
+            && caseD2Processed == null && caseB2Processed == null && caseL2CProcessed == null)
             {
 
 
@@ -241,6 +257,10 @@ namespace ConsoleApp1
                 //var invinv = MatrixOperations.MatrixInverse(inverseMatrix);
                 //PrintingToConsole.PrintJaggedArrayToConsole(invinv);
 
+            }
+            else
+            {
+                Console.WriteLine("The Input matrix is not copositive!");
             }
 
 
