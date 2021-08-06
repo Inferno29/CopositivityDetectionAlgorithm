@@ -36,7 +36,7 @@ namespace ConsoleApp1
                 originalArray = result;
                 for (int i = 0; i < originalArray.GetLength(0); i++)
                 {
-                    if (originalArray != null && list.Count <1000)
+                    if (originalArray != null && list.Count <10000)
                     {
                         returnListForTrim(list, Trim(list, i, originalArray));
                     }

@@ -56,7 +56,7 @@ namespace ConsoleApp1
             Console.WriteLine("INVERSE MATRIX");
             var inverseMatrix = MatrixOperations.MatrixInverse(jaggedInputMatrix);
             PrintingToConsole.PrintJaggedArrayToConsole(inverseMatrix);
-            var inverseMatrixDouble = MatrixOperations.ConvertToArray(inverseMatrix); 
+            var inverseMatrixDouble = MatrixOperations.ConvertToArray(inverseMatrix);
 
 
 
@@ -113,10 +113,10 @@ namespace ConsoleApp1
             Console.WriteLine("________________________________________________________");
 
 
-           
 
 
-           
+
+
             var caseB2 = Preprocessing2.CaseB(0, inputMatrixDoubles);
             var caseB2inv = Preprocessing2.CaseB(0, inverseMatrixDouble);
             Console.WriteLine("____________________Case C2____________________");
@@ -163,6 +163,8 @@ namespace ConsoleApp1
 
 
 
+
+
             if (resultCaseA == 0 && caseB == null && caseC == null && caseD == null
             && caseE == null && caseE2 == null && caseB2 == null && caseC2 == null && caseD2 == null
             && caseL2C == null && caseB2Processed == null && caseC2Processed == null && caseE2Processed == null
@@ -172,7 +174,7 @@ namespace ConsoleApp1
 
 
                 List<double[,]> firstList = new List<double[,]>();
-                var det = 0; 
+                var det = 0;
 
 
                 for (int i = 0; i < inputMatrixDoubles.GetLength(0); i++)
@@ -182,7 +184,7 @@ namespace ConsoleApp1
 
                 foreach (var item in firstList)
                 {
-                    det = (int) MatrixOperations.Det(item, item.GetLength(0));
+                    det = (int)MatrixOperations.Det(item, item.GetLength(0));
                     if (det != 0)
                     {
                         var jaggedSubInputMatrix = MatrixOperations.ConvertToJaggedArray(item);
@@ -192,29 +194,14 @@ namespace ConsoleApp1
 
 
 
-
-                        double[] checkForGegativeDiagonalsSub = Preprocessing.CheckForNegativeDiagonalElement(inverseSubMatrixDouble);
-
-                        var caseB2sub = Preprocessing2.CaseB(0, inverseSubMatrixDouble);
-                        
-                        var caseC2sub = Preprocessing2.PositivityTestCaseC(inverseSubMatrixDouble, 0);
-
-                        var caseE2sub = Preprocessing2.CaseE(inverseSubMatrixDouble);
-
-                        var caseD2sub = Preprocessing2.NegativityTestCaseD(inverseSubMatrixDouble);
-                        
-                        var caseL2Csub = Preprocessing2.Lemma2CaseC(inverseSubMatrixDouble);
-
-
-                        if (caseL2Csub == null && caseB2sub == null && caseC2sub == null && caseE2sub == null && caseD2sub == null)
+                        bool negativity = false;
+                        var positivity = Preprocessing.PositivityTestForColumns(inverseSubMatrixDouble);
+                        negativity = Preprocessing.NegativityTestForColumns(inverseSubMatrixDouble);
+                        if (negativity == true || positivity == true)
                         {
-                            bool copositive = false;
-                            copositive = Preprocessing.NegativityTestForColumns(item);
-                            if (copositive == true)
-                            {
-                                break;
-                            }
+                            break;
                         }
+
 
 
                     }
@@ -225,37 +212,18 @@ namespace ConsoleApp1
                 // ____________________________________________________________________________
                 //____________________________________________________________________________
 
-                var determinant = MatrixOperations.Det(m, m.GetLength(0));
+                var determinant = MatrixOperations.Det(inputMatrixDoubles, inputMatrixDoubles.GetLength(0));
                 Console.WriteLine("The Determinant is = " + determinant);
 
                 if (determinant < 0)
                 {
-                    Console.WriteLine("No answer");
+                    Console.WriteLine("Based on Cottle-Habetler-Lemke there is no answer. The Determinant is negative. ");
                 }
                 else
                 {
                     Console.WriteLine("The input matrix is copositive");
                 }
 
-                //Console.WriteLine("__________________________________________________________________________");
-                //Console.WriteLine("__________________________________________________________________________");
-                //Console.WriteLine("__________________________________________________________________________");
-               
-
-                //double[][] invMultiplication = MatrixOperations.PreprocessingMatrix(MatrixOperations.MatrixProduct(jaggedInputMatrix, inverseMatrix));
-                //double[][] invIdentityMultiplication = MatrixOperations.MatrixProduct(invMultiplication, identityMatrix);
-                //Console.WriteLine("__________________________________________________________________________");
-                //Console.WriteLine("__________________________________________________________________________");
-                //Console.WriteLine("__________________________________________________________________________");
-                //PrintingToConsole.PrintJaggedArrayToConsole(MatrixOperations.MatrixProduct(invIdentityMultiplication, jaggedInputMatrix));
-
-                //Console.WriteLine("__________________________________________________________________________");
-                //Console.WriteLine("__________________________________________________________________________");
-                //Console.WriteLine("__________________________________________________________________________");
-
-                ////Proof that inv(invA) = A
-                //var invinv = MatrixOperations.MatrixInverse(inverseMatrix);
-                //PrintingToConsole.PrintJaggedArrayToConsole(invinv);
 
             }
             else

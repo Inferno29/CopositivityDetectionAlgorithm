@@ -12,7 +12,42 @@ namespace ConsoleApp1
 {
     class Preprocessing
     {
+        public static bool PositivityTestForColumns(double[,] inputMatrix)
+        {
+            int indexJ = -1;
+            int IndexI = 0;
+            for (int i = 0; i < inputMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < inputMatrix.GetLength(1); j++)
+                {
+                    if (inputMatrix[j, i] > 0)
+                    {
+                        indexJ++;
+                        break; 
 
+
+                    }
+
+
+                }
+             
+
+            }
+            if (indexJ == inputMatrix.GetLength(1) - 1)
+            {
+                IndexI = 1;
+                Console.WriteLine("The input matrix is copositive because each column of the inverse matrix contains a positive entry Proposition 7.5");
+                return true;
+
+            }
+
+            if (IndexI == 0)
+            {
+                Console.WriteLine("No Answer possible for this case - Positivity Test");
+            }
+
+            return false;
+        }
 
         public static bool NegativityTestForColumns(double[,] inputMatrix)
         {
@@ -44,7 +79,7 @@ namespace ConsoleApp1
 
             if (IndexI == 0)
             {
-                Console.WriteLine("Input matrix has positive elements in every row - no answer");
+                Console.WriteLine("Input matrix has positive elements in every row - No answer for negativity test columns");
             }
 
             return false; 
@@ -373,6 +408,7 @@ namespace ConsoleApp1
 
                         //Call to Case E
                         CaseE(afterCaseC);
+                        NegativityTestCaseD(afterCaseC); 
 
                         List<int> listZero2 = Preprocessing.CheckIfDiagonalElementsAreZero(listCheckZero2, afterCaseC);
                         double[] violatingVectorReduced = new double[afterCaseC.GetLength(0)];

@@ -490,7 +490,6 @@ namespace ConsoleApp1
 
         public static double[] CaseE(double[,] inputMatrix)
         {
-            Console.WriteLine("Case E starting");
             double[] violatingVector = new double[inputMatrix.GetLength(0)];
             bool rowFound = false;
             double[] result = new double[inputMatrix.GetLength(0)];
@@ -627,32 +626,6 @@ namespace ConsoleApp1
                     //_________________________________________________________________________________________
                     //_________________________________________________________________________________________
 
-
-
-                    ////Case B
-                    //Console.WriteLine("Result for Case B and matrix T");
-                    //var caseB = CaseB(0, T);
-                    //if (caseB != null)
-                    //{
-
-                    //}
-
-                    ////CaseC
-                    //Console.WriteLine("Result for Case C and matrix T");
-                    //var caseC = CaseC(0, T);
-                    //if (caseC != null)
-                    //{
-
-                    //}
-                    ////CaseE
-                    //Console.WriteLine("Result for Case E and matrix T");
-                    //var caseE = CaseE(T);
-                    //if (caseE != null)
-                    //{
-
-                    //}
-                    ////__________________________________________________________________________________________
-                    ////__________________________________________________________________________________________
 
 
                     if (checkForGegativeDiagonals != null)
