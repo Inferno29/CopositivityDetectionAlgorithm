@@ -54,7 +54,7 @@ namespace ConsoleApp1
 
         public static List<double[,]> returnListForTrim(List<double[,]> list, double[,] matrix)
         {
-            if (list.Count < 1000)
+            if (list.Count < 10000)
             {
                 if (matrix != null)
                 {
@@ -63,6 +63,11 @@ namespace ConsoleApp1
                 }
 
                
+            }
+
+            if (list.Count > 10000)
+            {
+                return list; 
             }
           
             return list;
@@ -242,7 +247,7 @@ namespace ConsoleApp1
         public static double[][] MatrixDecompose(double[][] matrix, out int[] perm, out int toggle)
         {
             // Doolittle LUP decomposition with partial pivoting.
-            // rerturns: result is L (with 1s on diagonal) and U;
+            // returns: result is L (with 1s on diagonal) and U;
             // perm holds row permutations; toggle is +1 or -1 (even or odd)
             int rows = matrix.Length;
             int cols = matrix[0].Length; // assume square
@@ -263,16 +268,8 @@ namespace ConsoleApp1
             {
                 double colMax = Math.Abs(result[j][j]); // find largest val in col
                 int pRow = j;
-                //for (int i = j + 1; i less-than n; ++i)
-                //{
-                //  if (result[i][j] greater-than colMax)
-                //  {
-                //    colMax = result[i][j];
-                //    pRow = i;
-                //  }
-                //}
+               
 
-                // reader Matt V needed this:
                 for (int i = j + 1; i < n; ++i)
                 {
                     if (Math.Abs(result[i][j]) > colMax)
@@ -295,14 +292,6 @@ namespace ConsoleApp1
 
                     toggle = -toggle; // adjust the row-swap toggle
                 }
-
-                // --------------------------------------------------
-                // This part added later (not in original)
-                // and replaces the 'return null' below.
-                // if there is a 0 on the diagonal, find a good row
-                // from i = j+1 down that doesn't have
-                // a 0 in column j, and swap that good row with row j
-                // --------------------------------------------------
 
                 if (result[j][j] == 0.0)
                 {

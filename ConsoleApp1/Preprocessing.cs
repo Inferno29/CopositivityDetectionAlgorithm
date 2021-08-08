@@ -85,7 +85,33 @@ namespace ConsoleApp1
             return false; 
         }
 
+        public static bool NegativityTest(double[,] inputMatrix)
+        {
+            int numberOfNegativeElements = -1;
+          
+            for (int i = 0; i < inputMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < inputMatrix.GetLength(1); j++)
+                {
+                    if (inputMatrix[j, i] < 0)
+                    {
+                        numberOfNegativeElements++;
 
+                        if (numberOfNegativeElements == (inputMatrix.GetLength(1) - 1)*inputMatrix.GetLength(1) - 1)
+                        {
+                           
+                            Console.WriteLine("The input matrix is not copositive based on theorem 3.4");
+                            return true;
+
+                        }
+                    }
+
+
+                }
+            }
+
+            return false;
+        }
 
         public static double[] CheckForNegativeDiagonalElement(int[,] matrix)
         {
