@@ -26,6 +26,16 @@ namespace ConsoleApp1
 
 
             };
+            double[,] matrix1 = new double[,]
+            {
+                {0   ,-1,   1},
+                {-1,   1,   1},
+                {1,   1,   1}
+
+
+            };
+
+
             double[,] m = new double[,]
             {
                 {1,-1,1,1,-1},
@@ -45,13 +55,16 @@ namespace ConsoleApp1
             bool positivity = false;
             bool negativity = false;
             bool allElementsNegative = false;
-            bool negativityForInputMatrix = false; 
+            bool negativityForInputMatrix = false;
+
+
+
 
             using (var sw = new StreamWriter("results.txt"))
             {
 
                 int counter = 0;
-                while (counter < 10000)
+                while (counter < 100)
                 {
 
                     counter++;
@@ -73,7 +86,7 @@ namespace ConsoleApp1
                     var inverseMatrix = MatrixOperations.MatrixInverse(jaggedInputMatrix);
                     PrintingToConsole.PrintJaggedArrayToConsole(inverseMatrix);
                     var inverseMatrixDouble = MatrixOperations.ConvertToArray(inverseMatrix);
-                    allElementsNegative = Preprocessing.NegativityTest(inverseMatrixDouble); 
+                    allElementsNegative = Preprocessing.NegativityTest(inverseMatrixDouble);
 
 
 
@@ -182,7 +195,7 @@ namespace ConsoleApp1
                     determinant = MatrixOperations.Det(inputMatrixDoubles, inputMatrixDoubles.GetLength(0));
                     negativityForInputMatrix = Preprocessing.NegativityTestForColumns(inverseMatrixDouble);
                     double[] violatingVector = new double[inputMatrixDoubles.GetLength(0)];
-                    double result = 0; 
+                    double result = 0;
                     List<double[]> violatingVectors = new List<double[]>()
                     {
                         caseA, caseB,caseC,caseD, caseE,caseE2, caseB2, caseC2, caseD2, caseL2C,caseB2Processed, caseC2Processed,
@@ -195,11 +208,11 @@ namespace ConsoleApp1
                             violatingVector = vector;
                             result = Algebra.SkalarProdukt(vector,
                                 Algebra.VektorMatrixMultiplikation(inputMatrix, vector, resultTest));
-                            break; 
+                            break;
                         }
                         else
                         {
-                            violatingVector = null; 
+                            violatingVector = null;
                         }
                     }
 
@@ -226,7 +239,7 @@ namespace ConsoleApp1
 
                         foreach (var item in firstList)
                         {
-                            det = (int) MatrixOperations.Det(item, item.GetLength(0));
+                            det = (int)MatrixOperations.Det(item, item.GetLength(0));
                             if (det != 0)
                             {
                                 var jaggedSubInputMatrix = MatrixOperations.ConvertToJaggedArray(item);
@@ -257,7 +270,7 @@ namespace ConsoleApp1
                         // ____________________________________________________________________________
                         //____________________________________________________________________________
 
-                        
+
                         Console.WriteLine("The Determinant is = " + determinant);
 
                         if (determinant < 0)
@@ -284,7 +297,7 @@ namespace ConsoleApp1
                         for (int j = 0; j < inputMatrix.GetLength(1); j++)
                         {
                             sw.Write(inputMatrix[i, j] + "  ");
-                            if (j == inputMatrix.GetLength(0)-1 && violatingVector != null)
+                            if (j == inputMatrix.GetLength(0) - 1 && violatingVector != null)
                             {
                                 sw.Write("            " + violatingVector[i]);
                             }
@@ -296,11 +309,11 @@ namespace ConsoleApp1
                     sw.Write("\n");
 
                     if (result < 0)
-                    { 
+                    {
                         sw.Write("The result is : " + result);
                     }
 
-                   
+
                     sw.Write("\n");
                     sw.Write("\n");
 
@@ -310,8 +323,8 @@ namespace ConsoleApp1
                     {
                         for (int j = 0; j < inverseMatrixDouble.GetLength(1); j++)
                         {
-                            sw.Write(Math.Round(inverseMatrixDouble[i, j],3) + "  ");
-                           
+                            sw.Write(Math.Round(inverseMatrixDouble[i, j], 3) + "  ");
+
                         }
 
                         sw.Write("\n");
@@ -361,7 +374,7 @@ namespace ConsoleApp1
                     sw.Write("\n");
 
                 }
-                
+
 
                 sw.Flush();
                 sw.Close();

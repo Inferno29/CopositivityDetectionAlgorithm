@@ -7,6 +7,7 @@ namespace ConsoleApp1
 {
     class Preprocessing2
     {
+        
 
         public static double[,] CaseB2(int[,] inputMatrix)
         {
@@ -231,7 +232,7 @@ namespace ConsoleApp1
 
 
         //Case C
-        public static double[,] TestCaseC(double[,] inputMatrix, double[,] outputMatrix)
+        public static double[,] TestCaseC(double[,] inputMatrix, double[,] outputMatrix, ArrayWithIndex array)
         {
             int? indexI = -1;
             int indexJ = -1;
@@ -270,7 +271,7 @@ namespace ConsoleApp1
 
                             if (indexI != null)
                             {
-                                
+                                array.Index = indexI; 
                                 outputMatrix = TrimForCaseC(indexI, outputMatrix);
                                 return outputMatrix;
                             }
@@ -285,6 +286,10 @@ namespace ConsoleApp1
 
         }
 
+        public static int? GetIndexOfTrim(int? index)
+        {
+            return index; 
+        }
 
 
 
@@ -313,39 +318,36 @@ namespace ConsoleApp1
 
         public static double[] CaseC(double resultCaseA, double[,] inputMatrix)
         {
-
+            ArrayWithIndex array = new ArrayWithIndex(); 
 
             if (resultCaseA == 0)
             {
-
+                
                 Console.WriteLine("Case C");
                 Console.WriteLine("First iteration");
                 double[] resultTest = Algebra.RandomVektorForRandomMatrix(inputMatrix);
                 double[,] outputMatrix = new double[inputMatrix.GetLength(0), inputMatrix.GetLength(1)];
-                PrintingToConsole.PrintMatrixToConsole(Preprocessing2.TestCaseC(inputMatrix, outputMatrix));
-                double[,] afterCaseC = Preprocessing2.TestCaseC(inputMatrix, outputMatrix);
-                int counter = 1;
-                while (afterCaseC != null)
+                PrintingToConsole.PrintMatrixToConsole(Preprocessing2.TestCaseC(inputMatrix, outputMatrix, array));
+                double[,] afterCaseC = Preprocessing2.TestCaseC(inputMatrix, outputMatrix, array);
+                int counter = 0;
+                do
                 {
 
-                    outputMatrix = new double[afterCaseC.GetLength(0), afterCaseC.GetLength(1)];
-                    afterCaseC = Preprocessing2.TestCaseC(afterCaseC, outputMatrix);
+                   
+
                     counter++;
 
 
                     if (afterCaseC != null)
                     {
-                        Console.WriteLine("next iteration");
-                        Console.WriteLine("_________________________________________");
-                        PrintingToConsole.PrintMatrixToConsole(afterCaseC);
-                        Console.WriteLine("____________________________________________________");
-                        Console.WriteLine("Case B called from Case C");
+                        
                         List<double> listCheckZero2 = new List<double>();
 
                         //Call to Case E
                         CaseE(afterCaseC);
 
-                        List<double> listZero2 = Preprocessing2.CheckIfDiagonalElementsAreZero(listCheckZero2, afterCaseC);
+                        List<double> listZero2 =
+                            Preprocessing2.CheckIfDiagonalElementsAreZero(listCheckZero2, afterCaseC);
                         double[] violatingVectorReduced = new double[afterCaseC.GetLength(0)];
                         violatingVectorReduced =
                             Preprocessing2.TestMethod(listZero2, violatingVectorReduced, afterCaseC);
@@ -360,15 +362,22 @@ namespace ConsoleApp1
                             double[] violatingVectorCaseC = new double[violatingVectorReduced.Length + counter];
                             for (int i = 0; i < violatingVectorCaseC.Length; i++)
                             {
-                                if (i < counter)
+
+
+
+                                if (i >= counter)
+                                {
+                                    violatingVectorCaseC[i - counter] = violatingVectorReduced[i - counter];
+                                }
+
+                                if (i == array.Index)
                                 {
                                     violatingVectorCaseC[i] = 0;
 
                                 }
-                                else
-                                {
-                                    violatingVectorCaseC[i] = violatingVectorReduced[i - counter];
-                                }
+
+
+
                             }
 
                             double result = Algebra.SkalarProdukt(violatingVectorCaseC,
@@ -384,18 +393,21 @@ namespace ConsoleApp1
 
                             }
 
-                         
-                            
+
+
 
 
 
                         }
                         else
                         {
-                            
+
                             Console.WriteLine("No violating Vector for Case C");
-                            return null; 
+                            return null;
                         }
+
+                        outputMatrix = new double[afterCaseC.GetLength(0), afterCaseC.GetLength(1)];
+                        afterCaseC = Preprocessing2.TestCaseC(afterCaseC, outputMatrix, array);
                     }
                     else
                     {
@@ -408,7 +420,7 @@ namespace ConsoleApp1
 
 
                     }
-                }
+                } while (afterCaseC != null); 
             }
 
             return null;
@@ -609,7 +621,7 @@ namespace ConsoleApp1
 
                     //Case A
 
-                    double[] checkForGegativeDiagonals = CheckForNegativeDiagonalElementAndIgnoreIndex(T, indexOfMax - 1);
+                    double[] checkForGegativeDiagonals = CheckForNegativeDiagonalElementAndIgnoreIndex(T, indexOfMax);
 
                     if (checkForGegativeDiagonals != null)
                     {
@@ -676,39 +688,6 @@ namespace ConsoleApp1
                             }
 
                         }
-
-
-
-
-
-                        //if (caseE != null)
-                        //{
-
-                        //    double[] resultVektorCaseE = new double[violatingVector.Length];
-                        //    double resultE = Algebra.SkalarProdukt(violatingVector,
-                        //        Algebra.VektorMatrixMultiplikation(saveForInputMatrix, violatingVector, resultVektorCaseE));
-                        //    Console.WriteLine("Result For Case E with input matrix = " + resultE);
-                        //    PrintingToConsole.PrintVektorToConsole(violatingVector);
-                        //}
-
-                        //if (caseB != null)
-                        //{
-
-                        //    double[] resultVektorCaseE = new double[violatingVector.Length];
-                        //    double resultE = Algebra.SkalarProdukt(violatingVector,
-                        //        Algebra.VektorMatrixMultiplikation(saveForInputMatrix, violatingVector, resultVektorCaseE));
-                        //    Console.WriteLine("Result For Case B with input matrix = " + resultE);
-                        //}
-                        //if (caseC != null)
-                        //{
-
-                        //    double[] resultVektorCaseE = new double[violatingVector.Length];
-                        //    double resultE = Algebra.SkalarProdukt(violatingVector,
-                        //        Algebra.VektorMatrixMultiplikation(saveForInputMatrix, violatingVector, resultVektorCaseE));
-                        //    Console.WriteLine("Result For Case C with input matrix = " + resultE);
-                        //}
-
-
 
 
 

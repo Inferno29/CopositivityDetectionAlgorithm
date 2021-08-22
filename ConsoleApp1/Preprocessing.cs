@@ -673,37 +673,6 @@ namespace ConsoleApp1
 
 
 
-                    //_________________________________________________________________________________________
-                    //_________________________________________________________________________________________
-
-
-
-                    ////Case B
-                    //Console.WriteLine("Result for Case B and matrix T");
-                    //var caseB = CaseB(0, T);
-                    //if (caseB != null)
-                    //{
-
-                    //}
-
-                    ////CaseC
-                    //Console.WriteLine("Result for Case C and matrix T");
-                    //var caseC = CaseC(0, T);
-                    //if (caseC != null)
-                    //{
-
-                    //}
-                    ////CaseE
-                    //Console.WriteLine("Result for Case E and matrix T");
-                    //var caseE = CaseE(T);
-                    //if (caseE != null)
-                    //{
-
-                    //}
-                    ////__________________________________________________________________________________________
-                    ////__________________________________________________________________________________________
-
-
                     if (checkForGegativeDiagonals != null)
                     {
                         int length = saveForValuesVector.Length - valuesVector.Length;
@@ -754,39 +723,7 @@ namespace ConsoleApp1
                         }
 
 
-
-
-
-                        //if (caseE != null)
-                        //{
-
-                        //    double[] resultVektorCaseE = new double[violatingVector.Length];
-                        //    double resultE = Algebra.SkalarProdukt(violatingVector,
-                        //        Algebra.VektorMatrixMultiplikation(saveForInputMatrix, violatingVector, resultVektorCaseE));
-                        //    Console.WriteLine("Result For Case E with input matrix = " + resultE);
-                        //    PrintingToConsole.PrintVektorToConsole(violatingVector);
-                        //}
-
-                        //if (caseB != null)
-                        //{
-
-                        //    double[] resultVektorCaseE = new double[violatingVector.Length];
-                        //    double resultE = Algebra.SkalarProdukt(violatingVector,
-                        //        Algebra.VektorMatrixMultiplikation(saveForInputMatrix, violatingVector, resultVektorCaseE));
-                        //    Console.WriteLine("Result For Case B with input matrix = " + resultE);
-                        //}
-                        //if (caseC != null)
-                        //{
-
-                        //    double[] resultVektorCaseE = new double[violatingVector.Length];
-                        //    double resultE = Algebra.SkalarProdukt(violatingVector,
-                        //        Algebra.VektorMatrixMultiplikation(saveForInputMatrix, violatingVector, resultVektorCaseE));
-                        //    Console.WriteLine("Result For Case C with input matrix = " + resultE);
-                        //}
-
-
-
-
+                        
 
 
                         double[] resultVektor = new double[violatingVector.Length];
