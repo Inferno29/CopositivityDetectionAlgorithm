@@ -64,7 +64,7 @@ namespace ConsoleApp1
             {
 
                 int counter = 0;
-                while (counter < 100)
+                while (counter < 10000)
                 {
 
                     counter++;
@@ -208,6 +208,10 @@ namespace ConsoleApp1
                             violatingVector = vector;
                             result = Algebra.SkalarProdukt(vector,
                                 Algebra.VektorMatrixMultiplikation(inputMatrix, vector, resultTest));
+                            if (vector == caseC)
+                            {
+                                sw.Write("Case C violating vector");
+                            }
                             break;
                         }
                         else
