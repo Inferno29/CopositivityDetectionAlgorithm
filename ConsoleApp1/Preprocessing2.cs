@@ -392,6 +392,11 @@ namespace ConsoleApp1
 
 
                             }
+                            else
+                            {
+                                outputMatrix = new double[afterCaseC.GetLength(0), afterCaseC.GetLength(1)];
+                                afterCaseC = Preprocessing2.TestCaseC(afterCaseC, outputMatrix, array);
+                            }
 
 
 
@@ -403,11 +408,11 @@ namespace ConsoleApp1
                         {
 
                             Console.WriteLine("No violating Vector for Case C");
-                            return null;
+                            //return null;
+                            break; 
                         }
 
-                        outputMatrix = new double[afterCaseC.GetLength(0), afterCaseC.GetLength(1)];
-                        afterCaseC = Preprocessing2.TestCaseC(afterCaseC, outputMatrix, array);
+                      
                     }
                     else
                     {
@@ -621,14 +626,16 @@ namespace ConsoleApp1
 
                     //Case A
 
-                    double[] checkForGegativeDiagonals = CheckForNegativeDiagonalElementAndIgnoreIndex(T, indexOfMax);
+                    double[] checkForNegativeDiagonals2 = CheckForNegativeDiagonalElementAndIgnoreIndex(T, indexOfMax);
+                    double[] checkForNegativeDiagonals = CheckForNegativeDiagonalElement(T);
 
-                    if (checkForGegativeDiagonals != null)
+
+                    if (checkForNegativeDiagonals != null)
                     {
-                        double[] resultTest = new double[checkForGegativeDiagonals.Length];
-                        Preprocessing.CheckForNull(checkForGegativeDiagonals);
-                        double resultCaseA = Algebra.SkalarProdukt(checkForGegativeDiagonals,
-                            Algebra.VektorMatrixMultiplikation(T, checkForGegativeDiagonals, resultTest));
+                        double[] resultTest = new double[checkForNegativeDiagonals.Length];
+                        Preprocessing.CheckForNull(checkForNegativeDiagonals);
+                        double resultCaseA = Algebra.SkalarProdukt(checkForNegativeDiagonals,
+                            Algebra.VektorMatrixMultiplikation(T, checkForNegativeDiagonals, resultTest));
                         Console.WriteLine("the result is " + resultCaseA);
                     }
 
@@ -640,11 +647,11 @@ namespace ConsoleApp1
 
 
 
-                    if (checkForGegativeDiagonals != null)
+                    if (checkForNegativeDiagonals != null)
                     {
                         int length = saveForValuesVector.Length - valuesVector.Length;
                         double[] violatingVector = new double[saveForValuesVector.Length];
-                        double[] violatingVectorShorter = new double[checkForGegativeDiagonals.Length];
+                        double[] violatingVectorShorter = new double[checkForNegativeDiagonals.Length];
                         List<double> violatingList = new List<double>();
                         for (int i = 0; i < saveForValuesVector.Length; i++)
                         {
@@ -671,10 +678,10 @@ namespace ConsoleApp1
 
                                 violatingVectorShorter = violatingList.ToArray();
 
-                                for (int k = 0; k < checkForGegativeDiagonals.Length; k++)
+                                for (int k = 0; k < checkForNegativeDiagonals.Length; k++)
                                 {
 
-                                    temp += -violatingVectorShorter[k] * checkForGegativeDiagonals[k];
+                                    temp += -violatingVectorShorter[k] * checkForNegativeDiagonals[k];
 
                                 }
 
@@ -684,7 +691,7 @@ namespace ConsoleApp1
 
                             else
                             {
-                                violatingVector[i] = saveForInputMatrix[indexOfMax, indexOfMax] * checkForGegativeDiagonals[i - 1];
+                                violatingVector[i] = saveForInputMatrix[indexOfMax, indexOfMax] * checkForNegativeDiagonals[i - 1];
                             }
 
                         }
