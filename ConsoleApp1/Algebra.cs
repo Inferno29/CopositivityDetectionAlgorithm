@@ -93,7 +93,7 @@ namespace ConsoleApp1
             }
             return randomMatrix; 
         }
-
+        
         public static double[,] MatrixRandomDoubles()
         {
             Random random = new Random();

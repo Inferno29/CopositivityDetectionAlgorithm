@@ -8,7 +8,6 @@ namespace ConsoleApp1
     class Preprocessing2
     {
         
-
         public static double[,] CaseB2(int[,] inputMatrix)
         {
             double[,] processedMatrix = new double[inputMatrix.GetLength(0), inputMatrix.GetLength(1)];
@@ -444,11 +443,11 @@ namespace ConsoleApp1
                         {
                             indexJ++;
 
-                            if (indexJ == inputMatrix.GetLength(1) - 2)
+                            if (indexJ == inputMatrix.GetLength(1)-1)
                             {
 
-                                CaseC(resultCaseA, inputMatrix);
-                                return null;
+                               return CaseC(resultCaseA, inputMatrix);
+                                
                             }
                         }
 
@@ -554,7 +553,7 @@ namespace ConsoleApp1
         }
 
 
-        public static void CaseD(double[,] inputMatrix)
+        public static double[] CaseD(double[,] inputMatrix)
         {
             double[] valuesVector = new double[inputMatrix.GetLength(0)];
             double[] saveForValuesVector = new double[valuesVector.Length];
@@ -706,11 +705,12 @@ namespace ConsoleApp1
                         Console.WriteLine(resultA);
                         if (resultA < 0)
                         {
+                            
                             Console.WriteLine("Case A");
                             PrintingToConsole.PrintVektorToConsole(violatingVector);
                             Console.WriteLine("RESULT Case A");
                             Console.WriteLine(resultA);
-                            break;
+                            return violatingVector; 
 
                         }
                         else
@@ -732,7 +732,7 @@ namespace ConsoleApp1
             } while (valuesVector.Sum() > 0);
 
 
-
+            return null; 
 
         }
 
@@ -751,8 +751,8 @@ namespace ConsoleApp1
                         if (indexJ == inputMatrix.GetLength(1) - 2)
                         {
 
-                            CaseD(inputMatrix);
-                            return null;
+                           return CaseD(inputMatrix);
+                            
                         }
                     }
 
@@ -808,7 +808,7 @@ namespace ConsoleApp1
         public static double[] Lemma2CaseC(double[,] inputMatrix)
         {
             
-            Console.WriteLine("Lemma 0.2 Case E starting");
+            Console.WriteLine("Lemma 0.2 Case C starting");
             double[] violatingVector = new double[inputMatrix.GetLength(0)];
             bool rowFound = false;
             double[] result = new double[inputMatrix.GetLength(0)];
@@ -822,8 +822,8 @@ namespace ConsoleApp1
                         if (k == j && inputMatrix[i, j] < -Math.Sqrt(inputMatrix[i, i] * inputMatrix[j, j]) && inputMatrix[i,i] > 0 && inputMatrix[j,j] >0)
                         {
                             rowFound = true;
-                            violatingVector[i] = Math.Sqrt(inputMatrix[i, i]);
-                            violatingVector[j] = Math.Sqrt(inputMatrix[j, j]);
+                            violatingVector[i] = 1/(Math.Sqrt(inputMatrix[i, i]));
+                            violatingVector[j] = 1/(Math.Sqrt(inputMatrix[j, j]));
                         }
                         else
                         {
@@ -842,11 +842,11 @@ namespace ConsoleApp1
                         if (sum > 0)
                         {
                             
-                            double resultCaseE = Algebra.SkalarProdukt(violatingVector,
+                            double resultCaseC = Algebra.SkalarProdukt(violatingVector,
                                 Algebra.VektorMatrixMultiplikation(inputMatrix, violatingVector, result));
-                            if (resultCaseE < 0)
+                            if (resultCaseC < 0)
                             {
-                                Console.WriteLine("The result for Lemma 2 Case C is : " + resultCaseE);
+                                Console.WriteLine("The result for Lemma 2 Case C is : " + resultCaseC);
                                 Console.WriteLine("A violating vector is: ");
                                 PrintingToConsole.PrintVektorToConsole(violatingVector);
                                 return violatingVector;
