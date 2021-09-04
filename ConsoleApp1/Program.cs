@@ -23,6 +23,8 @@ namespace ConsoleApp1
                 {2   ,-3,   5},
                 {-3,   1,   -2},
                 {5,   -2,   2}
+               
+
 
 
             };
@@ -58,10 +60,11 @@ namespace ConsoleApp1
             bool negativity = false;
             bool allElementsNegative = false;
             bool negativityForInputMatrix = false;
-            
 
 
-            
+
+
+
 
 
             using (var sw = new StreamWriter("results.txt"))
@@ -76,8 +79,8 @@ namespace ConsoleApp1
                 int numberOfCaseC = 0;
                 int numberOfCaseD = 0;
                 int numberOfCaseE = 0;
-                int numberOfLemma02 = 0; 
-                while (counter < 10000)
+                int numberOfLemma02 = 0;
+                while (counter < 100000)
                 {
 
                     counter++;
@@ -206,7 +209,7 @@ namespace ConsoleApp1
 
                     if (caseA != null)
                     {
-                        numberOfCaseA++; 
+                        numberOfCaseA++;
                     }
                     if (caseB2 != null)
                     {
@@ -226,7 +229,7 @@ namespace ConsoleApp1
                     }
                     if (caseL2C != null)
                     {
-                        numberOfLemma02++; 
+                        numberOfLemma02++;
                     }
                     determinant = MatrixOperations.Det(inputMatrixDoubles, inputMatrixDoubles.GetLength(0));
                     negativityForInputMatrix = Preprocessing.NegativityTestForColumns(inverseMatrixDouble);
@@ -261,7 +264,7 @@ namespace ConsoleApp1
                             {
                                 break;
                             }
-                            
+
                         }
                         else
                         {
@@ -387,14 +390,14 @@ namespace ConsoleApp1
 
                     if (positivity == true && determinant > 0 && violatingVector == null)
                     {
-                        copositive++; 
+                        copositive++;
 
                         sw.Write("The input matrix is copositive based on proposition 7.5 and 3.3 if A is nonsingular and copositive, then each column of Ainv contains a positive entry. Determinant = " + determinant);
                     }
                     sw.Write("\n");
                     if (determinant < 0 && violatingVector == null)
                     {
-                        noAnswer++; 
+                        noAnswer++;
                         sw.Write("Based on Cottle-Habetler-Lemke theorem 3.3 there is no answer. The Determinant is negative. Determinant = " + determinant);
                     }
                     sw.Write("\n");
@@ -419,17 +422,17 @@ namespace ConsoleApp1
                     sw.Write("\n");
                     if (positivity == true && violatingVector == null)
                     {
-                        copositive++; 
+                        copositive++;
                         sw.Write("The input matrix is copositive based on theorem 7.5. Each column of the inverse of the input matrix contains a positive entry");
                     }
                     sw.Write("\n");
                     if (determinant >= 0 && violatingVector == null)
                     {
-                        copositive++; 
+                        copositive++;
                         sw.Write("Based on Cottle-Habetler-Lemke theorem 3.3 the input matrix is copositive. Determinant = " + determinant);
                     }
                     sw.Write("\n");
-                    
+
 
 
                     sw.Write("\n");

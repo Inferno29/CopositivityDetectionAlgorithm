@@ -655,8 +655,7 @@ namespace ConsoleApp1
                         for (int i = 0; i < saveForValuesVector.Length; i++)
                         {
                             double temp = 0;
-                            if (i < length)
-                            {
+                           
 
 
                                 for (int j = 0; j < saveForInputMatrix.GetLength(1); j++)
@@ -684,13 +683,27 @@ namespace ConsoleApp1
 
                                 }
 
+
+                            if (i == indexOfMax)
+                            {
                                 violatingVector[i] = temp;
                             }
 
-
                             else
                             {
-                                violatingVector[i] = saveForInputMatrix[indexOfMax, indexOfMax] * checkForNegativeDiagonals[i - 1];
+
+
+                                if (i < indexOfMax)
+                                {
+                                    violatingVector[i] = saveForInputMatrix[indexOfMax, indexOfMax] * checkForNegativeDiagonals[i];
+                                }
+
+                                if (i > indexOfMax)
+                                {
+                                    violatingVector[i] = saveForInputMatrix[indexOfMax, indexOfMax] * checkForNegativeDiagonals[i - 1];
+                                }
+
+
                             }
 
                         }
