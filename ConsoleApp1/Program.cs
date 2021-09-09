@@ -38,11 +38,21 @@ namespace ConsoleApp1
 
 
             };
+            double[,] matrix2 = new double[,]
+            {
+                {32 , 5 , 9 , 29 , 43},
+                {5 , 0 , 21 , -12 , 40},
+                {9 , 21 , 13 , 45 , 14},
+                {29 , -12 , 45 , 20 , 20},
+                {43 , 40 , 14 , 20 , 50},
+
+
+            };
 
 
             double[,] m = new double[,]
             {
-                {0,-1,1,1,-1},
+                {1,-1,1,1,-1},
                 {-1,1,-1,1,1},
                 {1,-1,1,-1,1},
                 {1,1,-1,1,-1},
@@ -67,6 +77,7 @@ namespace ConsoleApp1
 
 
 
+
             using (var sw = new StreamWriter("results.txt"))
             {
                 int copositive = 0;
@@ -80,13 +91,12 @@ namespace ConsoleApp1
                 int numberOfCaseD = 0;
                 int numberOfCaseE = 0;
                 int numberOfLemma02 = 0;
-                while (counter < 100000)
-                {
+               
 
                     counter++;
 
                     int[,] inputMatrix = Algebra.CreateSymmetricMatrix(Algebra.MatrixRandomElements());
-                    double[,] inputMatrixDoubles = Algebra.CreateSymmetricMatrixOfDoubles(inputMatrix);
+                    double[,] inputMatrixDoubles = matrix2; 
                     double[] resultTest = Algebra.RandomVektorForRandomMatrix(inputMatrix);
                     double[] caseA = Preprocessing.CheckForNegativeDiagonalElement(inputMatrix);
 
@@ -103,6 +113,10 @@ namespace ConsoleApp1
                     PrintingToConsole.PrintJaggedArrayToConsole(inverseMatrix);
                     var inverseMatrixDouble = MatrixOperations.ConvertToArray(inverseMatrix);
                     allElementsNegative = Preprocessing.NegativityTest(inverseMatrixDouble);
+
+
+                    Console.WriteLine("the inverse det is" + MatrixOperations.Det(inverseMatrixDouble, inverseMatrixDouble.GetLength(0)));
+                    
 
 
 
@@ -439,7 +453,7 @@ namespace ConsoleApp1
                     sw.WriteLine("________________________________________________________________________________________________________");
                     sw.Write("\n");
 
-                }
+                
 
                 sw.WriteLine("Number of copositive matrices: " + copositive);
                 sw.WriteLine("Number of not copositive matrices: " + notCopositive);
