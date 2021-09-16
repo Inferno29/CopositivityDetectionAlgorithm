@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Tracing;
 using System.IO;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
@@ -23,7 +24,7 @@ namespace ConsoleApp1
                 {2   ,-3,   5},
                 {-3,   1,   -2},
                 {5,   -2,   2}
-               
+
 
 
 
@@ -70,7 +71,7 @@ namespace ConsoleApp1
             bool negativity = false;
             bool allElementsNegative = false;
             bool negativityForInputMatrix = false;
-
+            int counter = 0;
 
 
 
@@ -80,10 +81,12 @@ namespace ConsoleApp1
 
             using (var sw = new StreamWriter("results.txt"))
             {
+
+
                 int copositive = 0;
                 int notCopositive = 0;
                 int noAnswer = 0;
-                int counter = 0;
+                int notCopositiveWithoutViolatingVector = 0;
 
                 int numberOfCaseA = 0;
                 int numberOfCaseB = 0;
@@ -91,12 +94,15 @@ namespace ConsoleApp1
                 int numberOfCaseD = 0;
                 int numberOfCaseE = 0;
                 int numberOfLemma02 = 0;
-               
+                int iDkwhatthisis = 0;
+
+                while (counter < 1000)
+                {
 
                     counter++;
 
                     int[,] inputMatrix = Algebra.CreateSymmetricMatrix(Algebra.MatrixRandomElements());
-                    double[,] inputMatrixDoubles = matrix2; 
+                    double[,] inputMatrixDoubles = Algebra.CreateSymmetricMatrixOfDoubles(inputMatrix);
                     double[] resultTest = Algebra.RandomVektorForRandomMatrix(inputMatrix);
                     double[] caseA = Preprocessing.CheckForNegativeDiagonalElement(inputMatrix);
 
@@ -115,8 +121,9 @@ namespace ConsoleApp1
                     allElementsNegative = Preprocessing.NegativityTest(inverseMatrixDouble);
 
 
-                    Console.WriteLine("the inverse det is" + MatrixOperations.Det(inverseMatrixDouble, inverseMatrixDouble.GetLength(0)));
-                    
+                    Console.WriteLine("the inverse det is" +
+                                      MatrixOperations.Det(inverseMatrixDouble, inverseMatrixDouble.GetLength(0)));
+
 
 
 
@@ -221,37 +228,16 @@ namespace ConsoleApp1
                     Console.WriteLine("________________________________________________________");
                     Console.WriteLine("________________________________________________________");
 
-                    if (caseA != null)
-                    {
-                        numberOfCaseA++;
-                    }
-                    if (caseB2 != null)
-                    {
-                        numberOfCaseB++;
-                    }
-                    if (caseC2 != null)
-                    {
-                        numberOfCaseC++;
-                    }
-                    if (caseD2 != null)
-                    {
-                        numberOfCaseD++;
-                    }
-                    if (caseE2 != null)
-                    {
-                        numberOfCaseE++;
-                    }
-                    if (caseL2C != null)
-                    {
-                        numberOfLemma02++;
-                    }
+
+
                     determinant = MatrixOperations.Det(inputMatrixDoubles, inputMatrixDoubles.GetLength(0));
                     negativityForInputMatrix = Preprocessing.NegativityTestForColumns(inverseMatrixDouble);
                     double[] violatingVector = new double[inputMatrixDoubles.GetLength(0)];
                     double result = 0;
                     List<double[]> violatingVectors = new List<double[]>()
                     {
-                        caseA, caseB,caseC,caseD, caseE,caseE2, caseB2, caseC2, caseD2, caseL2C,caseB2Processed, caseC2Processed,
+                        caseA, caseB, caseC, caseD, caseE, caseE2, caseB2, caseC2, caseD2, caseL2C, caseB2Processed,
+                        caseC2Processed,
                         caseE2Processed, caseL2CProcessed
                     };
                     List<double[]> violatingVectorsNew = new List<double[]>();
@@ -262,6 +248,7 @@ namespace ConsoleApp1
                             violatingVectorsNew.Add(item);
                         }
                     }
+
                     foreach (var vector in violatingVectors)
                     {
                         if (vector != null && vector.Sum() > 0)
@@ -269,15 +256,44 @@ namespace ConsoleApp1
                             violatingVector = vector;
                             result = Algebra.SkalarProdukt(vector,
                                 Algebra.VektorMatrixMultiplikation(inputMatrix, vector, resultTest));
-                            if (vector == caseC)
-                            {
-                                sw.Write("Case C violating vector");
-                            }
-
                             if (result < 0)
                             {
+                                if (caseA == violatingVector)
+                                {
+                                    numberOfCaseA++;
+                                }
+
+                                if (caseB == violatingVector)
+                                {
+                                    numberOfCaseB++;
+                                }
+
+                                if (caseC == violatingVector)
+                                {
+                                    numberOfCaseC++;
+                                }
+
+                                if (caseD == violatingVector)
+                                {
+                                    numberOfCaseD++;
+                                }
+
+                                if (caseE == violatingVector)
+                                {
+                                    numberOfCaseE++;
+                                }
+
+                                if (caseL2C == violatingVector)
+                                {
+                                    numberOfLemma02++;
+                                }
+                              
+
+
                                 break;
                             }
+
+
 
                         }
                         else
@@ -367,7 +383,8 @@ namespace ConsoleApp1
                         for (int j = 0; j < inputMatrix.GetLength(1); j++)
                         {
                             sw.Write(inputMatrix[i, j] + "  ");
-                            if (j == inputMatrix.GetLength(0) - 1 && violatingVector != null && violatingVector.Sum() > 0)
+                            if (j == inputMatrix.GetLength(0) - 1 && violatingVector != null &&
+                                violatingVector.Sum() > 0)
                             {
                                 sw.Write("            " + violatingVector[i]);
                             }
@@ -399,6 +416,7 @@ namespace ConsoleApp1
 
                         sw.Write("\n");
                     }
+
                     sw.Write("\n");
                     sw.Write("\n");
 
@@ -406,64 +424,60 @@ namespace ConsoleApp1
                     {
                         copositive++;
 
-                        sw.Write("The input matrix is copositive based on proposition 7.5 and 3.3 if A is nonsingular and copositive, then each column of Ainv contains a positive entry. Determinant = " + determinant);
+                        sw.Write(
+                            "The input matrix is copositive based on proposition 7.5 and 3.3 if A is nonsingular and copositive, then each column of Ainv contains a positive entry. Determinant = " +
+                            determinant);
                     }
+
                     sw.Write("\n");
                     if (determinant < 0 && violatingVector == null)
                     {
                         noAnswer++;
-                        sw.Write("Based on Cottle-Habetler-Lemke theorem 3.3 there is no answer. The Determinant is negative. Determinant = " + determinant);
+                        sw.Write(
+                            "Based on Cottle-Habetler-Lemke theorem 3.3 there is no answer. The Determinant is negative. Determinant = " +
+                            determinant);
                     }
+
                     sw.Write("\n");
 
                     if (allElementsNegative == true)
                     {
-                        notCopositive++;
-                        sw.Write("Input matrix is not copositive based on theorem 3.4");
+                        notCopositiveWithoutViolatingVector++;
+                        sw.Write("Input matrix is not copositive based on theorem 3.4. Inverse of A is nonpositive entrywise. ");
                     }
+
                     sw.Write("\n");
                     if (violatingVector != null && violatingVector.Sum() > 0)
                     {
                         notCopositive++;
                         sw.Write("The input matrix is not copositive. A violating vector exists.");
                     }
+
                     sw.Write("\n");
-                    if (negativityForInputMatrix == true)
-                    {
-                        notCopositive++;
-                        sw.Write("The input matrix is not copositive based on theorem 3.4. The inverse matrix in nonpositive entrywise. ");
-                    }
-                    sw.Write("\n");
-                    if (positivity == true && violatingVector == null)
-                    {
-                        copositive++;
-                        sw.Write("The input matrix is copositive based on theorem 7.5. Each column of the inverse of the input matrix contains a positive entry");
-                    }
-                    sw.Write("\n");
-                    if (determinant >= 0 && violatingVector == null)
-                    {
-                        copositive++;
-                        sw.Write("Based on Cottle-Habetler-Lemke theorem 3.3 the input matrix is copositive. Determinant = " + determinant);
-                    }
+                 
                     sw.Write("\n");
 
 
 
                     sw.Write("\n");
-                    sw.WriteLine("________________________________________________________________________________________________________");
+                    sw.WriteLine(
+                        "________________________________________________________________________________________________________");
                     sw.Write("\n");
 
-                
 
-                sw.WriteLine("Number of copositive matrices: " + copositive);
-                sw.WriteLine("Number of not copositive matrices: " + notCopositive);
-                sw.WriteLine("Number of no answer possible cases: " + noAnswer);
-                sw.WriteLine("Number of answers with case A: " + numberOfCaseA);
-                sw.WriteLine("Number of answers with case B: " + numberOfCaseB);
-                sw.WriteLine("Number of answers with case C: " + numberOfCaseC);
-                sw.WriteLine("Number of answers with case D: " + numberOfCaseD);
-                sw.WriteLine("Number of answers with case E: " + numberOfCaseE);
-                sw.WriteLine("Number of answers with Lemma 0.2 C: " + numberOfLemma02);
+
+                    sw.WriteLine("Number of copositive matrices: " + copositive);
+                    sw.WriteLine("Number of not copositive matrices: " + notCopositive);
+                    sw.WriteLine("Number of not copositive matrices. Inverse of A is nonpositive entrywise: " + notCopositiveWithoutViolatingVector);
+                    sw.WriteLine("Number of no answer possible cases: " + noAnswer);
+                    sw.WriteLine("Number of answers with case A: " + numberOfCaseA);
+                    sw.WriteLine("Number of answers with case B: " + numberOfCaseB);
+                    sw.WriteLine("Number of answers with case C: " + numberOfCaseC);
+                    sw.WriteLine("Number of answers with case D: " + numberOfCaseD);
+                    sw.WriteLine("Number of answers with case E: " + numberOfCaseE);
+                    sw.WriteLine("Number of answers with Lemma 0.2 C: " + numberOfLemma02);
+                }
+
                 sw.Flush();
                 sw.Close();
             }
