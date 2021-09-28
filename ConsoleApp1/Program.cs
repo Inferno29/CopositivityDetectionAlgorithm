@@ -10,6 +10,10 @@ using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Channels;
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
+using MathNet.Numerics.LinearAlgebra.Factorization;
+using Complex = System.Numerics.Complex;
 
 
 namespace ConsoleApp1
@@ -29,6 +33,7 @@ namespace ConsoleApp1
 
 
             };
+
             double[,] matrix1 = new double[,]
             {
                 {0   ,-1,   1,1,1},
@@ -46,6 +51,16 @@ namespace ConsoleApp1
                 {9 , 21 , 13 , 45 , 14},
                 {29 , -12 , 45 , 20 , 20},
                 {43 , 40 , 14 , 20 , 50},
+
+
+            };
+            double[,] matrix3 = new double[,]
+            {
+                {7   ,2},
+                {2,   1}
+                
+
+
 
 
             };
@@ -73,12 +88,8 @@ namespace ConsoleApp1
             bool negativityForInputMatrix = false;
             int counter = 0;
 
-
-
-
-
-
-
+         
+           
             using (var sw = new StreamWriter("results.txt"))
             {
 
@@ -94,9 +105,10 @@ namespace ConsoleApp1
                 int numberOfCaseD = 0;
                 int numberOfCaseE = 0;
                 int numberOfLemma02 = 0;
-                int iDkwhatthisis = 0;
+                int numberOfPositiveSemiDefinite = 0;
+                int numberOfSpectralPreProcessing = 0;
 
-                while (counter < 1000)
+                while (counter < 100000)
                 {
 
                     counter++;
@@ -202,6 +214,9 @@ namespace ConsoleApp1
                     var caseL2C = Preprocessing2.Lemma2CaseC(inputMatrixDoubles);
                     Console.WriteLine("____________________Case Lemma0.2 Cinv____________________");
                     var caseL2C2 = Preprocessing2.Lemma2CaseC(inverseMatrixDouble);
+                    Console.WriteLine("____________________Spectral Preprocessing________________");
+                    var spectral = Algebra.EigenVectorViolating(inputMatrixDoubles, numberOfPositiveSemiDefinite);
+                
 
                     Console.WriteLine("________________________________________________________");
                     Console.WriteLine("________________________________________________________");
@@ -238,7 +253,7 @@ namespace ConsoleApp1
                     {
                         caseA, caseB, caseC, caseD, caseE, caseE2, caseB2, caseC2, caseD2, caseL2C, caseB2Processed,
                         caseC2Processed,
-                        caseE2Processed, caseL2CProcessed
+                        caseE2Processed, caseL2CProcessed, spectral
                     };
                     List<double[]> violatingVectorsNew = new List<double[]>();
                     foreach (var item in violatingVectors)
@@ -287,7 +302,12 @@ namespace ConsoleApp1
                                 {
                                     numberOfLemma02++;
                                 }
-                              
+
+                                if (spectral == violatingVector)
+                                {
+                                    numberOfSpectralPreProcessing++; 
+                                }
+
 
 
                                 break;
@@ -454,7 +474,7 @@ namespace ConsoleApp1
                     }
 
                     sw.Write("\n");
-                 
+
                     sw.Write("\n");
 
 
@@ -466,17 +486,20 @@ namespace ConsoleApp1
 
 
 
-                    sw.WriteLine("Number of copositive matrices: " + copositive);
-                    sw.WriteLine("Number of not copositive matrices: " + notCopositive);
-                    sw.WriteLine("Number of not copositive matrices. Inverse of A is nonpositive entrywise: " + notCopositiveWithoutViolatingVector);
-                    sw.WriteLine("Number of no answer possible cases: " + noAnswer);
-                    sw.WriteLine("Number of answers with case A: " + numberOfCaseA);
-                    sw.WriteLine("Number of answers with case B: " + numberOfCaseB);
-                    sw.WriteLine("Number of answers with case C: " + numberOfCaseC);
-                    sw.WriteLine("Number of answers with case D: " + numberOfCaseD);
-                    sw.WriteLine("Number of answers with case E: " + numberOfCaseE);
-                    sw.WriteLine("Number of answers with Lemma 0.2 C: " + numberOfLemma02);
+                 
                 }
+                sw.WriteLine("Number of copositive matrices: " + copositive);
+                sw.WriteLine("Number of not copositive matrices: " + notCopositive);
+                sw.WriteLine("Number of not copositive matrices. Inverse of A is nonpositive entrywise: " + notCopositiveWithoutViolatingVector);
+                sw.WriteLine("Number of no answer possible cases: " + noAnswer);
+                sw.WriteLine("Number of answers with case A: " + numberOfCaseA);
+                sw.WriteLine("Number of answers with case B: " + numberOfCaseB);
+                sw.WriteLine("Number of answers with case C: " + numberOfCaseC);
+                sw.WriteLine("Number of answers with case D: " + numberOfCaseD);
+                sw.WriteLine("Number of answers with case E: " + numberOfCaseE);
+                sw.WriteLine("Number of answers with Lemma 0.2 C: " + numberOfLemma02);
+                sw.WriteLine("Number of positive semi definite matrices: " + numberOfPositiveSemiDefinite);
+                sw.WriteLine("Number of spectral preprocessing violating vectors: " + numberOfSpectralPreProcessing);
 
                 sw.Flush();
                 sw.Close();

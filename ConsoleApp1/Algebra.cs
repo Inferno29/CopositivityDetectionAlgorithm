@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Text;
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Factorization;
+using Complex = System.Numerics.Complex;
 
 namespace ConsoleApp1
 {
@@ -234,39 +238,102 @@ namespace ConsoleApp1
 
 
 
-
-        public static double[] DisplayResults(List<double> list, double finalResult, double[] result, double[] vektor, int[,] matrix)
+        public static double[] EigenVectorViolating(double[,] inputMatrix, int counter)
         {
-            finalResult = Algebra.SkalarProdukt(Algebra.VektorMatrixMultiplikation(matrix, vektor, result), vektor);
-            int counter = 0;
-            while (counter < 10)
+            //EIGENVALUES AND EIGENVECTORS
+
+            var M = Matrix<double>.Build;
+
+
+            var inputMatrixForEigen = M.DenseOfArray(inputMatrix);
+            Evd<double> eigenValue = inputMatrixForEigen.Evd();
+            Matrix<double> eigenVectors = eigenValue.EigenVectors;
+            Vector<Complex> eigenValues = eigenValue.EigenValues;
+
+            Console.WriteLine(eigenValues);
+            Console.WriteLine(eigenVectors);
+
+            var orderedEigenValues = eigenValues.OrderBy(x => x.Real);
+            double min = 0;
+            double max = 0;
+            min = eigenValues[0].Real;
+            max = eigenValues[0].Real;
+            for (var i = 0; i < eigenValues.Count; i++)
             {
-                finalResult = Algebra.SkalarProdukt(Algebra.VektorMatrixMultiplikation(matrix, Algebra.VektorRandomElements(vektor),result), Algebra.VektorRandomElements(vektor));
-                //Console.WriteLine(finalResult);
-                //Console.WriteLine("___________________");
-                counter++;
-                list.Add(finalResult);
-
-                if (finalResult < 0)
+                if (eigenValues[i].Real < min)
                 {
-                    Console.WriteLine("the final result is: " + finalResult);
-                    Console.WriteLine("A violating vector is");
-                    PrintingToConsole.PrintVektorToConsole(vektor);
-                    return vektor;
-
+                    min = eigenValues[i].Real;
                 }
-                if (counter == 10)
+
+                if (eigenValues[i].Real > max)
                 {
-                    Console.WriteLine("no violating vector could be found");
-                   
-                    break;
+                    max = eigenValues[i].Real;
+                }
+
+            }
+
+            // Get First Eigenvector
+            var eigenVectorsArray = eigenVectors.ToArray();
+            double[] firstEigenVector = new double[eigenVectorsArray.GetLength(0)];
+            double[] positiveEigenVector = new double[eigenVectorsArray.GetLength(0)];
+            double[] NegativeEigenVector = new double[eigenVectorsArray.GetLength(0)];
+            double[] resultVector = new double[eigenVectorsArray.GetLength(0)];
+
+
+            for (var i = 0; i < firstEigenVector.Length; i++)
+            {
+                firstEigenVector[i] = eigenVectorsArray[i, 0];
+                positiveEigenVector[i] = Math.Abs(firstEigenVector[i]);
+                NegativeEigenVector[i] = positiveEigenVector[i] - firstEigenVector[i];
+            }
+
+
+            if (min >= 0)
+            {
+                Console.WriteLine("Matrix is copositive");
+                counter++; 
+            }
+
+            if (min < -max)
+            {
+                Console.WriteLine("matrix is not copositive");
+                var pos = Algebra.SkalarProdukt(positiveEigenVector, Algebra.VektorMatrixMultiplikation(inputMatrix, positiveEigenVector, resultVector));
+                var neg = Algebra.SkalarProdukt(NegativeEigenVector, Algebra.VektorMatrixMultiplikation(inputMatrix, NegativeEigenVector, resultVector));
+
+                if (pos < 0)
+                {
+                    return positiveEigenVector;
+                }
+
+                if (neg < 0)
+                {
+                    return NegativeEigenVector; 
+                }
+
+            }
+
+
+            if (min == -max)
+            {
+                Console.WriteLine("matrix is not copositive");
+
+                var pos = Algebra.SkalarProdukt(positiveEigenVector, Algebra.VektorMatrixMultiplikation(inputMatrix, positiveEigenVector, resultVector));
+                var neg = Algebra.SkalarProdukt(NegativeEigenVector, Algebra.VektorMatrixMultiplikation(inputMatrix, NegativeEigenVector, resultVector));
+
+                if (pos < 0)
+                {
+                    return positiveEigenVector;
+                }
+
+                if (neg < 0)
+                {
+                    return NegativeEigenVector;
                 }
             }
-            return null;
+
+            return null; 
 
         }
-
-
 
 
 
