@@ -88,8 +88,8 @@ namespace ConsoleApp1
             bool negativityForInputMatrix = false;
             int counter = 0;
 
-         
-           
+
+          
             using (var sw = new StreamWriter("results.txt"))
             {
 
@@ -216,7 +216,7 @@ namespace ConsoleApp1
                     var caseL2C2 = Preprocessing2.Lemma2CaseC(inverseMatrixDouble);
                     Console.WriteLine("____________________Spectral Preprocessing________________");
                     var spectral = Algebra.EigenVectorViolating(inputMatrixDoubles, numberOfPositiveSemiDefinite);
-                
+
 
                     Console.WriteLine("________________________________________________________");
                     Console.WriteLine("________________________________________________________");
@@ -305,7 +305,7 @@ namespace ConsoleApp1
 
                                 if (spectral == violatingVector)
                                 {
-                                    numberOfSpectralPreProcessing++; 
+                                    numberOfSpectralPreProcessing++;
                                 }
 
 
@@ -486,7 +486,7 @@ namespace ConsoleApp1
 
 
 
-                 
+
                 }
                 sw.WriteLine("Number of copositive matrices: " + copositive);
                 sw.WriteLine("Number of not copositive matrices: " + notCopositive);
