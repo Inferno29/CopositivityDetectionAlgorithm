@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using ConsoleApp1.dto;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Factorization;
 using Complex = System.Numerics.Complex;
@@ -238,9 +239,12 @@ namespace ConsoleApp1
 
 
 
-        public static double[] EigenVectorViolating(double[,] inputMatrix, int counter)
+        public static EigenVectorAndValue EigenVectorViolating(double[,] inputMatrix, int counter, EigenVectorAndValue eigenVectorAndValue)
         {
             //EIGENVALUES AND EIGENVECTORS
+
+            
+            
 
             var M = Matrix<double>.Build;
 
@@ -258,19 +262,27 @@ namespace ConsoleApp1
             double max = 0;
             min = eigenValues[0].Real;
             max = eigenValues[0].Real;
+            var indexOfMax = -1;
+            double[] eigenValuesVector = new double[eigenValues.Count]; 
             for (var i = 0; i < eigenValues.Count; i++)
             {
+                eigenValuesVector[i] = eigenValues[i].Real;
                 if (eigenValues[i].Real < min)
                 {
                     min = eigenValues[i].Real;
+                    
                 }
 
                 if (eigenValues[i].Real > max)
                 {
                     max = eigenValues[i].Real;
+                    indexOfMax = i; 
                 }
 
             }
+            
+
+            Console.WriteLine($"Lambda1 = {min} ||| LambdaN = {max}" );
 
             // Get First Eigenvector
             var eigenVectorsArray = eigenVectors.ToArray();
@@ -278,6 +290,10 @@ namespace ConsoleApp1
             double[] positiveEigenVector = new double[eigenVectorsArray.GetLength(0)];
             double[] NegativeEigenVector = new double[eigenVectorsArray.GetLength(0)];
             double[] resultVector = new double[eigenVectorsArray.GetLength(0)];
+            
+            eigenVectorAndValue.SetEigenValues(eigenValuesVector);
+            eigenVectorAndValue.SetEigenVector(eigenVectorsArray);
+            
 
 
             for (var i = 0; i < firstEigenVector.Length; i++)
@@ -290,7 +306,7 @@ namespace ConsoleApp1
 
             if (min >= 0)
             {
-                Console.WriteLine("Matrix is copositive");
+                Console.WriteLine("Matrix is positive semidefinite");
                 counter++; 
             }
 
@@ -302,12 +318,14 @@ namespace ConsoleApp1
 
                 if (pos < 0)
                 {
-                    return positiveEigenVector;
+                    eigenVectorAndValue.SetEViolatingVector(positiveEigenVector);
+                    return eigenVectorAndValue;
                 }
 
                 if (neg < 0)
                 {
-                    return NegativeEigenVector; 
+                    eigenVectorAndValue.SetEViolatingVector(NegativeEigenVector);
+                    return eigenVectorAndValue; 
                 }
 
             }
@@ -315,23 +333,34 @@ namespace ConsoleApp1
 
             if (min == -max)
             {
-                Console.WriteLine("matrix is not copositive");
-
-                var pos = Algebra.SkalarProdukt(positiveEigenVector, Algebra.VektorMatrixMultiplikation(inputMatrix, positiveEigenVector, resultVector));
-                var neg = Algebra.SkalarProdukt(NegativeEigenVector, Algebra.VektorMatrixMultiplikation(inputMatrix, NegativeEigenVector, resultVector));
-
-                if (pos < 0)
+                for (int i = 0; i < eigenVectorsArray.Length; i++)
                 {
-                    return positiveEigenVector;
-                }
+                    if (eigenVectorsArray[indexOfMax, i] != null)
+                    {
+                        Console.WriteLine("matrix is not copositive");
 
-                if (neg < 0)
-                {
-                    return NegativeEigenVector;
+                        var pos = Algebra.SkalarProdukt(positiveEigenVector, Algebra.VektorMatrixMultiplikation(inputMatrix, positiveEigenVector, resultVector));
+                        var neg = Algebra.SkalarProdukt(NegativeEigenVector, Algebra.VektorMatrixMultiplikation(inputMatrix, NegativeEigenVector, resultVector));
+
+                        if (pos < 0)
+                        {
+                            eigenVectorAndValue.SetEViolatingVector(positiveEigenVector);
+                            return eigenVectorAndValue;
+                        }
+
+                        if (neg < 0)
+                        {
+                            eigenVectorAndValue.SetEViolatingVector(NegativeEigenVector);
+                            return eigenVectorAndValue; 
+                        }
+                        
+                        
+                    }
                 }
+              
             }
 
-            return null; 
+            return eigenVectorAndValue; 
 
         }
 

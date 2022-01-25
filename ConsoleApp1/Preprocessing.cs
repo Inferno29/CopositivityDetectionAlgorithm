@@ -7,6 +7,8 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters;
 using System.Text;
+using ConsoleApp1.dto;
+using MathNet.Numerics;
 
 namespace ConsoleApp1
 {
@@ -321,6 +323,52 @@ namespace ConsoleApp1
                 return null;
             }
         }
+        
+        public static double[] Case2( double[] violatingVector, double[,] matrix)
+        {
+
+
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                if (matrix[i, i] == 0)
+                {
+                    for (int j = 0; j < matrix.GetLength(1); j++)
+                    {
+                        if (j != i && Math.Abs(i-j)==1)
+                        {
+                            if (matrix[i, j] < matrix[i, i])
+                            {
+                                violatingVector[i] = (matrix[j, j] + 1);
+                                violatingVector[j] = -matrix[i, j];
+
+                            }
+                            else
+                            {
+                                violatingVector[j] = 0;
+                            }
+                        
+                        }
+                    
+                    }
+                    
+                    
+                    
+                    
+                }
+               
+                
+            }
+
+            if (violatingVector.Sum() > 0)
+            { 
+                return violatingVector; 
+                
+            }
+            else
+            {
+                return null; 
+            }
+        }
 
         //Case C
         public static int[,] TestCaseC(int[,] inputMatrix, int[,] outputMatrix)
@@ -401,25 +449,33 @@ namespace ConsoleApp1
             return result;
         }
 
-        public static double[] CaseC(double resultCaseA, int[,] inputMatrix)
+        public static double[] CaseC(double resultCaseA, int[,] inputMatrix, MatrixforCase4 matrixCase4, MatrixForCase3 matrixCase3, Case4Dto case4Dto)
         {
 
 
             if (resultCaseA == 0)
             {
 
-                Console.WriteLine("Case C");
+                Console.WriteLine("Case 3 deleting positive rows");
                 Console.WriteLine("First iteration");
                 double[] resultTest = Algebra.RandomVektorForRandomMatrix(inputMatrix);
                 int[,] outputMatrix = new int[inputMatrix.GetLength(0), inputMatrix.GetLength(1)];
                 PrintingToConsole.PrintMatrixToConsole(Preprocessing.TestCaseC(inputMatrix, outputMatrix));
                 int[,] afterCaseC = Preprocessing.TestCaseC(inputMatrix, outputMatrix);
+                if (afterCaseC != null)
+                {
+                    matrixCase3.SetMatrix(afterCaseC);
+                }
                 int counter = 1;
                 while (afterCaseC != null)
                 {
 
                     outputMatrix = new int[afterCaseC.GetLength(0), afterCaseC.GetLength(1)];
                     afterCaseC = Preprocessing.TestCaseC(afterCaseC, outputMatrix);
+                    if (afterCaseC != null)
+                    {
+                        matrixCase3.SetMatrix(afterCaseC);
+                    }
                     counter++;
 
 
@@ -429,18 +485,47 @@ namespace ConsoleApp1
                         Console.WriteLine("_________________________________________");
                         PrintingToConsole.PrintMatrixToConsole(afterCaseC);
                         Console.WriteLine("____________________________________________________");
-                        Console.WriteLine("Case B called from Case C");
+                        Console.WriteLine("Case 2 called from Case 3");
                         List<int> listCheckZero2 = new List<int>();
 
-                        //Call to Case E
-                        CaseE(afterCaseC);
-                        NegativityTestCaseD(afterCaseC); 
 
-                        List<int> listZero2 = Preprocessing.CheckIfDiagonalElementsAreZero(listCheckZero2, afterCaseC);
+
                         double[] violatingVectorReduced = new double[afterCaseC.GetLength(0)];
-                        violatingVectorReduced =
-                            Preprocessing.TestMethod(listZero2, violatingVectorReduced, afterCaseC);
-                        if (violatingVectorReduced != null)
+                        List<int> listZero2 = Preprocessing.CheckIfDiagonalElementsAreZero(listCheckZero2, afterCaseC);
+                        
+                        //Call to Case 5
+                       var test5 = CaseE(afterCaseC);
+                       
+                       //Call to Case 4
+                       Console.WriteLine("Case 4 called from Case 3");
+                       var test4 =   NegativityTestCaseD(afterCaseC, matrixCase4, matrixCase3, case4Dto);
+                       var testMethod = TestMethod(listZero2, violatingVectorReduced, afterCaseC);
+                       if (test5 != null)
+                       {
+                        
+                           violatingVectorReduced = test5; 
+                       }
+
+                       else if (test4 != null)
+                       {
+
+                           violatingVectorReduced = test5;
+
+                       }
+
+                       else if (testMethod != null)
+                       {
+                           TestMethod(listZero2, violatingVectorReduced, afterCaseC);
+                           violatingVectorReduced = testMethod; 
+                       }
+                       else
+                       {
+                           violatingVectorReduced = null; 
+                       }
+                       Console.WriteLine();
+
+                       
+                       if (violatingVectorReduced != null)
                         {
 
                             Console.WriteLine("A violating vector is REDUCED");
@@ -466,6 +551,7 @@ namespace ConsoleApp1
                                 Algebra.VektorMatrixMultiplikation(inputMatrix, violatingVectorCaseC, resultTest));
                             if (result < 0)
                             {
+                                case4Dto.SetCopositive(false);
                                 Console.WriteLine("Extended Violating Vector");
                                 PrintingToConsole.PrintVektorToConsole(violatingVectorCaseC);
                                 Console.WriteLine("The Result is " + Algebra.SkalarProdukt(violatingVectorCaseC,
@@ -483,14 +569,14 @@ namespace ConsoleApp1
                         }
                         else
                         {
-                            Console.WriteLine("No violating Vector for Case C");
+                            Console.WriteLine("No violating Vector for Case 3");
                         }
                     }
                     else
                     {
                         if (counter < 2)
                         {
-                            Console.WriteLine("No row had only nonnegative entries CASE C failed");
+                            Console.WriteLine("No row had only nonnegative entries CASE 3 failed");
                         }
 
 
@@ -540,7 +626,7 @@ namespace ConsoleApp1
 
         public static double[] CaseE(int[,] inputMatrix)
         {
-            Console.WriteLine("Case E starting");
+            Console.WriteLine("Case 5 starting");
             double[] violatingVector = new double[inputMatrix.GetLength(0)];
             bool rowFound = false;
             double[] result = new double[inputMatrix.GetLength(0)];
@@ -576,19 +662,23 @@ namespace ConsoleApp1
                             PrintingToConsole.PrintVektorToConsole(violatingVector);
                             double resultCaseE = Algebra.SkalarProdukt(violatingVector,
                                 Algebra.VektorMatrixMultiplikation(inputMatrix, violatingVector, result));
-                            Console.WriteLine("The result for case E is : " + resultCaseE);
+                            Console.WriteLine("The result for case 5 is : " + resultCaseE);
                             return violatingVector;
                         }
                     }
                 }
             }
 
-            Console.WriteLine("No violating vector for Case E");
+            Console.WriteLine("No violating vector for Case 5");
             return null;
         }
 
-        public static void CaseD(int[,] inputMatrix)
+       
+
+        
+        public static double[] CaseD(int[,] inputMatrix, MatrixforCase4 matrixCase4, MatrixForCase3 matrixCase3, Case4Dto case4Dto)
         {
+            
             double[] valuesVector = new double[inputMatrix.GetLength(0)];
             double[] saveForValuesVector = new double[valuesVector.Length];
             int[,] negativeSignMatrix = new int[inputMatrix.GetLength(0), inputMatrix.GetLength(1)];
@@ -628,8 +718,15 @@ namespace ConsoleApp1
                 }
 
 
-                double maxValue = valuesVector.Max();
+                double maxValue = 0;
+                if (valuesVector.Length == 0)
+                {
+                    return null; 
+                }
+                maxValue = valuesVector.Max();
                 int indexOfMax = valuesVector.ToList().IndexOf(maxValue);
+                
+               
 
 
 
@@ -652,14 +749,69 @@ namespace ConsoleApp1
 
 
                     int[,] T = TMatrixForCaseD(saveForInputMatrix, indexOfMax);
+                    matrixCase4.SetMatrix(T);
                     Console.WriteLine("this is matrix T");
                     PrintingToConsole.PrintMatrixToConsole(T);
 
+                    if (T.GetLength(1)==2)
+                    {
+                        int counter = 0; 
+                        for (int i = 0; i < T.GetLength(1); i++)
+                        {
+                            for (int j = 0; j < T.GetLength(1); j++)
+                            {
+                                if (i != j && T[i,j] < 0 && T[i,i] >= 0)
+                                {
+                                    counter++;
+                                    if (counter == T.GetLength(1))
+                                    {
+                                        case4Dto.SetCopositive(true);
+                                        Console.WriteLine("MATRIX T IS COPOSITIVE");
+                                        return null; 
+                                    }
+                                  
+                                    
+                                }
+                            }
+                        }
+                        Console.WriteLine();
+                        
+                    }
+                    if (T.GetLength(1)==2)
+                    {
+                        int counter = 0; 
+                        for (int i = 0; i < T.GetLength(1); i++)
+                        {
+                            for (int j = 0; j < T.GetLength(1); j++)
+                            {
+                                if (T[i,j] >= 0 )
+                                {
+                                    counter++;
+                                    if (counter == T.GetLength(1))
+                                    {
+                                        case4Dto.SetCopositive(true);
+                                        Console.WriteLine("MATRIX T IS COPOSITIVE");
+                                        return null; 
+                                    }
+                                  
+                                    
+                                }
+                            }
+                        }
+                        Console.WriteLine();
+                        
+                    }
 
+               
 
                     //Case A
 
-                    double[] checkForGegativeDiagonals = CheckForNegativeDiagonalElementAndIgnoreIndex(T, indexOfMax - 1);
+                    double[] checkForGegativeDiagonals = CheckForNegativeDiagonalElementAndIgnoreIndex(T, indexOfMax);
+                    
+                    var case2 = CaseB(0,T); 
+                    var case3 = CaseC(0,T, matrixCase4, matrixCase3, case4Dto); 
+                    var case4 = CaseD(T, matrixCase4, matrixCase3, case4Dto); 
+                    var case5 = CaseE(T);
 
                     if (checkForGegativeDiagonals != null)
                     {
@@ -668,6 +820,28 @@ namespace ConsoleApp1
                         double resultCaseA = Algebra.SkalarProdukt(checkForGegativeDiagonals,
                             Algebra.VektorMatrixMultiplikation(T, checkForGegativeDiagonals, resultTest));
                         Console.WriteLine("the result is " + resultCaseA);
+                    }
+                    
+
+                    if (case2 != null)
+                    {
+                        case4Dto.SetVector(case2);
+                        checkForGegativeDiagonals = case4Dto.GetVector();
+                    }
+                    if (case3 != null)
+                    {
+                        case4Dto.SetVector(case3);
+                        checkForGegativeDiagonals = case4Dto.GetVector();
+                    }
+                    if (case4 != null)
+                    {
+                        case4Dto.SetVector(case4);
+                        checkForGegativeDiagonals = case4Dto.GetVector();
+                    }
+                    if (case5 != null)
+                    {
+                        case4Dto.SetVector(case5);
+                        checkForGegativeDiagonals = case4Dto.GetVector();
                     }
 
 
@@ -682,7 +856,8 @@ namespace ConsoleApp1
                         for (int i = 0; i < saveForValuesVector.Length; i++)
                         {
                             double temp = 0;
-                            if (i < length)
+                            // if (i < length)
+                            if (i == indexOfMax)
                             {
 
 
@@ -711,13 +886,22 @@ namespace ConsoleApp1
 
                                 }
 
+                               
                                 violatingVector[i] = temp;
+                                
                             }
 
 
                             else
                             {
-                                violatingVector[i] = saveForInputMatrix[indexOfMax, indexOfMax] * checkForGegativeDiagonals[i - 1];
+                                for (int m = 0; m < checkForGegativeDiagonals.Length; m++)
+                                {
+                                    if (m == i)
+                                    {
+                                        violatingVector[i] = saveForInputMatrix[indexOfMax, indexOfMax] * checkForGegativeDiagonals[i];
+                                    }
+                                }
+                                
                             }
 
                         }
@@ -733,59 +917,71 @@ namespace ConsoleApp1
                         Console.WriteLine(resultA);
                         if (resultA < 0)
                         {
-                            Console.WriteLine("Case A");
+                            Console.WriteLine("Case 1");
                             PrintingToConsole.PrintVektorToConsole(violatingVector);
-                            Console.WriteLine("RESULT Case A");
+                            Console.WriteLine("RESULT Case 1");
                             Console.WriteLine(resultA);
-                            break;
+                            case4Dto.SetVector(violatingVector);
+                            return case4Dto.GetVector();
 
                         }
                         else
                         {
-                            Console.WriteLine("No violating Vector could be found For Case A (Called from Case D)");
+                            Console.WriteLine("No violating Vector could be found For Case 1 (Called from Case 4)");
                         }
 
                     }
-
-
+                    
 
                 }
 
-
-
-
+                
 
 
             } while (valuesVector.Sum() > 0);
+
+            if (case4Dto.GetVector() == null)
+            {
+                case4Dto.SetCopositive(true);
+
+            }
+
+            if (case4Dto.GetCopositive())
+            {
+                return null; 
+            }
+
+            return null; 
 
 
 
 
         }
 
-        public static double[] NegativityTestCaseD(int[,] inputMatrix)
+        public static double[] NegativityTestCaseD(int[,] inputMatrix, MatrixforCase4 matrixCase4, MatrixForCase3 matrixCase3, Case4Dto case4Dto)
         {
-            int indexJ = -1;
+            int indexJ = 0;
             for (int i = 0; i < inputMatrix.GetLength(0); i++)
             {
                 for (int j = 0; j < inputMatrix.GetLength(1); j++)
                 {
-                    if (inputMatrix[i, j] <= 0 && j != i && inputMatrix[i,i] > 0)
+                   
+                    if (inputMatrix[i, j] <= 0 && j != i && inputMatrix[i,i] >= 0)
                     {
                         indexJ++;
-
-                        if (indexJ == inputMatrix.GetLength(1) - 2)
+                        
+                        if (indexJ == inputMatrix.GetLength(1) - 1)
                         {
-
-                            CaseD(inputMatrix);
-                            return null; 
+                            return CaseD(inputMatrix, matrixCase4, matrixCase3, case4Dto);
+                            
+                            
                         }
                     }
 
 
                 }
 
-                indexJ = -1;
+                indexJ = 0;
             }
 
             Console.WriteLine("Input matrix not meeting criteria for Case D");
@@ -793,7 +989,7 @@ namespace ConsoleApp1
 
         }
 
-        public static double[] PositivityTestCaseC(int[,] inputMatrix, double resultCaseA)
+        public static double[] PositivityTestCaseC(int[,] inputMatrix, double resultCaseA, MatrixforCase4 matrixCase4, MatrixForCase3 matrixCase3, Case4Dto case4Dto)
         {
             if (resultCaseA == 0)
             {
@@ -809,8 +1005,8 @@ namespace ConsoleApp1
                             if (indexJ == inputMatrix.GetLength(1) - 2)
                             {
 
-                                CaseC(resultCaseA, inputMatrix);
-                                return null;
+                                return CaseC(resultCaseA, inputMatrix, matrixCase4, matrixCase3, case4Dto);
+                               
                             }
                         }
 
@@ -822,7 +1018,7 @@ namespace ConsoleApp1
             }
             else
             {
-                Console.WriteLine("Input matrix not meeting criteria for Case C");
+                Console.WriteLine("Input matrix not meeting criteria for Case 3");
                 return null;
             }
 
