@@ -172,9 +172,9 @@ namespace ConsoleApp1
             int counter = 0;
 
 
-
-            using (var sw = new StreamWriter("results.txt"))
-            {
+            //
+            // using (var sw = new StreamWriter("results.txt"))
+            // {
 
 
                 int copositive = 0;
@@ -197,7 +197,7 @@ namespace ConsoleApp1
                 decimal percentageofRows4 = 0;
 
 
-                while (counter < 1000)
+                while (counter < 100)
                 {
 
                     counter++;
@@ -365,26 +365,30 @@ namespace ConsoleApp1
 
                     var finalMatrixCase4 = matrixCase4.GetMatrix();
                     var finalMatrixCase3 = matrixCase3.GetMatrix();
+                    int rows3 = 0;
+                    int rows4 = 0; 
                     if (finalMatrixCase3 != null)
                     {
+                        rows3 = Math.Abs(finalMatrixCase3.GetLength(1) - inputMatrix.GetLength(1));
                         deletedRowsCase3 += Math.Abs(finalMatrixCase3.GetLength(1) - inputMatrix.GetLength(1));
                     }
 
                     if (finalMatrixCase4 != null)
                     {
+                        rows4 = Math.Abs(finalMatrixCase4.GetLength(1) - inputMatrix.GetLength(1));
                         deletedRowsCase4 += Math.Abs(finalMatrixCase4.GetLength(1) - inputMatrix.GetLength(1));
                     }
 
                     if (deletedRowsCase3 > 0)
                     {
                         percentageofRows3 =
-                            Math.Round((decimal) deletedRowsCase3 / (decimal) inputMatrix.GetLength(0) * 100, 2);
+                            Math.Round((decimal) rows3 / (decimal) inputMatrix.GetLength(0) * 100, 2);
                     }
 
                     if (deletedRowsCase4 > 0)
                     {
                         percentageofRows4 =
-                            Math.Round((decimal) deletedRowsCase4 / (decimal) inputMatrix.GetLength(0) * 100, 2);
+                            Math.Round((decimal) rows4 / (decimal) inputMatrix.GetLength(0) * 100, 2);
                     }
 
 
@@ -466,23 +470,7 @@ namespace ConsoleApp1
                     }
 
 
-
-                    //TODO WORK WITH THIS
-                    if (matrixDto.GetCopositive())
-                    {
-                        Console.WriteLine();
-                    }
-
-                    if (matrixDto.GetVector() != null)
-                    {
-                        Console.WriteLine();
-                    }
-
-                    if (matrixDto.GetVector() == null)
-                    {
-                        Console.WriteLine();
-                    }
-
+                    
 
                     if (matrixDto.GetVector() == null && matrixDto.GetCopositive())
                     {
@@ -506,174 +494,114 @@ namespace ConsoleApp1
                     {
                         numberOfPositiveSemiDefinite++; 
                     }
-
-                    Console.WriteLine("THIS IS THE EIGENVALUEEESSSSSS");
-
-                    for (int i = 0; i < eigenValues.Length; i++)
-                    {
-                        Console.Write(eigenValues[i] + " ");
-                    }
-
-                    
-                    //
-                    // if (resultCaseA == 0 && caseB == null && caseC == null && caseD == null
-                    //     && caseE == null && caseE2 == null && caseB2 == null && caseC2 == null && caseD2 == null
-                    //     && caseL2C == null && caseB2Processed == null && caseC2Processed == null &&
-                    //     caseE2Processed == null
-                    //     && caseD2Processed == null && caseL2CProcessed == null)
-                    // {
-                    //
-                    //
-                    //
-                    //     List<double[,]> firstList = new List<double[,]>();
-                    //     var det = 0;
-                    //
-                    //
-                    //     for (int i = 0; i < inputMatrixDoubles.GetLength(0); i++)
-                    //     {
-                    //         firstList = MatrixOperations.returnListForTrim(firstList,
-                    //             MatrixOperations.Trim(firstList, i, inputMatrixDoubles));
-                    //     }
-                    //
-                    //     foreach (var item in firstList)
-                    //     {
-                    //         det = (int)MatrixOperations.Det(item, item.GetLength(0));
-                    //         if (det != 0)
-                    //         {
-                    //             var jaggedSubInputMatrix = MatrixOperations.ConvertToJaggedArray(item);
-                    //             var identitySubMatrix = MatrixOperations.MatrixIdentity(item.GetLength(0));
-                    //             var inverseSubMatrix = MatrixOperations.MatrixInverse(jaggedSubInputMatrix);
-                    //             var inverseSubMatrixDouble = MatrixOperations.ConvertToArray(inverseSubMatrix);
-                    //
-                    //
-                    //
-                    //             negativity = false;
-                    //             negativity = Preprocessing.NegativityTestForColumns(inverseSubMatrixDouble);
-                    //             if (negativity == true)
-                    //             {
-                    //                 break;
-                    //             }
-                    //
-                    //
-                    //
-                    //         }
-                    //
-                    //     }
-                    //
-                    //     positivity = Preprocessing.PositivityTestForColumns(inverseMatrixDouble);
-                    //
-                    //
-                    //
-                    //     // ____________________________________________________________________________
-                    //     // ____________________________________________________________________________
-                    //     //____________________________________________________________________________
-                    //
-                    //
-                    //     Console.WriteLine("The Determinant is = " + determinant);
-                    //
-                    //     if (determinant < 0)
-                    //     {
-                    //         Console.WriteLine(
-                    //             "Based on Cottle-Habetler-Lemke there is no answer. The Determinant is negative. ");
-                    //     }
-                    //     else if (positivity == true && determinant > 0)
-                    //     {
-                    //         Console.WriteLine("The input matrix is copositive");
-                    //     }
-                    //
-                    //
-                    //
-                    // }
-                    // else
-                    // {
-                    //     Console.WriteLine("The Input matrix is not copositive!");
-                    // }
-
                     
                     
                     
-                    sw.WriteLine("Example : " + counter);
-                    for (int i = 0; i < inputMatrix.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < inputMatrix.GetLength(1); j++)
-                        {
-                            sw.Write(inputMatrix[i, j] + "  ");
-                            if (j == inputMatrix.GetLength(0) - 1 && violatingVector != null &&
-                                violatingVector.Sum() > 0)
-                            {
-                                sw.Write("            " + violatingVector[i]);
-                            }
-                        }
                     
-                        sw.Write("\n");
-                    }
-                    
-                    sw.Write("\n");
-                    
-                    if (result < 0)
-                    {
-                        sw.Write("The result is : " + result);
-                    }
-
-                    if (percentageofRows3 > 0)
-                    {
-                        sw.Write("The percentage of deleted rows with Case 3 is " + percentageofRows3);
-                    }
-                    sw.Write("\n");
-                    if (percentageofRows4 > 0)
-                    {
-                        sw.Write("The percentage of deleted rows with Case 4 is " + percentageofRows4);
-                    }
-                    
-                    
-                    
-                    sw.Write("\n");    
-                    sw.WriteLine(
-                        "________________________________________________________________________________________________________");
-                    sw.Write("\n");
-
-                    for (int i = 0; i < eigenValues.Length; i++)
-                    {
-                        sw.Write(eigenValues[i] + " ");
-                    }
-                    sw.Write("\n");
-                    
-                    
-                    
-                    sw.Write("\n");
-                    sw.WriteLine(
-                        "________________________________________________________________________________________________________");
-                    sw.Write("\n");
-                    
-
-
-
-                    
-                    sw.WriteLine("Number of copositive matrices: " + copositive);
-                    sw.WriteLine("Number of not copositive matrices: " + notCopositive);
-                    sw.WriteLine("Number of No Answer cases: " + noAnswer);
-                    sw.WriteLine("Number of answers with case A: " + numberOfCaseA);
-                    sw.WriteLine("Number of answers with case B: " + numberOfCaseB);
-                    sw.WriteLine("Number of answers with case C: " + numberOfCaseC);
-                    sw.WriteLine("Number of answers with case D: " + numberOfCaseD);
-                    sw.WriteLine("Number of answers with case E: " + numberOfCaseE);
-                    sw.WriteLine("Number of answers with Lemma 0.2 C: " + numberOfLemma02);
-                    sw.WriteLine("Number of positive semi definite matrices: " + numberOfPositiveSemiDefinite);
-                    sw.WriteLine("Number of spectral preprocessing violating vectors: " + numberOfSpectralPreProcessing);
-                    sw.WriteLine("Number of lines deleted with case 3 " + deletedRowsCase3);
-                    sw.WriteLine("Number of lines deleted with case 4 " + deletedRowsCase4);
-               
-
-                    sw.Flush();
-                    sw.Close();
-                }
+                //     
+                //     
+                //     sw.WriteLine("Example : " + counter);
+                //     for (int i = 0; i < inputMatrix.GetLength(0); i++)
+                //     {
+                //         for (int j = 0; j < inputMatrix.GetLength(1); j++)
+                //         {
+                //             sw.Write(inputMatrix[i, j] + "  ");
+                //             if (j == inputMatrix.GetLength(0) - 1 && violatingVector != null &&
+                //                 violatingVector.Sum() > 0)
+                //             {
+                //                 sw.Write("            " + violatingVector[i]);
+                //             }
+                //         }
+                //     
+                //         sw.Write("\n");
+                //     }
+                //     
+                //     sw.Write("\n");
+                //     
+                //     if (result < 0)
+                //     {
+                //         sw.Write("The result is : " + result);
+                //     }
+                //     if (matrixDto.GetVector() == null && matrixDto.GetCopositive())
+                //     {
+                //         sw.Write("Matrix is copositive");
+                //     }
+                //     else if (matrixDto.GetVector() != null && !matrixDto.GetCopositive())
+                //     {
+                //         sw.Write("Matrix is not copositive");
+                //     }
+                //     else if (matrixDto.GetCopositive() && matrixDto.GetVector() != null)
+                //     {
+                //         sw.Write("Matrix is not copositive");
+                //     }
+                //     else if (!matrixDto.GetCopositive() && matrixDto.GetVector() == null)
+                //     {
+                //         sw.Write("No answer possible");
+                //     }
+                //     if (eigenValues[0] < -eigenValues[eigenValues.Length-1])
+                //     {
+                //         sw.Write("Matrix is positive semi definite");
+                //     }
+                //
+                //     if (percentageofRows3 > 0)
+                //     {
+                //         sw.Write("The percentage of deleted rows with Case 3 is " + percentageofRows3);
+                //     }
+                //     sw.Write("\n");
+                //     if (percentageofRows4 > 0)
+                //     {
+                //         sw.Write("The percentage of deleted rows with Case 4 is " + percentageofRows4);
+                //     }
+                //     
+                //     
+                //     
+                //     sw.Write("\n");    
+                //     sw.WriteLine(
+                //         "________________________________________________________________________________________________________");
+                //     sw.Write("\n");
+                //
+                //     for (int i = 0; i < eigenValues.Length; i++)
+                //     {
+                //         sw.Write(eigenValues[i] + " ");
+                //     }
+                //     sw.Write("\n");
+                //     
+                //     
+                //     
+                //     sw.Write("\n");
+                //     sw.WriteLine(
+                //         "________________________________________________________________________________________________________");
+                //     sw.Write("\n");
+                //     
+                //
+                //
+                //
+                //     
+                //     sw.WriteLine("Number of copositive matrices: " + copositive);
+                //     sw.WriteLine("Number of not copositive matrices: " + notCopositive);
+                //     sw.WriteLine("Number of No Answer cases: " + noAnswer);
+                //     sw.WriteLine("Number of answers with case A: " + numberOfCaseA);
+                //     sw.WriteLine("Number of answers with case B: " + numberOfCaseB);
+                //     sw.WriteLine("Number of answers with case C: " + numberOfCaseC);
+                //     sw.WriteLine("Number of answers with case D: " + numberOfCaseD);
+                //     sw.WriteLine("Number of answers with case E: " + numberOfCaseE);
+                //     sw.WriteLine("Number of answers with Lemma 0.2 C: " + numberOfLemma02);
+                //     sw.WriteLine("Number of positive semi definite matrices: " + numberOfPositiveSemiDefinite);
+                //     sw.WriteLine("Number of spectral preprocessing violating vectors: " + numberOfSpectralPreProcessing);
+                //     sw.WriteLine("Number of lines deleted with case 3 " + deletedRowsCase3);
+                //     sw.WriteLine("Number of lines deleted with case 4 " + deletedRowsCase4);
+                //
+                //
+                //     sw.Flush();
+                //     sw.Close();
+                // }
+                
+                
 
             }
 
-            Console.WriteLine();
-
-
-
+                Console.WriteLine();
+            
 
         }
     }
