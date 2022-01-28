@@ -1,104 +1,122 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Tracing;
 using System.IO;
 using System.Linq;
-using System.Runtime.ConstrainedExecution;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Channels;
 using ConsoleApp1.dto;
-using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Double;
-using MathNet.Numerics.LinearAlgebra.Factorization;
-using Complex = System.Numerics.Complex;
-
 
 namespace ConsoleApp1
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            Case4Dto matrixDto = new Case4Dto();
-            MatrixforCase4 matrixCase4 = new MatrixforCase4();
-            MatrixForCase3 matrixCase3 = new MatrixForCase3();
-
             //Test Input
-            int[,] matrix = new int[,]
+            int[,] matrix =
             {
-                {2   ,-3,   5},
-                {-3,   1,   -2},
-                {5,   -2,   2}
-
-
-
-
-            };
-
-            double[,] matrix1 = new double[,]
-            {
-                {0   ,-1,   1,1,1},
-                {-1,   1,   1,1,1},
-                {1,   1,   1,1,1},
-                {1,   1,   1,1,1},
-                {1,   1,   1,1,1},
-
-
-            };
-            double[,] matrix2 = new double[,]
-            {
-                {32 , 5 , 9 , 29 , 43},
-                {5 , 0 , 21 , -12 , 40},
-                {9 , 21 , 13 , 45 , 14},
-                {29 , -12 , 45 , 20 , 20},
-                {43 , 40 , 14 , 20 , 50},
-
-
-            };
-            double[,] matrix3 = new double[,]
-            {
-                {7   ,2},
-                {2,   1}
+                {2, -3, 5},
+                {-3, 1, -2},
+                {5, -2, 2}
             };
 
 
-            double[,] m = new double[,]
+            double[,] matrix1 =
             {
-                {1,-1,1,1,-1},
-                {-1,1,-1,1,1},
-                {1,-1,1,-1,1},
-                {1,1,-1,1,-1},
-                {-1,1,1,-1,1}
-
+                {0, -1, 1, 1, 1},
+                {-1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1}
+            };
+            double[,] matrix2 =
+            {
+                {32, 5, 9, 29, 43},
+                {5, 0, 21, -12, 40},
+                {9, 21, 13, 45, 14},
+                {29, -12, 45, 20, 20},
+                {43, 40, 14, 20, 50}
+            };
+            int[,] matrix3 =
+            {
+                {8, -3, -4, -4},
+                {-3, 25, 18, 36},
+                {-4, 18, 35, 49},
+                {-4, 36, 49, 8}
             };
 
-            int[,] example101 = new int[,]
-            {
-                {41,  -6,  -8,  24,  9},
-                {-6,  30,  -14,  40,  38},
-                {-8,  -14,  43,  33,  34},
-                {24,  40,  33,  5,  18},
-                {9,  38,  34,  18,  37}
 
-            };
-            int[,] example213 = new int[,]
+            double[,] m =
             {
-                {20, 31, 40, 20, -2, 8 },
-                {31, 27, 20, 31, 1, 6 },
+                {1, -1, 1, 1, -1},
+                {-1, 1, -1, 1, 1},
+                {1, -1, 1, -1, 1},
+                {1, 1, -1, 1, -1},
+                {-1, 1, 1, -1, 1}
+            };
+
+            int[,] example839 =
+            {
+                {51, 3, 9, 1, 55},
+                {3, 34, 11, 33, 24},
+                {9, 11, 38, 11, 2},
+                {1, 33, 11, 18, -10},
+                {55, 24, 2, -10, 9}
+            };
+
+            int[,] example81905 =
+            {
+                {14, 8, -3, 24},
+                {8, 40, 33, -14},
+                {-3, 33, 53, 54},
+                {24, -14, 54, 36}
+            };
+            int[,] example980 =
+            {
+                {22, -18, -6, 40, 8},
+                {-18, 22, 25, 2, -7},
+                {-6, 25, 18, 25, 7},
+                {40, 2, 25, 44, 4},
+                {8, -7, 7, 4, 21}
+            };
+
+            int[,] example81905a =
+            {
+                {14, 8, -3, 24, 14},
+                {8, 40, 33, -14, 8},
+                {-3, 33, 53, 54, 3},
+                {24, -14, 54, 36, 24},
+                {14, 8, 3, 24, 10}
+            };
+            int[,] example101 =
+            {
+                {41, -6, -8, 24, 9},
+                {-6, 30, -14, 40, 38},
+                {-8, -14, 43, 33, 34},
+                {24, 40, 33, 5, 18},
+                {9, 38, 34, 18, 37}
+            };
+            int[,] example294 =
+            {
+                {24, 16, 0, 1, 22, -1, -12},
+                {16, 40, 0, 12, 37, 19, 12},
+                {0, 0, 0, 0, 29, 12, 1},
+                {1, 12, 0, 20, 3, 37, 28},
+                {22, 37, 29, 3, 6, 24, 32},
+                {-1, 19, 12, 37, 24, 16, 28},
+                {-12, 12, 1, 28, 32, 28, 48}
+            };
+            int[,] example213 =
+            {
+                {20, 31, 40, 20, -2, 8},
+                {31, 27, 20, 31, 1, 6},
                 {40, 20, 14, 39, -11, 36},
                 {20, 31, 39, 26, 52, 2},
                 {-2, 1, -11, 52, 47, 17},
                 {8, 6, 36, 2, 17, 10}
-
             };
-            int[,] example229 = new int[,]
+            int[,] example229 =
             {
                 {25, 2, 6, 46, -1, 53, 57, 6, 30},
-                { 2, 33, 5, 8, 18, 33, 3, 1, 8},
+                {2, 33, 5, 8, 18, 33, 3, 1, 8},
                 {6, 5, 24, 26, 19, 42, 37, 35, 0},
                 {46, 8, 26, 54, 10, 9, 49, 29, -7},
                 {-1, 18, 19, 10, 28, 30, -4, 15, -1},
@@ -106,13 +124,10 @@ namespace ConsoleApp1
                 {57, 3, 37, 49, -4, 6, 4, 6, 21},
                 {6, 1, 35, 29, 15, 26, 6, 10, 3},
                 {30, 8, 0, -7, -1, -4, 21, 3, 36}
-
             };
 
 
-
-
-            int[,] example336 = new int[,]
+            int[,] example336 =
             {
                 {27, 10, -11, 42, 12, -13},
                 {10, 2, 8, 46, 22, 19},
@@ -120,10 +135,20 @@ namespace ConsoleApp1
                 {42, 46, 32, 12, 51, 15},
                 {12, 22, 13, 51, 13, 4},
                 {-13, 19, -11, 15, 4, 34}
-
             };
 
-            int[,] example329 = new int[,]
+            int[,] example399 =
+            {
+                {12, 19, -4, 50, 23, 41, 6},
+                {19, 17, 35, 51, -6, -15, 27},
+                {-4, 35, 30, 33, -3, 39, 18},
+                {50, 51, 33, 16, -3, 52, 15},
+                {23, -6, -3, -3, 37, -6, 33},
+                {41, -15, 39, 52, -6, 36, 17},
+                {6, 27, 18, 15, 33, 17, 44}
+            };
+
+            int[,] example329 =
             {
                 {6, 39, 25, 47, 41, 21, 42, 43, 17, 3, 17, 30},
                 {39, 45, -1, 34, 30, -9, 29, 8, 1, -12, 17, -4},
@@ -138,86 +163,100 @@ namespace ConsoleApp1
                 {17, 17, 19, 30, 45, -2, 40, 8, -10, 17, 14, -6},
                 {30, -4, 48, 30, -2, -11, 20, 13, 6, 7, -6, 29}
             };
-            int[,] example5429 = new int[,]
+            int[,] example5429 =
             {
-                {29, 17, 33, 4, -15, 36, 14, -18, 5, 16, 19, 12, 16, 2, 28, 3 },
+                {29, 17, 33, 4, -15, 36, 14, -18, 5, 16, 19, 12, 16, 2, 28, 3},
                 {17, 12, 17, 15, 48, 13, 45, 45, 29, -2, 26, -3, 45, 41, 51, 0},
-                {33, 17, 24, 17, 51, 14, 17, 18, 4, 0, 39, -5, 1, 35, -12, 11 },
+                {33, 17, 24, 17, 51, 14, 17, 18, 4, 0, 39, -5, 1, 35, -12, 11},
                 {4, 15, 17, 45, -1, 25, 7, 22, 37, 40, -6, -10, 40, 53, 27, -12},
                 {-15, 48, 51, -1, 8, 13, 2, 52, 51, 25, 52, 20, -6, 30, 36, 20},
                 {36, 13, 14, 25, 13, 31, 56, 20, 44, 1, 10, 47, 21, 39, 39, 38},
                 {14, 45, 17, 7, 2, 56, 23, 15, 19, -5, 13, -5, 37, -13, 29, 9},
-                {-18, 45, 18, 22, 52, 20, 15, 46, -6, 4, 15, 40, -6, 19, 17, 32  },
-                {5, 29, 4, 37, 51, 44, 19, -6, 36, 15, -8, 18, 16, 33, 24, 42  },
-                {16, -2, 0, 40, 25, 1, -5, 4, 15, 33, -15, 22, -2, 30, 54, 31 },
-                {19, 26, 39, -6, 52, 10, 13, 15, -8, -15, 46, 40, 26, 12, 49, 32 },
-                {12, -3, -5, -10, 20, 47, -5, 40, 18, 22, 40, 19, 19, 9, 12, 8 },
-                {16, 45, 1, 40, -6, 21, 37, -6, 16, -2, 26, 19, 0, -11, 19, -6    },
-                {2, 41, 35, 53, 30, 39, -13, 19, 33, 30, 12, 9, -11, 38, -8, 6      },
-                {28, 51, -12, 27, 36, 39, 29, 17, 24, 54, 49, 12, 19, -8, 30, 0   },
+                {-18, 45, 18, 22, 52, 20, 15, 46, -6, 4, 15, 40, -6, 19, 17, 32},
+                {5, 29, 4, 37, 51, 44, 19, -6, 36, 15, -8, 18, 16, 33, 24, 42},
+                {16, -2, 0, 40, 25, 1, -5, 4, 15, 33, -15, 22, -2, 30, 54, 31},
+                {19, 26, 39, -6, 52, 10, 13, 15, -8, -15, 46, 40, 26, 12, 49, 32},
+                {12, -3, -5, -10, 20, 47, -5, 40, 18, 22, 40, 19, 19, 9, 12, 8},
+                {16, 45, 1, 40, -6, 21, 37, -6, 16, -2, 26, 19, 0, -11, 19, -6},
+                {2, 41, 35, 53, 30, 39, -13, 19, 33, 30, 12, 9, -11, 38, -8, 6},
+                {28, 51, -12, 27, 36, 39, 29, 17, 24, 54, 49, 12, 19, -8, 30, 0},
                 {3, 0, 11, -12, 20, 38, 9, 32, 42, 31, 32, 8, -6, 6, 0, 38}
+            };
+            int[,] example996 =
+            {
+                {30, 36, 48, 11, 4, 10, 32, 11, 0, 17, 13, 39, 11},
+                {36, 19, -1, 14, 13, 4, 15, 22, 44, 26, 52, 9, 29},
+                {48, -1, 4, 7, 10, -7, 5, 1, 46, 34, 0, 0, 36},
+                {11, 14, 7, 37, 36, 51, 29, 42, 45, 58, 44, 23, 28},
+                {4, 13, 10, 36, 43, 42, -3, 3, -4, 23, 28, 49, 18},
+                {10, 4, -7, 51, 42, 26, 43, 31, 34, -6, 7, -17, 20},
+                {32, 15, 5, 29, -3, 43, 19, 39, 50, 15, -9, 32, 24},
+                {11, 22, 1, 42, 3, 31, 39, 35, 4, 5, 42, -4, 37},
+                {0, 44, 46, 45, -4, 34, 50, 4, 17, 35, 12, 45, -7},
+                {17, 26, 34, 58, 23, -6, 15, 5, 35, 54, 36, 33, -5},
+                {13, 52, 0, 44, 28, 7, -9, 42, 12, 36, 21, 40, 6},
+                {39, 9, 0, 23, 49, -17, 32, -4, 45, 33, 40, 34, 7},
+                {11, 29, 36, 28, 18, 20, 24, 37, -7, -5, 6, 7, 19}
             };
 
 
-            double[][] testMatrix = new double[][] { new double[] { 2, -3, 5 }, new double[] { -3, 1, -2 }, new double[] { 5, -2, 2 } };
+            double[][] testMatrix = {new double[] {2, -3, 5}, new double[] {-3, 1, -2}, new double[] {5, -2, 2}};
             //Test input END 
             //_____________________________________________________________________________________________________________________________
             //_____________________________________________________________________________________________________________________________
 
             double determinant = 0;
-            bool positivity = false;
-            bool negativity = false;
-            bool allElementsNegative = false;
-            bool negativityForInputMatrix = false;
-            int counter = 0;
-
+            var positivity = false;
+            var negativity = false;
+            var allElementsNegative = false;
+            var negativityForInputMatrix = false;
+            var counter = 0;
 
 
             //using (var sw = new StreamWriter("C:/Users/dejan/Desktop/Master/Results/resultsnotcopositive.txt"))
             //{
 
-            var swnotcop = new StreamWriter("C:/Users/dejan/Desktop/Master/Results/resultsnotcopositive.txt");
-            var swcop = new StreamWriter("C:/Users/dejan/Desktop/Master/Results/resultcopositive.txt");
-            var swnoansw = new StreamWriter("C:/Users/dejan/Desktop/Master/Results/nowanswer.txt");
+            var swnotcop = new StreamWriter("C:/Users/z004f7tr/Desktop/Results/notCopositiveResults4.txt");
+            var swcop = new StreamWriter("C:/Users/z004f7tr/Desktop/Results/copositiveResults4.txt");
+            var swnoansw = new StreamWriter("C:/Users/z004f7tr/Desktop/Results/NoAnswerResults4.txt");
 
 
-            int copositive = 0;
-            int notCopositive = 0;
-            int noAnswer = 0;
-            int notCopositiveWithoutViolatingVector = 0;
+            var copositive = 0;
+            var notCopositive = 0;
+            var noAnswer = 0;
+            var notCopositiveWithoutViolatingVector = 0;
 
-            int numberOfCaseA = 0;
-            int numberOfCaseB = 0;
-            int numberOfCaseC = 0;
-            int numberOfCaseD = 0;
-            int numberOfCaseE = 0;
-            int numberOfLemma02 = 0;
-            int numberOfCase2 = 0;
-            int numberOfPositiveSemiDefinite = 0;
-            int numberOfSpectralPreProcessing = 0;
-            int deletedRowsCase3 = 0;
-            int deletedRowsCase4 = 0;
-            decimal percentageofRows3 = 0;
-            decimal percentageofRows4 = 0;
+            var numberOfCaseA = 0;
+            var numberOfCaseB = 0;
+            var numberOfCaseC = 0;
+            var numberOfCaseD = 0;
+            var numberOfCaseE = 0;
+            var numberOfLemma02 = 0;
+            var numberOfCase2 = 0;
+            var numberOfPositiveSemiDefinite = 0;
+            var numberOfSpectralPreProcessing = 0;
+            var deletedRowsCase3 = 0;
+            var deletedRowsCase4 = 0;
 
 
-            while (counter < 100000)
+            while (counter < 1000)
             {
+                var matrixDto = new Case4Dto();
+                var matrixCase4 = new MatrixforCase4();
+                var matrixCase3 = new MatrixForCase3();
+                var eigenVectorAndValue = new EigenVectorAndValue();
+                decimal percentageofRows3 = 0;
+                decimal percentageofRows4 = 0;
 
                 counter++;
 
-                int[,] inputMatrix = Algebra.CreateSymmetricMatrix(Algebra.MatrixRandomElements());
-                double[,] inputMatrixDoubles = Algebra.CreateSymmetricMatrixOfDoubles(inputMatrix);
-                // int[,] inputMatrix = example5429;
-                // double[,] inputMatrixDoubles = Algebra.CreateSymmetricMatrixOfDoubles(inputMatrix);
+                var inputMatrix = Algebra.CreateSymmetricMatrix(Algebra.MatrixRandomElements());
+                var inputMatrixDoubles = Algebra.CreateSymmetricMatrixOfDoubles(inputMatrix);
+                // var inputMatrix = example980;
+                // var inputMatrixDoubles = Algebra.CreateSymmetricMatrixOfDoubles(inputMatrix);
 
-                double[] resultTest = Algebra.RandomVektorForRandomMatrix(inputMatrix);
-                double[] caseA = Preprocessing.CheckForNegativeDiagonalElement(inputMatrix);
-
-
-
-
-
+                var resultTest = Algebra.RandomVektorForRandomMatrix(inputMatrix);
+                var caseA = Preprocessing.CheckForNegativeDiagonalElement(inputMatrix);
 
 
                 //Case A
@@ -225,27 +264,22 @@ namespace ConsoleApp1
                 Preprocessing.CheckForNull(caseA);
                 PrintingToConsole.PrintMatrixToConsole(inputMatrix);
                 Console.WriteLine("Results Case A");
-                double resultCaseA = Algebra.SkalarProdukt(caseA,
+                var resultCaseA = Algebra.SkalarProdukt(caseA,
                     Algebra.VektorMatrixMultiplikation(inputMatrix, caseA, resultTest));
                 Console.WriteLine(resultCaseA);
 
 
-                double[] case2Test = new double[inputMatrixDoubles.GetLength(1)];
+                var case2Test = new double[inputMatrixDoubles.GetLength(1)];
                 var case2 = Preprocessing.Case2(case2Test, inputMatrixDoubles);
                 if (case2 != null)
                 {
-                    double[] resultvectortest = new double[case2.Length];
+                    var resultvectortest = new double[case2.Length];
                 }
 
-                double resultCase2 = Algebra.SkalarProdukt(case2,
+                var resultCase2 = Algebra.SkalarProdukt(case2,
                     Algebra.VektorMatrixMultiplikation(inputMatrix, case2, resultTest));
                 double[] violatingCase2 = null;
-                if (resultCase2 < 0)
-                {
-                    violatingCase2 = case2;
-                }
-
-
+                if (resultCase2 < 0) violatingCase2 = case2;
 
 
                 //Case B
@@ -258,9 +292,9 @@ namespace ConsoleApp1
                 Console.WriteLine("____________________Case 3____________________");
 
                 var caseC = Preprocessing.PositivityTestCaseC(inputMatrix, resultCaseA, matrixCase4, matrixCase3,
-                    matrixDto);
-
-
+                    matrixDto, eigenVectorAndValue);
+                if (matrixCase3.GetMatrix() != null)
+                    Preprocessing.DiagonalNegativeDominance(matrixCase3.GetMatrix(), matrixDto);
 
 
                 //END CASE C___________________________________________________
@@ -269,24 +303,20 @@ namespace ConsoleApp1
                 var caseE = Preprocessing.CaseE(inputMatrix);
 
 
-
                 Console.WriteLine("____________________Case 4____________________");
 
 
-                var caseD = Preprocessing.NegativityTestCaseD(inputMatrix, matrixCase4, matrixCase3, matrixDto);
-                if (caseD != null)
-                {
-                    Console.WriteLine();
-                }
+                var caseD = Preprocessing.NegativityTestCaseD(inputMatrix, matrixCase4, matrixCase3, matrixDto,
+                    eigenVectorAndValue);
+                if (caseD != null) Console.WriteLine();
+
+                if (matrixCase4.GetMatrix() != null)
+                    Preprocessing.DiagonalNegativeDominance(matrixCase4.GetMatrix(), matrixDto);
 
 
                 Console.WriteLine("________________________________________________________");
                 Console.WriteLine("____________________Lemma 0.2 Case B____________________");
                 Console.WriteLine("________________________________________________________");
-
-
-
-
 
 
                 var caseB2 = Preprocessing2.CaseB(0, inputMatrixDoubles);
@@ -308,10 +338,14 @@ namespace ConsoleApp1
                 // Console.WriteLine("____________________Case Lemma0.2 Cinv____________________");
                 // var caseL2C2 = Preprocessing2.Lemma2CaseC(inverseMatrixDouble);
                 Console.WriteLine("____________________Spectral Preprocessing________________");
-                EigenVectorAndValue eigenVectorAndValue = new EigenVectorAndValue();
+
                 //WE ARE HERE
-                var spectral = Algebra.EigenVectorViolating(inputMatrixDoubles, numberOfPositiveSemiDefinite, eigenVectorAndValue).GetViolatingVector();
-                var eigenValues = Algebra.EigenVectorViolating(inputMatrixDoubles, numberOfPositiveSemiDefinite, eigenVectorAndValue).GetEigenValues();
+                var spectral = Algebra
+                    .EigenVectorViolating(inputMatrix, numberOfPositiveSemiDefinite, eigenVectorAndValue)
+                    .GetViolatingVector();
+                var eigenValues = Algebra
+                    .EigenVectorViolating(inputMatrix, numberOfPositiveSemiDefinite, eigenVectorAndValue)
+                    .GetEigenValues();
 
 
                 Console.WriteLine("________________________________________________________");
@@ -340,18 +374,15 @@ namespace ConsoleApp1
                 Console.WriteLine("________________________________________________________");
 
 
-                List<double[]> violatingVectorsList = new List<double[]>()
-                    {
-                        caseA, caseB, caseC, caseD, caseE,
-                        caseE2, caseB2, caseC2, caseD2, caseL2C, caseB2Processed,
-                        caseC2Processed,
-                        caseE2Processed, caseL2CProcessed, spectral, violatingCase2
-                    };
-                int counterVar = 0;
-                foreach (var vector in violatingVectorsList)
+                var violatingVectorsList = new List<double[]>
                 {
-
-
+                    caseA, caseB, caseC, caseD, caseE,
+                    caseE2, caseB2, caseC2, caseD2, caseL2C, caseB2Processed,
+                    caseC2Processed,
+                    caseE2Processed, caseL2CProcessed, spectral, violatingCase2
+                };
+                var counterVar = 0;
+                foreach (var vector in violatingVectorsList)
                     if (vector != null)
                     {
                         counterVar++;
@@ -359,18 +390,12 @@ namespace ConsoleApp1
                         break;
                     }
 
-
-                }
-
-                if (counterVar == 0)
-                {
-                    matrixDto.SetVector(null);
-                }
+                if (counterVar == 0) matrixDto.SetVector(null);
 
                 var finalMatrixCase4 = matrixCase4.GetMatrix();
                 var finalMatrixCase3 = matrixCase3.GetMatrix();
-                int rows3 = 0;
-                int rows4 = 0;
+                var rows3 = 0;
+                var rows4 = 0;
                 decimal store1 = 0;
                 decimal store2 = 0;
                 if (finalMatrixCase3 != null)
@@ -388,117 +413,60 @@ namespace ConsoleApp1
                 if (deletedRowsCase3 > 0)
                 {
                     store1 =
-                        Math.Round((decimal)rows3 / (decimal)inputMatrix.GetLength(0) * 100, 2);
-                    if (store1 > 0 && store1 < 100)
-                    {
-                        percentageofRows3 = store1;
-                    }
+                        Math.Round(100 - rows3 / (decimal) inputMatrix.GetLength(0) * 100, 2);
+                    if (store1 > 0 && store1 < 100) percentageofRows3 = store1;
                 }
 
                 if (deletedRowsCase4 > 0)
                 {
                     store2 =
-                        Math.Round((decimal)rows4 / (decimal)inputMatrix.GetLength(0) * 100, 2);
-                    if (store2 > 0 && store2 < 100)
-                    {
-                        percentageofRows4 = store2;
-                    }
+                        Math.Round(100 - rows4 / (decimal) inputMatrix.GetLength(0) * 100, 2);
+                    if (store2 > 0 && store2 < 100) percentageofRows4 = store2;
                 }
-
-
-
-
-
-
-
 
 
                 double[] violatingVector = null;
                 double result = 0;
-                List<double[]> violatingVectorsNew = new List<double[]>();
+                var violatingVectorsNew = new List<double[]>();
                 foreach (var item in violatingVectorsList)
-                {
                     if (item != null)
-                    {
                         violatingVectorsNew.Add(item);
-                    }
-                }
 
                 foreach (var vector in violatingVectorsList)
-                {
-                    if (vector != null && vector.Sum() > 0)
+                    if (vector != null && vector.Sum() > 0 && vector.Length == inputMatrix.GetLength(0))
                     {
                         violatingVector = vector;
                         result = Algebra.SkalarProdukt(vector,
                             Algebra.VektorMatrixMultiplikation(inputMatrix, vector, resultTest));
                         if (result < 0)
                         {
-                            if (caseA == violatingVector)
-                            {
-                                numberOfCaseA++;
-                            }
+                            if (caseA == violatingVector) numberOfCaseA++;
 
-                            if (caseB == violatingVector)
-                            {
-                                numberOfCaseB++;
-                            }
+                            if (caseB == violatingVector) numberOfCaseB++;
 
-                            if (caseC == violatingVector)
-                            {
-                                numberOfCaseC++;
-                            }
+                            if (caseC == violatingVector) numberOfCaseC++;
 
-                            if (caseD == violatingVector)
-                            {
-                                numberOfCaseD++;
-                            }
+                            if (caseD == violatingVector) numberOfCaseD++;
 
-                            if (caseE == violatingVector)
-                            {
-                                numberOfCaseE++;
-                            }
+                            if (caseE == violatingVector) numberOfCaseE++;
 
-                            if (caseL2C == violatingVector)
-                            {
-                                numberOfLemma02++;
-                            }
+                            if (caseL2C == violatingVector) numberOfLemma02++;
 
-                            if (spectral == violatingVector)
-                            {
-                                numberOfSpectralPreProcessing++;
-                            }
+                            if (spectral == violatingVector) numberOfSpectralPreProcessing++;
 
-                            if (violatingCase2 == violatingVector)
-                            {
-                                numberOfCase2++;
-                            }
-
+                            if (violatingCase2 == violatingVector) numberOfCase2++;
 
 
                             break;
                         }
-
-
-
                     }
 
-                }
 
-
-
-
-                int length = 0;
-                for (int i = 0; i < inputMatrix.GetLength(0); i++)
-                {
-                    for (int j = 0; j < inputMatrix.GetLength(1); j++)
-                    {
-                        if (inputMatrix[i, j] >= 0)
-                        {
-                            length++;
-
-                        }
-                    }
-                }
+                var length = 0;
+                for (var i = 0; i < inputMatrix.GetLength(0); i++)
+                for (var j = 0; j < inputMatrix.GetLength(1); j++)
+                    if (inputMatrix[i, j] >= 0)
+                        length++;
 
                 if (length == inputMatrix.Length)
                 {
@@ -507,56 +475,36 @@ namespace ConsoleApp1
                 }
 
 
-
                 if (matrixDto.GetVector() == null && matrixDto.GetCopositive())
-                {
                     copositive++;
-                }
                 else if (matrixDto.GetVector() != null && !matrixDto.GetCopositive())
-                {
                     notCopositive++;
-                }
                 else if (!matrixDto.GetCopositive() && matrixDto.GetVector() == null)
-                {
                     noAnswer++;
-                }
-                else if (matrixDto.GetCopositive() && matrixDto.GetVector() != null)
-                {
-                    notCopositive++;
-                }
+                else if (matrixDto.GetCopositive() && matrixDto.GetVector() != null) notCopositive++;
 
 
-                if (eigenValues[0] < -eigenValues[eigenValues.Length - 1])
-                {
-                    numberOfPositiveSemiDefinite++;
-                }
-
-
-
-
-
+                if (eigenValues[0] < -eigenValues[eigenValues.Length - 1]) numberOfPositiveSemiDefinite++;
 
 
                 //WRITE ALL NOT COPOSITIVE MATRICES
 
-                if (matrixDto.GetVector() != null && !matrixDto.GetCopositive() || matrixDto.GetCopositive() && matrixDto.GetVector() != null)
+                if (matrixDto.GetVector() != null && !matrixDto.GetCopositive() ||
+                    matrixDto.GetCopositive() && matrixDto.GetVector() != null || matrixDto.GetVector() != null &&
+                    violatingVector.Length == inputMatrix.GetLength(0))
                 {
-
-
-
-
+                    swnotcop.Write("\n");
+                    swnotcop.Write("\n");
 
                     swnotcop.WriteLine("Example : " + counter);
-                    for (int i = 0; i < inputMatrix.GetLength(0); i++)
+                    for (var i = 0; i < inputMatrix.GetLength(0); i++)
                     {
-                        for (int j = 0; j < inputMatrix.GetLength(1); j++)
+                        for (var j = 0; j < inputMatrix.GetLength(1); j++)
                         {
                             swnotcop.Write(inputMatrix[i, j] + "  ");
                             if (j == inputMatrix.GetLength(0) - 1 && violatingVector != null &&
                                 violatingVector.Sum() > 0)
-                            {
                                 swnotcop.Write("            " + violatingVector[i]);
-                            }
                         }
 
                         swnotcop.Write("\n");
@@ -564,46 +512,28 @@ namespace ConsoleApp1
 
                     swnotcop.Write("\n");
 
-                    if (result < 0)
-                    {
-                        swnotcop.Write("The result is : " + result);
-                    }
+                    if (result < 0) swnotcop.Write("The result is : " + result);
                     swnotcop.Write("\n");
 
                     if (matrixDto.GetVector() == null && matrixDto.GetCopositive())
-                    {
                         swnotcop.Write("Matrix is copositive");
-                    }
                     else if (matrixDto.GetVector() != null && !matrixDto.GetCopositive())
-                    {
                         swnotcop.Write("Matrix is not copositive");
-                    }
                     else if (matrixDto.GetCopositive() && matrixDto.GetVector() != null)
-                    {
                         swnotcop.Write("Matrix is not copositive");
-                    }
                     else if (!matrixDto.GetCopositive() && matrixDto.GetVector() == null)
-                    {
                         swnotcop.Write("No answer possible");
-                    }
 
                     if (eigenValues[0] < -eigenValues[eigenValues.Length - 1])
-                    {
                         swnotcop.Write("Matrix is positive semi definite");
-                    }
                     swnotcop.Write("\n");
 
                     if (percentageofRows3 > 0)
-                    {
                         swnotcop.Write("The percentage of deleted rows with Case 3 is " + percentageofRows3);
-                    }
 
                     swnotcop.Write("\n");
                     if (percentageofRows4 > 0)
-                    {
                         swnotcop.Write("The percentage of deleted rows with Case 4 is " + percentageofRows4);
-                    }
-
 
 
                     swnotcop.Write("\n");
@@ -613,46 +543,36 @@ namespace ConsoleApp1
                     swnotcop.Write("Sorted Eigenvalues");
                     swnotcop.Write("\n");
 
-                    for (int i = 0; i < eigenValues.Length; i++)
-                    {
-                        swnotcop.Write(eigenValues[i] + " ");
-                    }
+                    for (var i = 0; i < eigenValues.Length; i++) swnotcop.Write(eigenValues[i] + " ");
 
                     swnotcop.Write("\n");
-
 
 
                     swnotcop.Write("\n");
                     swnotcop.WriteLine(
                         "________________________________________________________________________________________________________");
                     swnotcop.Write("\n");
-
-
                 }
-
-
 
 
                 //WRITE ALL COPOSITIVE MATRICES
 
-                if (matrixDto.GetVector() == null && matrixDto.GetCopositive() || eigenValues[0] < -eigenValues[eigenValues.Length - 1])
+                if (matrixDto.GetVector() == null && matrixDto.GetCopositive() ||
+                    eigenValues[0] < -eigenValues[eigenValues.Length - 1] ||
+                    matrixDto.GetVector() == null && matrixDto.GetPositiveDefinite())
                 {
-
-
-
-
+                    swnotcop.Write("\n");
+                    swnotcop.Write("\n");
 
                     swcop.WriteLine("Example : " + counter);
-                    for (int i = 0; i < inputMatrix.GetLength(0); i++)
+                    for (var i = 0; i < inputMatrix.GetLength(0); i++)
                     {
-                        for (int j = 0; j < inputMatrix.GetLength(1); j++)
+                        for (var j = 0; j < inputMatrix.GetLength(1); j++)
                         {
                             swcop.Write(inputMatrix[i, j] + "  ");
                             if (j == inputMatrix.GetLength(0) - 1 && violatingVector != null &&
                                 violatingVector.Sum() > 0)
-                            {
                                 swcop.Write("            " + violatingVector[i]);
-                            }
                         }
 
                         swcop.Write("\n");
@@ -660,46 +580,28 @@ namespace ConsoleApp1
 
                     swcop.Write("\n");
 
-                    if (result < 0)
-                    {
-                        swcop.Write("The result is : " + result);
-                    }
+                    if (result < 0) swcop.Write("The result is : " + result);
                     swcop.Write("\n");
 
                     if (matrixDto.GetVector() == null && matrixDto.GetCopositive())
-                    {
                         swcop.Write("Matrix is copositive");
-                    }
                     else if (matrixDto.GetVector() != null && !matrixDto.GetCopositive())
-                    {
                         swcop.Write("Matrix is not copositive");
-                    }
                     else if (matrixDto.GetCopositive() && matrixDto.GetVector() != null)
-                    {
                         swcop.Write("Matrix is not copositive");
-                    }
                     else if (!matrixDto.GetCopositive() && matrixDto.GetVector() == null)
-                    {
                         swcop.Write("No answer possible");
-                    }
 
                     if (eigenValues[0] < -eigenValues[eigenValues.Length - 1])
-                    {
                         swcop.Write("Matrix is positive semi definite");
-                    }
                     swcop.Write("\n");
 
                     if (percentageofRows3 > 0)
-                    {
                         swnotcop.Write("The percentage of deleted rows with Case 3 is " + percentageofRows3);
-                    }
 
                     swcop.Write("\n");
                     if (percentageofRows4 > 0)
-                    {
                         swcop.Write("The percentage of deleted rows with Case 4 is " + percentageofRows4);
-                    }
-
 
 
                     swcop.Write("\n");
@@ -709,21 +611,22 @@ namespace ConsoleApp1
                     swcop.Write("Sorted Eigenvalues");
                     swcop.Write("\n");
 
-                    for (int i = 0; i < eigenValues.Length; i++)
-                    {
-                        swcop.Write(eigenValues[i] + " ");
-                    }
+                    for (var i = 0; i < eigenValues.Length; i++) swcop.Write(eigenValues[i] + " ");
 
                     swcop.Write("\n");
 
+                    if (matrixDto.GetDiagonalDominance())
+                        swcop.Write("This matrix is copositive by diagonal dominance");
+
+                    if (matrixDto.GetDiagonalNegativeDominance())
+                        swcop.Write(
+                            "This matrix is copositive by diagonal dominance by setting all positive off-diagonal entries to 0");
 
 
                     swcop.Write("\n");
                     swcop.WriteLine(
                         "________________________________________________________________________________________________________");
                     swcop.Write("\n");
-
-
                 }
 
 
@@ -731,18 +634,18 @@ namespace ConsoleApp1
 
                 if (!matrixDto.GetCopositive() && matrixDto.GetVector() == null)
                 {
+                    swnotcop.Write("\n");
+                    swnotcop.Write("\n");
 
                     swnoansw.WriteLine("Example : " + counter);
-                    for (int i = 0; i < inputMatrix.GetLength(0); i++)
+                    for (var i = 0; i < inputMatrix.GetLength(0); i++)
                     {
-                        for (int j = 0; j < inputMatrix.GetLength(1); j++)
+                        for (var j = 0; j < inputMatrix.GetLength(1); j++)
                         {
                             swnoansw.Write(inputMatrix[i, j] + "  ");
                             if (j == inputMatrix.GetLength(0) - 1 && violatingVector != null &&
                                 violatingVector.Sum() > 0)
-                            {
                                 swnoansw.Write("            " + violatingVector[i]);
-                            }
                         }
 
                         swnoansw.Write("\n");
@@ -750,46 +653,28 @@ namespace ConsoleApp1
 
                     swnoansw.Write("\n");
 
-                    if (result < 0)
-                    {
-                        swnoansw.Write("The result is : " + result);
-                    }
+                    if (result < 0) swnoansw.Write("The result is : " + result);
                     swnoansw.Write("\n");
 
                     if (matrixDto.GetVector() == null && matrixDto.GetCopositive())
-                    {
                         swnoansw.Write("Matrix is copositive");
-                    }
                     else if (matrixDto.GetVector() != null && !matrixDto.GetCopositive())
-                    {
                         swnoansw.Write("Matrix is not copositive");
-                    }
                     else if (matrixDto.GetCopositive() && matrixDto.GetVector() != null)
-                    {
                         swnoansw.Write("Matrix is not copositive");
-                    }
                     else if (!matrixDto.GetCopositive() && matrixDto.GetVector() == null)
-                    {
                         swnoansw.Write("No answer possible");
-                    }
 
                     if (eigenValues[0] < -eigenValues[eigenValues.Length - 1])
-                    {
                         swnoansw.Write("Matrix is positive semi definite");
-                    }
                     swnoansw.Write("\n");
 
                     if (percentageofRows3 > 0)
-                    {
                         swnoansw.Write("The percentage of deleted rows with Case 3 is " + percentageofRows3);
-                    }
 
                     swnoansw.Write("\n");
                     if (percentageofRows4 > 0)
-                    {
                         swnoansw.Write("The percentage of deleted rows with Case 4 is " + percentageofRows4);
-                    }
-
 
 
                     swnoansw.Write("\n");
@@ -799,28 +684,20 @@ namespace ConsoleApp1
                     swnoansw.Write("Sorted Eigenvalues");
                     swnoansw.Write("\n");
 
-                    for (int i = 0; i < eigenValues.Length; i++)
-                    {
-                        swnoansw.Write(eigenValues[i] + " ");
-                    }
+                    for (var i = 0; i < eigenValues.Length; i++) swnoansw.Write(eigenValues[i] + " ");
 
                     swnoansw.Write("\n");
-
 
 
                     swnoansw.Write("\n");
                     swnoansw.WriteLine(
                         "________________________________________________________________________________________________________");
                     swnoansw.Write("\n");
-
-
                 }
-
-
-
             }
 
-
+            swnoansw.Write("\n");
+            swnoansw.Write("\n");
 
             swnotcop.WriteLine("Number of copositive matrices: " + copositive);
             swnotcop.WriteLine("Number of not copositive matrices: " + notCopositive);
@@ -830,12 +707,12 @@ namespace ConsoleApp1
             swnotcop.WriteLine("Number of answers with case C: " + numberOfCaseC);
             swnotcop.WriteLine("Number of answers with case D: " + numberOfCaseD);
             swnotcop.WriteLine("Number of answers with case E: " + numberOfCaseE);
+            swnotcop.WriteLine("Number of answers with case 2 " + numberOfCase2);
             swnotcop.WriteLine("Number of answers with Lemma 0.2 C: " + numberOfLemma02);
             swnotcop.WriteLine("Number of positive semi definite matrices: " + numberOfPositiveSemiDefinite);
             swnotcop.WriteLine("Number of spectral preprocessing violating vectors: " + numberOfSpectralPreProcessing);
             swnotcop.WriteLine("Number of lines deleted with case 3 " + deletedRowsCase3);
             swnotcop.WriteLine("Number of lines deleted with case 4 " + deletedRowsCase4);
-
 
 
             swnotcop.Flush();
@@ -847,11 +724,7 @@ namespace ConsoleApp1
             swcop.Flush();
             swcop.Close();
 
-            //}
-
             Console.WriteLine();
-
-
         }
     }
 }

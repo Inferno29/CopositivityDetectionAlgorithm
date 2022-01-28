@@ -1,69 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using ConsoleApp1.dto;
 using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Factorization;
-using Complex = System.Numerics.Complex;
 
 namespace ConsoleApp1
 {
-    class Algebra
+    internal class Algebra
     {
-
-
-
         public static int[,] CreateSymmetricMatrix(int[,] matrix)
         {
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            for (var i = 0; i < matrix.GetLength(0); i++)
+            for (var j = 0; j < matrix.GetLength(1); j++)
             {
-                for (int j = 0; j < matrix.GetLength(1); j++)
-                {
-                    if (i == j || i < j)
-                    {
-                        matrix[i, j] = matrix[i,j]; 
-                    }
+                if (i == j || i < j) matrix[i, j] = matrix[i, j];
 
-                    if (i > j)
-                    {
-                        matrix[i,j] = matrix[j, i];
-                        
-                    }
-
-                }
+                if (i > j) matrix[i, j] = matrix[j, i];
             }
 
 
-
-
-            return matrix; 
+            return matrix;
         }
 
         public static double[,] CreateSymmetricMatrixOfDoubles(int[,] matrix)
         {
-            double[,] inputMatrixDoubles = new double[matrix.GetLength(0), matrix.GetLength(1)];  
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            var inputMatrixDoubles = new double[matrix.GetLength(0), matrix.GetLength(1)];
+            for (var i = 0; i < matrix.GetLength(0); i++)
+            for (var j = 0; j < matrix.GetLength(1); j++)
             {
-                for (int j = 0; j < matrix.GetLength(1); j++)
-                {
-                    if (i == j || i < j)
-                    {
-                        inputMatrixDoubles[i,j] = Math.Round((double)matrix[i, j],3);
-                    }
+                if (i == j || i < j) inputMatrixDoubles[i, j] = Math.Round((double) matrix[i, j], 3);
 
-                    if (i > j)
-                    {
-                        inputMatrixDoubles[i, j] = Math.Round((double)matrix[j, i],3);
-
-                    }
-
-                }
+                if (i > j) inputMatrixDoubles[i, j] = Math.Round((double) matrix[j, i], 3);
             }
-
-
 
 
             return inputMatrixDoubles;
@@ -71,11 +38,8 @@ namespace ConsoleApp1
 
         public static double[] VektorRandomElements(double[] vektor)
         {
-            Random random = new Random();
-            for (int i = 0; i < vektor.Length; i++)
-            {
-                vektor[i] = random.NextDouble();
-            }
+            var random = new Random();
+            for (var i = 0; i < vektor.Length; i++) vektor[i] = random.NextDouble();
 
             return vektor;
         }
@@ -84,60 +48,46 @@ namespace ConsoleApp1
         //work on the random numbers in the matrix 
         public static int[,] MatrixRandomElements()
         {
-            Random random = new Random();
-            int number = random.Next(5, 20);
-            int[,] randomMatrix = new int[number,number];
+            var random = new Random();
+            var number = random.Next(5, 20);
+            var randomMatrix = new int[number, number];
 
 
-            for (int i = 0; i < randomMatrix.GetLength(0); i++)
-            {
-                for (int j = 0; j < randomMatrix.GetLength(1); j++)
-                {
-                    randomMatrix[i, j] = random.Next(0, 60)-random.Next(0,20);
-                }
-            }
-            return randomMatrix; 
+            for (var i = 0; i < randomMatrix.GetLength(0); i++)
+            for (var j = 0; j < randomMatrix.GetLength(1); j++)
+                randomMatrix[i, j] = random.Next(0, 60) - random.Next(0, 20);
+            return randomMatrix;
         }
-        
+
         public static double[,] MatrixRandomDoubles()
         {
-            Random random = new Random();
-            int number = random.Next(5, 20);
-            double[,] randomMatrix = new double[number, number];
+            var random = new Random();
+            var number = random.Next(5, 20);
+            var randomMatrix = new double[number, number];
 
 
-            for (int i = 0; i < randomMatrix.GetLength(0); i++)
-            {
-                for (int j = 0; j < randomMatrix.GetLength(1); j++)
-                {
-                    randomMatrix[i, j] = random.Next(0, 60) - random.Next(0, 20);
-                }
-            }
+            for (var i = 0; i < randomMatrix.GetLength(0); i++)
+            for (var j = 0; j < randomMatrix.GetLength(1); j++)
+                randomMatrix[i, j] = random.Next(0, 60) - random.Next(0, 20);
             return randomMatrix;
         }
 
         public static double[] RandomVektorForRandomMatrix(int[,] matrix)
         {
-            Random random = new Random();
-            double[] randomVektor = new double[matrix.GetLength(0)];
-            
-            for (int i = 0; i < matrix.GetLength(0); i++)
-            {
-                randomVektor[i] = random.NextDouble(); 
-            }
+            var random = new Random();
+            var randomVektor = new double[matrix.GetLength(0)];
+
+            for (var i = 0; i < matrix.GetLength(0); i++) randomVektor[i] = random.NextDouble();
 
             return randomVektor;
         }
 
         public static double[] RandomVektorForRandomMatrix(double[,] matrix)
         {
-            Random random = new Random();
-            double[] randomVektor = new double[matrix.GetLength(0)];
+            var random = new Random();
+            var randomVektor = new double[matrix.GetLength(0)];
 
-            for (int i = 0; i < matrix.GetLength(0); i++)
-            {
-                randomVektor[i] = Math.Round(random.NextDouble(), 3);
-            }
+            for (var i = 0; i < matrix.GetLength(0); i++) randomVektor[i] = Math.Round(random.NextDouble(), 3);
 
             return randomVektor;
         }
@@ -145,44 +95,28 @@ namespace ConsoleApp1
         public static double[] VektorMatrixMultiplikation(int[,] matrix, double[] vektor, double[] result)
         {
             if (matrix != null && vektor != null && result != null)
-            {
-                for (int i = 0; i < matrix.GetLength(0); i++)
+                for (var i = 0; i < matrix.GetLength(0); i++)
                 {
                     double temp = 0;
-                    for (int j = 0; j < matrix.GetLength(1); j++)
-                    {
-
-                        temp += (double)matrix[i, j] * vektor[j];
-                    }
+                    for (var j = 0; j < matrix.GetLength(1); j++) temp += matrix[i, j] * vektor[j];
 
                     result[i] = temp;
                 }
 
-
-                
-            }
             return result;
         }
 
         public static double[] VektorMatrixMultiplikation(double[,] matrix, double[] vektor, double[] result)
         {
             if (matrix != null && vektor != null && result != null)
-            {
-                for (int i = 0; i < matrix.GetLength(0); i++)
+                for (var i = 0; i < matrix.GetLength(0); i++)
                 {
                     double temp = 0;
-                    for (int j = 0; j < matrix.GetLength(1); j++)
-                    {
-
-                        temp += (double)matrix[i, j] * vektor[j];
-                    }
+                    for (var j = 0; j < matrix.GetLength(1); j++) temp += matrix[i, j] * vektor[j];
 
                     result[i] = temp;
                 }
 
-
-
-            }
             return result;
         }
 
@@ -191,23 +125,20 @@ namespace ConsoleApp1
 
         private static int[,] MatrixMultiplikation(int[,] result, int[,] matrix1, int[,] matrix2)
         {
-
-            for (int i = 0; i < matrix1.GetLength(0); i++)
+            for (var i = 0; i < matrix1.GetLength(0); i++)
+            for (var j = 0; j < matrix1.GetLength(1); j++)
             {
-                for (int j = 0; j < matrix1.GetLength(1); j++)
+                var temp = 0;
+                var test = 0;
+                var test2 = 0;
+                for (var k = 0; k < matrix1.GetLength(0); k++)
                 {
-                    int temp = 0;
-                    int test = 0;
-                    int test2 = 0;
-                    for (int k = 0; k < matrix1.GetLength(0); k++)
-                    {
-                        test = matrix1[i, k];
-                        test2 = matrix2[k, i];
-                        temp += matrix1[i, k] * matrix2[k, j];
-                    }
-
-                    result[i, j] = temp;
+                    test = matrix1[i, k];
+                    test2 = matrix2[k, i];
+                    temp += matrix1[i, k] * matrix2[k, j];
                 }
+
+                result[i, j] = temp;
             }
 
 
@@ -215,44 +146,33 @@ namespace ConsoleApp1
         }
 
 
-
-
-
         //SkalarProdukt
 
         public static double SkalarProdukt(double[] vektor1, double[] vektor2)
         {
-            
             double temp = 0;
             if (vektor1 != null && vektor2 != null)
-            {
-                for (int i = 0; i < vektor1.Length; i++)
-                {
+                for (var i = 0; i < vektor1.Length; i++)
                     temp += vektor1[i] * vektor2[i];
-                }
-            }
-            
+
 
             return temp;
         }
 
 
-
-
-        public static EigenVectorAndValue EigenVectorViolating(double[,] inputMatrix, int counter, EigenVectorAndValue eigenVectorAndValue)
+        public static EigenVectorAndValue EigenVectorViolating(int[,] inputMatrix, int counter,
+            EigenVectorAndValue eigenVectorAndValue)
         {
             //EIGENVALUES AND EIGENVECTORS
 
-            
-            
 
             var M = Matrix<double>.Build;
 
 
-            var inputMatrixForEigen = M.DenseOfArray(inputMatrix);
-            Evd<double> eigenValue = inputMatrixForEigen.Evd();
-            Matrix<double> eigenVectors = eigenValue.EigenVectors;
-            Vector<Complex> eigenValues = eigenValue.EigenValues;
+            var inputMatrixForEigen = M.DenseOfArray(CreateSymmetricMatrixOfDoubles(inputMatrix));
+            var eigenValue = inputMatrixForEigen.Evd();
+            var eigenVectors = eigenValue.EigenVectors;
+            var eigenValues = eigenValue.EigenValues;
 
             Console.WriteLine(eigenValues);
             Console.WriteLine(eigenVectors);
@@ -263,37 +183,31 @@ namespace ConsoleApp1
             min = eigenValues[0].Real;
             max = eigenValues[0].Real;
             var indexOfMax = -1;
-            double[] eigenValuesVector = new double[eigenValues.Count]; 
+            var eigenValuesVector = new double[eigenValues.Count];
             for (var i = 0; i < eigenValues.Count; i++)
             {
                 eigenValuesVector[i] = eigenValues[i].Real;
-                if (eigenValues[i].Real < min)
-                {
-                    min = eigenValues[i].Real;
-                    
-                }
+                if (eigenValues[i].Real < min) min = eigenValues[i].Real;
 
                 if (eigenValues[i].Real > max)
                 {
                     max = eigenValues[i].Real;
-                    indexOfMax = i; 
+                    indexOfMax = i;
                 }
-
             }
-            
 
-            Console.WriteLine($"Lambda1 = {min} ||| LambdaN = {max}" );
+
+            Console.WriteLine($"Lambda1 = {min} ||| LambdaN = {max}");
 
             // Get First Eigenvector
             var eigenVectorsArray = eigenVectors.ToArray();
-            double[] firstEigenVector = new double[eigenVectorsArray.GetLength(0)];
-            double[] positiveEigenVector = new double[eigenVectorsArray.GetLength(0)];
-            double[] NegativeEigenVector = new double[eigenVectorsArray.GetLength(0)];
-            double[] resultVector = new double[eigenVectorsArray.GetLength(0)];
-            
+            var firstEigenVector = new double[eigenVectorsArray.GetLength(0)];
+            var positiveEigenVector = new double[eigenVectorsArray.GetLength(0)];
+            var NegativeEigenVector = new double[eigenVectorsArray.GetLength(0)];
+            var resultVector = new double[eigenVectorsArray.GetLength(0)];
+
             eigenVectorAndValue.SetEigenValues(eigenValuesVector);
             eigenVectorAndValue.SetEigenVector(eigenVectorsArray);
-            
 
 
             for (var i = 0; i < firstEigenVector.Length; i++)
@@ -307,14 +221,16 @@ namespace ConsoleApp1
             if (min >= 0)
             {
                 Console.WriteLine("Matrix is positive semidefinite");
-                counter++; 
+                counter++;
             }
 
             if (min < -max)
             {
                 Console.WriteLine("matrix is not copositive");
-                var pos = Algebra.SkalarProdukt(positiveEigenVector, Algebra.VektorMatrixMultiplikation(inputMatrix, positiveEigenVector, resultVector));
-                var neg = Algebra.SkalarProdukt(NegativeEigenVector, Algebra.VektorMatrixMultiplikation(inputMatrix, NegativeEigenVector, resultVector));
+                var pos = SkalarProdukt(positiveEigenVector,
+                    VektorMatrixMultiplikation(inputMatrix, positiveEigenVector, resultVector));
+                var neg = SkalarProdukt(NegativeEigenVector,
+                    VektorMatrixMultiplikation(inputMatrix, NegativeEigenVector, resultVector));
 
                 if (pos < 0)
                 {
@@ -325,46 +241,38 @@ namespace ConsoleApp1
                 if (neg < 0)
                 {
                     eigenVectorAndValue.SetEViolatingVector(NegativeEigenVector);
-                    return eigenVectorAndValue; 
+                    return eigenVectorAndValue;
                 }
-
             }
 
 
-            if (min == -max)
-            {
-                for (int i = 0; i < eigenVectorsArray.Length; i++)
-                {
-                    if (eigenVectorsArray[indexOfMax, i] != null)
-                    {
-                        Console.WriteLine("matrix is not copositive");
-
-                        var pos = Algebra.SkalarProdukt(positiveEigenVector, Algebra.VektorMatrixMultiplikation(inputMatrix, positiveEigenVector, resultVector));
-                        var neg = Algebra.SkalarProdukt(NegativeEigenVector, Algebra.VektorMatrixMultiplikation(inputMatrix, NegativeEigenVector, resultVector));
-
-                        if (pos < 0)
+            if (indexOfMax >= 0)
+                if (min == -max)
+                    for (var i = 0; i < eigenVectorsArray.Length; i++)
+                        if (eigenVectorsArray[indexOfMax, i] != null)
                         {
-                            eigenVectorAndValue.SetEViolatingVector(positiveEigenVector);
-                            return eigenVectorAndValue;
+                            Console.WriteLine("matrix is not copositive");
+
+                            var pos = SkalarProdukt(positiveEigenVector,
+                                VektorMatrixMultiplikation(inputMatrix, positiveEigenVector, resultVector));
+                            var neg = SkalarProdukt(NegativeEigenVector,
+                                VektorMatrixMultiplikation(inputMatrix, NegativeEigenVector, resultVector));
+
+                            if (pos < 0)
+                            {
+                                eigenVectorAndValue.SetEViolatingVector(positiveEigenVector);
+                                return eigenVectorAndValue;
+                            }
+
+                            if (neg < 0)
+                            {
+                                eigenVectorAndValue.SetEViolatingVector(NegativeEigenVector);
+                                return eigenVectorAndValue;
+                            }
                         }
 
-                        if (neg < 0)
-                        {
-                            eigenVectorAndValue.SetEViolatingVector(NegativeEigenVector);
-                            return eigenVectorAndValue; 
-                        }
-                        
-                        
-                    }
-                }
-              
-            }
 
-            return eigenVectorAndValue; 
-
+            return eigenVectorAndValue;
         }
-
-
-
     }
 }
