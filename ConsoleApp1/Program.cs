@@ -61,6 +61,14 @@ namespace ConsoleApp1
                 {1, 33, 11, 18, -10},
                 {55, 24, 2, -10, 9}
             };
+            int[,] example37 =
+            {
+                {39, -12, -2, 18, -4},
+                {-12, 35, 13, 6, 3},
+                {-2, 13, 18, -14, 27},
+                {18, 6, -14, 40, 37},
+                {-4, 3, 27, 37, 15}
+            };
 
             int[,] example81905 =
             {
@@ -93,6 +101,17 @@ namespace ConsoleApp1
                 {-8, -14, 43, 33, 34},
                 {24, 40, 33, 5, 18},
                 {9, 38, 34, 18, 37}
+            };
+
+            int[,] example975 =
+            {
+                {20, 8, 6, 11, 18, 25, 30},
+                {8, 4, 30, 43, -4, 20, 32},
+                {6, 30, 10, 11, 9, -2, 41},
+                {11, 43, 11, 45, 37, 44, 16},
+                {18, -4, 9, 37, 35, 10, 21},
+                {25, 20, -2, 44, 10, 21, 27},
+                {30, 32, 41, 16, 21, 27, 11}
             };
             int[,] example294 =
             {
@@ -216,9 +235,9 @@ namespace ConsoleApp1
             //using (var sw = new StreamWriter("C:/Users/dejan/Desktop/Master/Results/resultsnotcopositive.txt"))
             //{
 
-            var swnotcop = new StreamWriter("C:/Users/z004f7tr/Desktop/Results/notCopositiveResults4.txt");
-            var swcop = new StreamWriter("C:/Users/z004f7tr/Desktop/Results/copositiveResults4.txt");
-            var swnoansw = new StreamWriter("C:/Users/z004f7tr/Desktop/Results/NoAnswerResults4.txt");
+            var swnotcop = new StreamWriter("C:/Users/z004f7tr/Desktop/Results/notCopositiveResults5.txt");
+            var swcop = new StreamWriter("C:/Users/z004f7tr/Desktop/Results/copositiveResults5.txt");
+            var swnoansw = new StreamWriter("C:/Users/z004f7tr/Desktop/Results/NoAnswerResults5.txt");
 
 
             var copositive = 0;
@@ -239,7 +258,7 @@ namespace ConsoleApp1
             var deletedRowsCase4 = 0;
 
 
-            while (counter < 1000)
+            while (counter < 100000)
             {
                 var matrixDto = new Case4Dto();
                 var matrixCase4 = new MatrixforCase4();
@@ -249,10 +268,10 @@ namespace ConsoleApp1
                 decimal percentageofRows4 = 0;
 
                 counter++;
-
+                //
                 var inputMatrix = Algebra.CreateSymmetricMatrix(Algebra.MatrixRandomElements());
                 var inputMatrixDoubles = Algebra.CreateSymmetricMatrixOfDoubles(inputMatrix);
-                // var inputMatrix = example980;
+                // var inputMatrix = example975;
                 // var inputMatrixDoubles = Algebra.CreateSymmetricMatrixOfDoubles(inputMatrix);
 
                 var resultTest = Algebra.RandomVektorForRandomMatrix(inputMatrix);
@@ -474,6 +493,9 @@ namespace ConsoleApp1
                     matrixDto.SetVector(null);
                 }
 
+                Preprocessing.DiagonalNegativeDominance(inputMatrix, matrixDto);
+                Preprocessing.DiagonalDominance(inputMatrix, matrixDto);
+
 
                 if (matrixDto.GetVector() == null && matrixDto.GetCopositive())
                     copositive++;
@@ -559,7 +581,7 @@ namespace ConsoleApp1
 
                 if (matrixDto.GetVector() == null && matrixDto.GetCopositive() ||
                     eigenValues[0] < -eigenValues[eigenValues.Length - 1] ||
-                    matrixDto.GetVector() == null && matrixDto.GetPositiveDefinite())
+                    matrixDto.GetPositiveDefinite())
                 {
                     swnotcop.Write("\n");
                     swnotcop.Write("\n");

@@ -755,7 +755,7 @@ namespace ConsoleApp1
 
             var counter = 0;
             for (var i = 0; i < diagonals.Length; i++)
-                if (diagonals[i] > offDiagonals[i])
+                if (diagonals[i] >= offDiagonals[i])
                     counter++;
 
             if (counter == diagonals.Length)
@@ -786,7 +786,7 @@ namespace ConsoleApp1
 
             var counter = 0;
             for (var i = 0; i < diagonals.Length; i++)
-                if (diagonals[i] > offDiagonals[i])
+                if (diagonals[i] >= offDiagonals[i])
                     counter++;
 
             if (counter == diagonals.Length)
