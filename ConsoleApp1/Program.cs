@@ -260,6 +260,10 @@ namespace ConsoleApp1
 
             while (counter < 100000)
             {
+                var copositiveMatrix = false;
+                var notCopositiveMatrix = false;
+                var noAnswerMatrix = false;
+                var positiveDefiniteMatrix = false;
                 var matrixDto = new Case4Dto();
                 var matrixCase4 = new MatrixforCase4();
                 var matrixCase3 = new MatrixForCase3();
@@ -268,8 +272,9 @@ namespace ConsoleApp1
                 decimal percentageofRows4 = 0;
 
                 counter++;
+
                 //
-                var inputMatrix = Algebra.CreateSymmetricMatrix(Algebra.MatrixRandomElements());
+                var inputMatrix = Algebra.CreateSymmetricMatrix(Algebra.MatrixRandomElements(counter));
                 var inputMatrixDoubles = Algebra.CreateSymmetricMatrixOfDoubles(inputMatrix);
                 // var inputMatrix = example975;
                 // var inputMatrixDoubles = Algebra.CreateSymmetricMatrixOfDoubles(inputMatrix);
@@ -310,7 +315,7 @@ namespace ConsoleApp1
 
                 Console.WriteLine("____________________Case 3____________________");
 
-                var caseC = Preprocessing.PositivityTestCaseC(inputMatrix, resultCaseA, matrixCase4, matrixCase3,
+                var caseC = Preprocessing.PositivityTestCaseC(inputMatrix, 0, matrixCase4, matrixCase3,
                     matrixDto, eigenVectorAndValue);
                 if (matrixCase3.GetMatrix() != null)
                     Preprocessing.DiagonalNegativeDominance(matrixCase3.GetMatrix(), matrixDto);
@@ -327,7 +332,6 @@ namespace ConsoleApp1
 
                 var caseD = Preprocessing.NegativityTestCaseD(inputMatrix, matrixCase4, matrixCase3, matrixDto,
                     eigenVectorAndValue);
-                if (caseD != null) Console.WriteLine();
 
                 if (matrixCase4.GetMatrix() != null)
                     Preprocessing.DiagonalNegativeDominance(matrixCase4.GetMatrix(), matrixDto);
@@ -411,6 +415,8 @@ namespace ConsoleApp1
 
                 if (counterVar == 0) matrixDto.SetVector(null);
 
+                
+                //Calculating percentage of deleted rows
                 var finalMatrixCase4 = matrixCase4.GetMatrix();
                 var finalMatrixCase3 = matrixCase3.GetMatrix();
                 var rows3 = 0;
@@ -429,14 +435,14 @@ namespace ConsoleApp1
                     deletedRowsCase4 += Math.Abs(finalMatrixCase4.GetLength(1) - inputMatrix.GetLength(1));
                 }
 
-                if (deletedRowsCase3 > 0)
+                if (rows3 < inputMatrix.GetLength(1) && rows3 > 0)
                 {
                     store1 =
                         Math.Round(100 - rows3 / (decimal) inputMatrix.GetLength(0) * 100, 2);
                     if (store1 > 0 && store1 < 100) percentageofRows3 = store1;
                 }
 
-                if (deletedRowsCase4 > 0)
+                if (rows4 < inputMatrix.GetLength(1) && rows4 > 0)
                 {
                     store2 =
                         Math.Round(100 - rows4 / (decimal) inputMatrix.GetLength(0) * 100, 2);
@@ -498,22 +504,38 @@ namespace ConsoleApp1
 
 
                 if (matrixDto.GetVector() == null && matrixDto.GetCopositive())
+                {
                     copositive++;
+                    copositiveMatrix = true;
+                }
                 else if (matrixDto.GetVector() != null && !matrixDto.GetCopositive())
+                {
                     notCopositive++;
+                    notCopositiveMatrix = true;
+                }
+
                 else if (!matrixDto.GetCopositive() && matrixDto.GetVector() == null)
+                {
                     noAnswer++;
-                else if (matrixDto.GetCopositive() && matrixDto.GetVector() != null) notCopositive++;
+                    noAnswerMatrix = true;
+                }
 
+                else if (matrixDto.GetCopositive() && matrixDto.GetVector() != null)
+                {
+                    notCopositive++;
+                    notCopositiveMatrix = true;
+                }
 
-                if (eigenValues[0] < -eigenValues[eigenValues.Length - 1]) numberOfPositiveSemiDefinite++;
+                else if (eigenValues[0] < -eigenValues[eigenValues.Length - 1])
+                {
+                    numberOfPositiveSemiDefinite++;
+                    positiveDefiniteMatrix = true;
+                }
 
 
                 //WRITE ALL NOT COPOSITIVE MATRICES
 
-                if (matrixDto.GetVector() != null && !matrixDto.GetCopositive() ||
-                    matrixDto.GetCopositive() && matrixDto.GetVector() != null || matrixDto.GetVector() != null &&
-                    violatingVector.Length == inputMatrix.GetLength(0))
+                if (notCopositiveMatrix)
                 {
                     swnotcop.Write("\n");
                     swnotcop.Write("\n");
@@ -550,12 +572,12 @@ namespace ConsoleApp1
                         swnotcop.Write("Matrix is positive semi definite");
                     swnotcop.Write("\n");
 
-                    if (percentageofRows3 > 0)
-                        swnotcop.Write("The percentage of deleted rows with Case 3 is " + percentageofRows3);
+
+                    swnotcop.Write("The percentage of deleted rows with Case 3 is " + percentageofRows3 + "%");
 
                     swnotcop.Write("\n");
-                    if (percentageofRows4 > 0)
-                        swnotcop.Write("The percentage of deleted rows with Case 4 is " + percentageofRows4);
+
+                    swnotcop.Write("The percentage of deleted rows with Case 4 is " + percentageofRows4 + "%");
 
 
                     swnotcop.Write("\n");
@@ -576,15 +598,12 @@ namespace ConsoleApp1
                     swnotcop.Write("\n");
                 }
 
-
                 //WRITE ALL COPOSITIVE MATRICES
 
-                if (matrixDto.GetVector() == null && matrixDto.GetCopositive() ||
-                    eigenValues[0] < -eigenValues[eigenValues.Length - 1] ||
-                    matrixDto.GetPositiveDefinite())
+                else if (copositiveMatrix || positiveDefiniteMatrix)
                 {
-                    swnotcop.Write("\n");
-                    swnotcop.Write("\n");
+                    swcop.Write("\n");
+                    swcop.Write("\n");
 
                     swcop.WriteLine("Example : " + counter);
                     for (var i = 0; i < inputMatrix.GetLength(0); i++)
@@ -618,12 +637,12 @@ namespace ConsoleApp1
                         swcop.Write("Matrix is positive semi definite");
                     swcop.Write("\n");
 
-                    if (percentageofRows3 > 0)
-                        swnotcop.Write("The percentage of deleted rows with Case 3 is " + percentageofRows3);
+
+                    swcop.Write("The percentage of deleted rows with Case 3 is " + percentageofRows3 + "%");
 
                     swcop.Write("\n");
-                    if (percentageofRows4 > 0)
-                        swcop.Write("The percentage of deleted rows with Case 4 is " + percentageofRows4);
+
+                    swcop.Write("The percentage of deleted rows with Case 4 is " + percentageofRows4 + "%");
 
 
                     swcop.Write("\n");
@@ -651,13 +670,12 @@ namespace ConsoleApp1
                     swcop.Write("\n");
                 }
 
-
                 //WRITE ALL NO ANSWER CASES
 
-                if (!matrixDto.GetCopositive() && matrixDto.GetVector() == null)
+                else if (noAnswerMatrix)
                 {
-                    swnotcop.Write("\n");
-                    swnotcop.Write("\n");
+                    swnoansw.Write("\n");
+                    swnoansw.Write("\n");
 
                     swnoansw.WriteLine("Example : " + counter);
                     for (var i = 0; i < inputMatrix.GetLength(0); i++)
@@ -691,12 +709,12 @@ namespace ConsoleApp1
                         swnoansw.Write("Matrix is positive semi definite");
                     swnoansw.Write("\n");
 
-                    if (percentageofRows3 > 0)
-                        swnoansw.Write("The percentage of deleted rows with Case 3 is " + percentageofRows3);
+
+                    swnoansw.Write("The percentage of deleted rows with Case 3 is " + percentageofRows3 + "%");
 
                     swnoansw.Write("\n");
-                    if (percentageofRows4 > 0)
-                        swnoansw.Write("The percentage of deleted rows with Case 4 is " + percentageofRows4);
+
+                    swnoansw.Write("The percentage of deleted rows with Case 4 is " + percentageofRows4 + "%");
 
 
                     swnoansw.Write("\n");

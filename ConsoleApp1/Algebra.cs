@@ -46,11 +46,30 @@ namespace ConsoleApp1
 
 
         //work on the random numbers in the matrix 
-        public static int[,] MatrixRandomElements()
+        public static int[,] MatrixRandomElements(int counter)
         {
+            var dimension = 0;
+            if (counter < 5000) dimension = 5;
+            if (counter >= 5000 && counter <= 10000) dimension = 5;
+            if (counter > 10000 && counter <= 15000) dimension = 6;
+            if (counter > 15000 && counter <= 20000) dimension = 7;
+            if (counter > 20000 && counter <= 25000) dimension = 8;
+            if (counter > 25000 && counter <= 30000) dimension = 9;
+            if (counter > 30000 && counter <= 35000) dimension = 10;
+            if (counter > 35000 && counter <= 40000) dimension = 11;
+            if (counter > 40000 && counter <= 45000) dimension = 12;
+            if (counter > 45000 && counter <= 50000) dimension = 13;
+            if (counter > 50000 && counter <= 55000) dimension = 14;
+            if (counter > 55000 && counter <= 60000) dimension = 15;
+            if (counter > 60000 && counter <= 65000) dimension = 16;
+            if (counter > 65000 && counter <= 70000) dimension = 17;
+            if (counter > 70000 && counter <= 75000) dimension = 18;
+            if (counter > 75000 && counter <= 80000) dimension = 19;
+            if (counter > 80000 && counter <= 100000) dimension = 20;
+
+
             var random = new Random();
-            var number = random.Next(5, 20);
-            var randomMatrix = new int[number, number];
+            var randomMatrix = new int[dimension, dimension];
 
 
             for (var i = 0; i < randomMatrix.GetLength(0); i++)
